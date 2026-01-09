@@ -150,32 +150,32 @@ Table of content:
 
 /* base background color */
 .bg-color {
-  background: var(--primary-color)
+  background: var(--primary-color);
 }
 
 .bg-color-2 {
-  background: var(--secondary-color)
+  background: var(--secondary-color);
 }
 
 .bg-light {
-  background: var(--bg-light) !important
+  background: var(--bg-light) !important;
 }
 
 .bg-dark,
 .bg-dark-1 {
-  background-color: var(--bg-dark-1) !important
+  background-color: var(--bg-dark-1) !important;
 }
 
 .bg-dark-2 {
-  background-color: var(--bg-dark-2) !important
+  background-color: var(--bg-dark-2) !important;
 }
 
 .bg-dark-3 {
-  background-color: var(--bg-dark-3) !important
+  background-color: var(--bg-dark-3) !important;
 }
 
 .bg-grey {
-  background-color: var(--bg-grey) !important
+  background-color: var(--bg-grey) !important;
 }
 
 .bg-gradient-1 {
