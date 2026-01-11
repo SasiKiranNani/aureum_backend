@@ -23,14 +23,14 @@
                             </div>
 
                             <!-- <div class="d-flex justify-content-center align-items-center mx-4">
-                                                                                                    <i class="fa fa-calendar id-color me-3"></i>
-                                                                                                    <h4 class="mb-0">October 1–5, 2025</h4>
-                                                                                                </div> -->
+                                                                                                            <i class="fa fa-calendar id-color me-3"></i>
+                                                                                                            <h4 class="mb-0">October 1–5, 2025</h4>
+                                                                                                        </div> -->
 
                             <!-- <div class="d-flex justify-content-center align-items-center mx-4">
-                                                                                                    <i class="fa fa-location-pin id-color me-3"></i>
-                                                                                                    <h4 class="mb-0">San Francisco, CA</h4>
-                                                                                                </div> -->
+                                                                                                            <i class="fa fa-location-pin id-color me-3"></i>
+                                                                                                            <h4 class="mb-0">San Francisco, CA</h4>
+                                                                                                        </div> -->
                         </div>
 
                         <div class="spacer-single"></div>
@@ -253,97 +253,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="bg-dark section-dark text-light pt-80 relative jarallax" aria-label="section">
-        <img src="{{ asset('frontend/images/background/2.webp') }}" class="jarallax-img" alt="">
-        <div class="gradient-edge-top"></div>
-        <div class="gradient-edge-bottom"></div>
-        <div class="sw-overlay op-8"></div>
-        <div class="container relative z-4">
-            <div class="row align-items-center g-5">
-                <div class="col-md-4">
-                    <div class="relative w-100 d-inline-block pe-5">
-                        <div class="abs bg-color w-80px h-80px rounded-1 text-center end-0 z-2 wow scaleIn">
-                            <i class="icofont-quote-left text-white fs-40 d-block pt-3"></i>
-                        </div>
-                        <img src="{{ asset('frontend/images/misc/s9.webp') }}" class="w-100 rounded-1 wow scale-in-mask"
-                            alt="">
-                    </div>
-                </div>
-
-                <div class="col-md-8">
-                    <h3 class="fs-32 mb-4 wow fadeInUp">“Artificial intelligence is advancing rapidly, and while it offers
-                        immense opportunity, it also poses significant risks. If not properly regulated and aligned with
-                        human values, AI could become a fundamental threat to civilization.”</h3>
-
-                    <span>Elon Musk</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="section-speakers" class="bg-dark section-dark text-light">
-        <div class="container">
-            <div class="row g-4 justify-content-center">
-                <div class="col-lg-6 relative z-3">
-                    <div class="text-center">
-                        <div class="subtitle wow fadeInUp" data-wow-delay=".0s">Speakers</div>
-                        <h2 class="wow fadeInUp" data-wow-delay=".2s">Meet the Visionaries</h2>
-                        <p class="lead wow fadeInUp">Whether it's a quick refresh or a deep clean transformation, our
-                            expert touch leaves your home or office shining.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <div class="hover relative rounded-1 overflow-hidden wow fadeIn scale-in-mask">
-                        <img src="{{ asset('frontend/images/team/1.webp') }}" class="w-100 hover-scale-1-1"
-                            alt="">
-                        <div class="abs w-100 h-100 start-0 top-0 hover-op-1 radial-gradient-color"></div>
-                        <div class="abs w-100 start-0 bottom-0 z-3">
-                            <div class="bg-blur p-4 m-4 rounded-1 text-light text-center relative z-2">
-                                <h3 class="mb-0">Joshua Henry</h3>
-                                <span>Chief AI Scientist, OpenAI</span>
-                            </div>
-                            <div class="gradient-edge-bottom h-100 op-8"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="hover relative rounded-1 overflow-hidden wow fadeIn scale-in-mask">
-                        <img src="{{ asset('frontend/images/team/2.webp') }}" class="w-100 hover-scale-1-1"
-                            alt="">
-                        <div class="abs w-100 h-100 start-0 top-0 hover-op-1 radial-gradient-color"></div>
-                        <div class="abs w-100 start-0 bottom-0 z-3">
-                            <div class="bg-blur p-4 m-4 rounded-1 text-light text-center relative z-2">
-                                <h3 class="mb-0">Leila Zhang</h3>
-                                <span>VP of Machine Learning, Google</span>
-                            </div>
-                            <div class="gradient-edge-bottom h-100 op-8"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="hover relative rounded-1 overflow-hidden wow fadeIn scale-in-mask">
-                        <img src="{{ asset('frontend/images/team/3.webp') }}" class="w-100 hover-scale-1-1"
-                            alt="">
-                        <div class="abs w-100 h-100 start-0 top-0 hover-op-1 radial-gradient-color"></div>
-                        <div class="abs w-100 start-0 bottom-0 z-3">
-                            <div class="bg-blur p-4 m-4 rounded-1 text-light text-center relative z-2">
-                                <h3 class="mb-0">Carlos Rivera</h3>
-                                <span>Founder & CEO, NeuralCore</span>
-                            </div>
-                            <div class="gradient-edge-bottom h-100 op-8"></div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </section>

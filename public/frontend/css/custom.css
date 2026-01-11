@@ -1,4 +1,3 @@
-
 /* divya designs for about and contact us */
 #section-about .subtitle {
   text-align: center;
@@ -117,6 +116,8 @@
   gap: 15px;
   justify-content: center;
   margin-bottom: 30px;
+  padding: 40px 0 0px 0px;
+  /* Changed to prevent clipping of shadow/animation */
 }
 
 .float-letter {
@@ -129,7 +130,11 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: float-letter 3s ease-in-out infinite, gradient-wave 4s ease infinite;
-  text-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+  text-shadow: 0 0 50px rgba(255, 215, 0, 0.8);
+  /* Enhanced shadow */
+  padding: 0 5px;
+  /* Added horizontal padding to prevent side clipping */
+  line-height: 1.2;
 }
 
 .float-letter:nth-child(1) {
@@ -439,7 +444,8 @@
 /* 3D Flip Cards */
 .flip-card-3d {
   perspective: 1500px;
-  height: 450px;
+  height: 380px;
+  /* Reduced from 450px */
 }
 
 .flip-card-inner {
@@ -476,18 +482,20 @@
 }
 
 .flip-card-back {
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 107, 0, 0.05));
-  border: 1px solid rgba(255, 215, 0, 0.3);
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 107, 0, 0.1));
+  border: 1px solid rgba(255, 215, 0, 0.4);
   transform: rotateY(180deg);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 60px;
+  padding: 40px;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.2) inset;
 }
 
 .vision-back {
-  background: linear-gradient(135deg, rgba(0, 245, 255, 0.1), rgba(157, 0, 255, 0.05));
-  border: 1px solid rgba(0, 245, 255, 0.3);
+  background: linear-gradient(135deg, rgba(0, 245, 255, 0.15), rgba(157, 0, 255, 0.1));
+  border: 1px solid rgba(0, 245, 255, 0.4);
+  box-shadow: 0 0 30px rgba(0, 245, 255, 0.2) inset;
 }
 
 /* Mesh Background Pattern on Cards */
@@ -517,9 +525,15 @@
 
 /* Floating Icon */
 .floating-icon {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   animation: icon-float 3s ease-in-out infinite;
-  filter: drop-shadow(0 10px 30px rgba(255, 215, 0, 0.5));
+  filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.7));
+  transition: all 0.3s ease;
+}
+
+.floating-icon:hover {
+  filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.9));
+  transform: scale(1.1);
 }
 
 @keyframes icon-float {
@@ -628,7 +642,8 @@
   }
 
   .flip-card-3d {
-    height: 400px;
+    height: 350px;
+    /* Reduced responsive height */
   }
 }
 
@@ -658,7 +673,8 @@
   }
 
   .flip-card-3d {
-    height: 380px;
+    height: 320px;
+    /* Reduced responsive height */
     margin-bottom: 30px;
   }
 
@@ -682,7 +698,8 @@
   }
 
   .flip-card-3d {
-    height: 350px;
+    height: 300px;
+    /* Reduced responsive height */
   }
 }
 
@@ -1221,4 +1238,65 @@
   .detail-item {
     padding: 12px 0;
   }
+}
+
+/* ================================================================ */
+/* PREMIUM SUBTITLE REDESIGN - REPLACES [ ] BRACKETS */
+/* ================================================================ */
+
+.subtitle {
+  position: relative;
+  display: inline-block;
+  padding: 0 60px !important;
+  /* Space for the lines */
+  background: none !important;
+  color: #FFD700 !important;
+  /* Premium Gold */
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  border: none !important;
+  font-size: 16px;
+  margin-bottom: 20px;
+  z-index: 1;
+  line-height: normal;
+}
+
+/* Left Line with Gradient & Glow */
+.subtitle:before {
+  content: "" !important;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 45px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #FFD700) !important;
+  transform: translateY(-50%) !important;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+  border-radius: 2px;
+  /* Resetting unwanted properties from previous styles if any */
+  color: transparent;
+  font-weight: normal;
+}
+
+/* Right Line with Gradient & Glow */
+.subtitle:after {
+  content: "" !important;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 45px;
+  height: 2px;
+  background: linear-gradient(90deg, #FFD700, transparent) !important;
+  transform: translateY(-50%) !important;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+  border-radius: 2px;
+  color: transparent;
+  font-weight: normal;
+}
+
+/* Optional: Add a subtle glow behind the text */
+.subtitle:hover {
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+  transition: all 0.3s ease;
 }

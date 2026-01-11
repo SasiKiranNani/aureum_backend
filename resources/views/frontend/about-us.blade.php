@@ -3,16 +3,18 @@
 @section('contents')
     <section id="section-about" class="bg-dark section-dark text-light">
         <div class="container">
-            <div class="row">
-                <div class="subtitle wow fadeInUp" data-wow-delay=".2s">About Aureum</div>
-                <h2 class="wow fadeInUp" data-wow-delay=".4s">Welcome to Aureum International Awards</h2>
+            <div class="row g-4">
+                <div class="col-lg-12 text-center">
+                    <div class="subtitle wow fadeInUp mb-3">About Aureum</div>
+                    <h2 class="wow fadeInUp" data-wow-delay=".4s">Welcome to Aureum International Awards</h2>
+                </div>
             </div>
             <div class="row gx-5 align-items-center justify-content-between">
                 <div class="col-lg-6">
                     <div class="">
                         <!-- me-lg-5 pe-lg-5 py-5 my-5 -->
                         <!-- <div class="subtitle wow fadeInUp" data-wow-delay=".2s">About Aureum</div>
-                                            <h2 class="wow fadeInUp" data-wow-delay=".4s">Welcome to Aureum International Awards</h2> -->
+                                                            <h2 class="wow fadeInUp" data-wow-delay=".4s">Welcome to Aureum International Awards</h2> -->
                         <p class="wow fadeInUp" data-wow-delay=".6s">Aureum International Awards transcend the
                             confines of a traditional ceremony, rising as a monumental global
                             beacon that unites nations in celebration of extraordinary visionaries—those intrepid
