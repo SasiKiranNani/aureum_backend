@@ -55,6 +55,20 @@ class AdminPanelProvider extends PanelProvider
             ->plugins([
                 FilamentShieldPlugin::make(),
             ])
+            ->navigationGroups([
+                \Filament\Navigation\NavigationGroup::make()
+                     ->label('Season Management'),
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label('Fee Management'),
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label('Media Management'),
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label('CMS Management'),
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label('Settings'),
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label('User & Roles Management'),
+            ])
             ->authMiddleware([
                 Authenticate::class,
             ]);

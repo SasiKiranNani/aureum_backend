@@ -24,7 +24,7 @@ class UserResource extends Resource
 
     protected static ?string $navigationGroup = 'User & Roles Management';
 
-    // protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -129,9 +129,6 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'view' => Pages\ViewUser::route('/{record}'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }

@@ -2,11 +2,11 @@
 
 return [
     'shield_resource' => [
-        'should_register_navigation' => true,
+        'should_register_navigation' => false,
         'slug' => 'shield/roles',
-        'navigation_sort' => -1,
+        'navigation_sort' => 2,
         'navigation_badge' => true,
-        'navigation_group' => true,
+        'navigation_group' => 'User & Roles Management',
         'sub_navigation_position' => null,
         'is_globally_searchable' => false,
         'show_model_path' => true,
