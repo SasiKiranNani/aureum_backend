@@ -37,24 +37,24 @@ jobs:
           npm run build
 
       # ✅ Deploy to Second Server (e.g., production/live)
-      - name: Deploy to FTP Server (Live)
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.LIVE_SERVER }}
-          username: ${{ secrets.LIVE_USERNAME }}
-          password: ${{ secrets.LIVE_PASSWORD }}
-          exclude: |
-            **/.git
-            **/.git/**
-            **/.env
-            **/.env.example
-            **/.editorconfig
-            **/.github/**
-            **/.vscode/**
-            **/tests/**
-            **/node_modules/**
-            **/storage/framework/**
-            **/storage/logs/**
+      # - name: Deploy to FTP Server (Live)
+      #   uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      #   with:
+      #     server: ${{ secrets.LIVE_SERVER }}
+      #     username: ${{ secrets.LIVE_USERNAME }}
+      #     password: ${{ secrets.LIVE_PASSWORD }}
+      #     exclude: |
+      #       **/.git
+      #       **/.git/**
+      #       **/.env
+      #       **/.env.example
+      #       **/.editorconfig
+      #       **/.github/**
+      #       **/.vscode/**
+      #       **/tests/**
+      #       **/node_modules/**
+      #       **/storage/framework/**
+      #       **/storage/logs/**
 
       # ✅ Deploy to First Server (e.g., staging)
       - name: Deploy to FTP Server 2 (Staging)
