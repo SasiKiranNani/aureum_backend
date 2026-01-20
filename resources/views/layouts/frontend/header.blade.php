@@ -35,7 +35,13 @@
                     </div>
 
                     <div class="de-flex-col">
-                        <a class="btn-main fx-slide w-100" href=""><span>Login/Register</span></a>
+                        <a class="btn-main fx-slide w-100" href="javascript:void(0)" data-bs-toggle="modal"
+                            data-bs-target="#authModal">
+                            <span class="auth-icon-wrap">
+                                <i class="fa fa-user auth-btn-icon"></i>
+                            </span>
+                            <span class="auth-btn-text">Login/Register</span>
+                        </a>
 
                         <div class="menu_side_area">
                             <span id="menu-btn"></span>

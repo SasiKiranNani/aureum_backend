@@ -44,9 +44,15 @@ class UserResource extends Resource
                             ->password()
                             ->dehydrateStateUsing(fn($state) => Hash::make($state))
                             ->dehydrated(fn($state) => filled($state))
+                            ->afterStateHydrated(function (Forms\Components\TextInput $component, $state) {
+                                $component->state('');
+                            })
                             ->required(fn(string $context): bool => $context === 'create')
                             ->maxLength(255)
                             ->helperText('Leave blank to keep current password'),
+                        Forms\Components\Hidden::make('original_password')
+                            ->dehydrateStateUsing(fn($state, Forms\Get $get) => $get('password'))
+                            ->dehydrated(fn($state, Forms\Get $get) => filled($get('password'))),
                     ])
                     ->columns(2),
 

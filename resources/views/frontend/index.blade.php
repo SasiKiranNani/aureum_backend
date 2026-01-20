@@ -15,22 +15,23 @@
                             Excellence</h1>
 
                         <div class="d-block d-md-flex justify-content-center">
-                            <div class="d-flex justify-content-center align-items-center mx-4 white-space-pre-wrap">
-                                <!-- <i class="fa fa-calendar id-color me-3"></i> -->
+                            <div class="mx-4 text-center">
+                                <!-- <i class="fa
+                                fa-calendar id-color me-3"></i> -->
                                 <h4 class="mb-0">Recognizing outstanding achievers in technology through a fair,
                                     transparent, and merit-driven process that earns international acclaim and sets a
                                     benchmark for innovation and excellence.</h4>
                             </div>
 
                             <!-- <div class="d-flex justify-content-center align-items-center mx-4">
-                                                                                                            <i class="fa fa-calendar id-color me-3"></i>
-                                                                                                            <h4 class="mb-0">October 1–5, 2025</h4>
-                                                                                                        </div> -->
+                                            <i class="fa fa-calendar id-color me-3"></i>
+                                            <h4 class="mb-0">October 1–5, 2025</h4>
+                                        </div> -->
 
                             <!-- <div class="d-flex justify-content-center align-items-center mx-4">
-                                                                                                            <i class="fa fa-location-pin id-color me-3"></i>
-                                                                                                            <h4 class="mb-0">San Francisco, CA</h4>
-                                                                                                        </div> -->
+                                            <i class="fa fa-location-pin id-color me-3"></i>
+                                            <h4 class="mb-0">San Francisco, CA</h4>
+                                        </div> -->
                         </div>
 
                         <div class="spacer-single"></div>
@@ -44,20 +45,20 @@
             </div>
         </div>
 
-        <div class="abs w-100 start-0 bottom-0 z-3">
+        <div class="abs w-100 start-0 bottom-0 z-3" section="abs">
             <div class="container">
-                <div class="sm-hide border-white-op-3 p-40 py-4 rounded-1 bg-blur relative overflow-hidden wow fadeInUp">
+                <div class="sm-mt-30 border-white-op-3 p-40 py-4 rounded-1 bg-blur relative overflow-hidden wow fadeInUp">
                     <div class="gradient-edge-bottom color start-0 h-50 op-5"></div>
                     <div class="row g-4 justify-content-between align-items-center relative z-2">
-                        <div class="col-lg-3">
+                        <div class="col-lg-3 col-md-12 text-center text-lg-start">
                             <h2 class="mb-0">Hurry Up!</h2>
                             <h4 class="mb-0">Apply for Nominations Now</h4>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-4 col-md-12 text-center">
                             <div id="defaultCountdown" class="pt-2"></div>
                         </div>
-                        <div class="col-lg-4">
-                            <div class="d-flex">
+                        <div class="col-lg-4 col-md-12">
+                            <div class="d-flex justify-content-center justify-content-lg-start">
                                 <i class="fs-60 icofont-google-map id-color"></i>
                                 <div class="ms-3">
                                     <h4 class="mb-0">121 AI Blvd,<br>San Francisco BCA 94107</h4>

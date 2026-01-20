@@ -29,8 +29,22 @@
                         <li><a href="{{ route('home') }}">Home</a></li>
                         <li><a href="{{ route('about-us') }}">About</a></li>
                         <li><a href="{{ route('categories') }}">Categories</a></li>
+                        <li><a href="{{ route('nomination') }}">Nomination</a></li>
+                        <li><a href="{{ route('award-trophy') }}">Award Trophy</a></li>
+                        <li><a href="{{ route('how-to-nominate') }}">How to Nominate</a></li>
+                        <li><a href="{{ route('judges') }}">Judges</a></li>
+                        <li><a href="{{ route('judge-details') }}">Judge Details</a></li>
+                        <li><a href="{{ route('judging-criteria') }}">Judging Criteria</a></li>
+                        <li><a href="{{ route('past-winners') }}">Past Winners</a></li>
+                        <li><a href="{{ route('past-winner-details') }}">Past Winner Details</a></li>
+                        <li><a href="{{ route('why-enter') }}">Why Enter</a></li>
                         <li><a href="{{ route('news-room') }}">NewsRoom</a></li>
                         <li><a href="{{ route('contact-us') }}">Contact</a></li>
+                        <li><a href="{{ route('privacy-policy') }}">Privacy Policy</a></li>
+                        <li><a href="{{ route('terms-and-conditions') }}">Terms & Conditions</a></li>
+                        <li><a href="{{ route('cookie-policy') }}">Cookie Policy</a></li>
+                        <li><a href="{{ route('cancellation-refund-policy') }}">Refund Policy</a></li>
+                        <li><a href="{{ route('shipping-return-policy') }}">Shipping Policy</a></li>
                     </ul>
                 </div>
             </div>

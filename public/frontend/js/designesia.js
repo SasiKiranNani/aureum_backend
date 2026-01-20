@@ -643,6 +643,15 @@
 
      requestAnimationFrame(raf)
      /* Lenis end */
+
+     /* Lenis Fix for Bootstrap Modal */
+     $(document).on('show.bs.modal', function () {
+         lenis.stop();
+     });
+
+     $(document).on('hidden.bs.modal', function () {
+         lenis.start();
+     });
      
      /* --------------------------------------------------
       * plugin | isotope

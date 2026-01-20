@@ -15458,6 +15458,44 @@ img {
     margin-bottom: 60px;
   }
 
+  .sm-mt-10 {
+    margin-top: 10px;
+  }
+
+  .sm-mt-20 {
+    margin-top: 20px;
+  }
+
+  .sm-mt-30 {
+    margin-top: 30px;
+  }
+
+  /* Make abs section relative on mobile */
+  .abs[section="abs"] {
+    position: relative !important;
+    bottom: auto !important;
+  }
+
+  /* Reset hero content positioning on mobile */
+  #section-hero .abs-centered {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    padding-top: 100px;
+    padding-bottom: 30px;
+    height: auto !important;
+    width: 100% !important;
+  }
+
+  /* Allow hero section to grow with content */
+  #section-hero {
+    min-height: auto !important;
+    height: auto !important;
+    padding-top: 50px !important;
+    padding-bottom: 50px !important;
+  }
+
   .timeline-row-reverse {
     flex-direction: column;
   }
@@ -15604,6 +15642,27 @@ img {
   /* Hide the very last connector (after step 7) */
   .timeline-step-final::after {
     display: none !important;
+  }
+
+
+  .bottom-sm-125 {
+    bottom: -125px !important;
+  }
+
+  .bottom-sm-100 {
+    bottom: -100% !important
+  }
+
+  .bottom-sm-75 {
+    bottom: -75px !important;
+  }
+
+  .bottom-sm-50 {
+    bottom: -50px !important;
+  }
+
+  .bottom-sm-25 {
+    bottom: -25px !important;
   }
 }
 
@@ -15943,3 +16002,56 @@ img {
 .QuickLinks a:hover::after {
   width: 150%;
 }
+/* Policy Pages */
+.policy-content {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 40px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.policy-content h3 {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    color: #fff;
+    font-size: 24px;
+}
+.policy-content h4 {
+    margin-top: 25px;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+    font-size: 20px;
+}
+.policy-content p {
+    margin-bottom: 15px;
+    color: rgba(255, 255, 255, 0.8);
+}
+.policy-content ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 20px;
+}
+.policy-content ul li {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.8);
+}
+.policy-content ul li::before {
+    content: '\f054'; /* fa-chevron-right */
+    font-family: 'FontAwesome';
+    position: absolute;
+    left: 0;
+    top: 2px;
+    color: var(--primary-color);
+    font-size: 10px;
+}
+.policy-content a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+.policy-content a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+

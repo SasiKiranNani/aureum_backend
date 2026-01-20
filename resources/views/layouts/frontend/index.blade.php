@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Aureum Clone</title>
     <link rel="icon" href="{{ asset('frontend/images/icon.webp') }}" type="image/gif" sizes="16x16">
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" >
-    <meta content="AIvent" name="description" >
-    <meta content="" name="keywords" >
-    <meta content="" name="author" >
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="AIvent" name="description">
+    <meta content="" name="keywords">
+    <meta content="" name="author">
     <!-- CSS Files
     ================================================== -->
     <link href="{{ asset('frontend/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" id="bootstrap">
-    <link href="{{ asset('frontend/css/vendors.css') }}" rel="stylesheet" type="text/css" >
-    <link href="{{ asset('frontend/css/style.css') }}" rel="stylesheet" type="text/css" >
-    <link href="{{ asset('frontend/css/custom.css') }}" rel="stylesheet" type="text/css" >
+    <link href="{{ asset('frontend/css/vendors.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('frontend/css/style.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('frontend/css/custom.css') }}" rel="stylesheet" type="text/css">
     <!-- color scheme -->
-    <link id="colors" href="{{ ('frontend/css/colors/scheme-01.css') }}" rel="stylesheet" type="text/css" >
+    <link id="colors" href="{{ 'frontend/css/colors/scheme-01.css' }}" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -31,13 +32,17 @@
 
         @include('layouts.frontend.header')
 
-       @yield('contents')
+        @yield('contents')
 
     </div>
 
     <!-- footer begin -->
     @include('layouts.frontend.footer')
     <!-- footer end -->
+
+    <!-- auth modal begin -->
+    @include('frontend.modals.auth')
+    <!-- auth modal end -->
     <!-- Javascript Files
     ================================================== -->
     <script src="{{ asset('frontend/js/vendors.js') }}"></script>
@@ -48,4 +53,5 @@
     <script src="{{ asset('frontend/js/custom-marquee.js') }}"></script>
 
 </body>
+
 </html>
