@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Route;
 //     return view('frontend.index');
 // })->name('home');
 
+// API Routes for Frontend
+Route::get('/api/category-details', [FrontendController::class, 'getCategoryDetails'])->name('api.category-details');
+
 Route::get('/', [FrontendController::class, 'index'])->name('home');
 Route::get('/about-us', [FrontendController::class, 'aboutUs'])->name('about-us');
 Route::get('/categories', [FrontendController::class, 'categories'])->name('categories');

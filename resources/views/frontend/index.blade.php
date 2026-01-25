@@ -24,22 +24,22 @@
                             </div>
 
                             <!-- <div class="d-flex justify-content-center align-items-center mx-4">
-                                                            <i class="fa fa-calendar id-color me-3"></i>
-                                                            <h4 class="mb-0">October 1–5, 2025</h4>
-                                                        </div> -->
+                                                                <i class="fa fa-calendar id-color me-3"></i>
+                                                                <h4 class="mb-0">October 1–5, 2025</h4>
+                                                            </div> -->
 
                             <!-- <div class="d-flex justify-content-center align-items-center mx-4">
-                                                            <i class="fa fa-location-pin id-color me-3"></i>
-                                                            <h4 class="mb-0">San Francisco, CA</h4>
-                                                        </div> -->
+                                                                <i class="fa fa-location-pin id-color me-3"></i>
+                                                                <h4 class="mb-0">San Francisco, CA</h4>
+                                                            </div> -->
                         </div>
 
                         <div class="spacer-single"></div>
 
-                        <a class="btn-main mx-2 fx-slide" href="#section-tickets"><span>Nominate Now</span></a>
-                        <a class="btn-main btn-line mx-2 fx-slide" href="#section-schedule"><span>Explore
-                                Categories</span></a>
-                        <a class="btn-main mx-2 fx-slide" href="#section-tickets"><span>Verify Nominations</span></a>
+                        {{-- <a class="btn-main mx-2 fx-slide" href="#section-tickets"><span>Nominate Now</span></a> --}}
+                        <a class="btn-main btn-line mx-2 fx-slide" href="{{ route('nomination') }}"><span>submit your
+                                achievement</span></a>
+                        {{-- <a class="btn-main mx-2 fx-slide" href="#section-tickets"><span>Verify Nominations</span></a> --}}
                     </div>
                 </div>
             </div>

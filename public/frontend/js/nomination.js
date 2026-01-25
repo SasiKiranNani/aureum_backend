@@ -62,14 +62,54 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Radio Button Active State Toggling
+    const radioInputs = document.querySelectorAll('input[type="radio"]');
+    
+    function updateRadioStates() {
+        radioInputs.forEach(radio => {
+            const parent = radio.closest('.custom-radio-card') || radio.closest('.custom-radio-pill');
+            if (parent) {
+                if (radio.checked) {
+                    parent.classList.add('active');
+                    parent.style.borderColor = '#FFD700';
+                    // Reset others in same group
+                    const name = radio.name;
+                    document.querySelectorAll(`input[name="${name}"]`).forEach(other => {
+                        if (other !== radio) {
+                            const otherParent = other.closest('.custom-radio-card') || other.closest('.custom-radio-pill');
+                            if(otherParent) {
+                                otherParent.classList.remove('active');
+                                otherParent.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    radioInputs.forEach(radio => {
+        radio.addEventListener('change', updateRadioStates);
+    });
+    
+    // Initial check
+    updateRadioStates();
+
     // File Upload Name Display
     const fileInputs = document.querySelectorAll('.file-input, input[type="file"]');
     fileInputs.forEach(input => {
         input.addEventListener('change', function(e) {
-            const fileName = e.target.files[0] ? e.target.files[0].name : 'No file chosen';
+            let displayText = 'No file chosen';
+            
+            if (this.files && this.files.length > 1) {
+                displayText = `${this.files.length} files selected`;
+            } else if (this.files && this.files.length === 1) {
+                displayText = this.files[0].name;
+            }
+
             const nameDisplay = this.parentElement.querySelector('.file-name');
             if (nameDisplay) {
-                nameDisplay.textContent = fileName;
+                nameDisplay.textContent = displayText;
                 nameDisplay.style.color = '#FFD700';
             }
 
@@ -77,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const wrapper = this.closest('.file-upload-wrapper');
             if (wrapper) {
                 const text = wrapper.querySelector('.main-text');
-                if (text) text.textContent = fileName;
+                if (text) text.textContent = displayText;
                 wrapper.style.borderColor = '#FFD700';
                 wrapper.style.background = 'rgba(255, 215, 0, 0.05)';
             }
@@ -127,106 +167,163 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    // Checkout Logic
-    const checkoutTabBtn = document.querySelector('.tab-item[data-tab="checkout"]');
-    const checkoutNextBtns = document.querySelectorAll('.btn-next-tab[data-next="checkout"]');
+    // Dynamic Form Logic
+    const categorySelect = document.getElementById('category_select');
+    const awardsContainer = document.getElementById('awards-container');
+    const awardsList = document.getElementById('awards-list');
+    const questionsContainer = document.getElementById('dynamic-questions-container');
+    let selectedAwardPrice = 0;
 
-    function updateCheckoutSummary() {
-        // Get values
-        const fullName = document.getElementById('full_name').value || '-';
-        const entryTitle = document.getElementById('contribution_title').value || '-';
-        const categorySelect = document.querySelector('select[name="category"]');
-        const categoryText = categorySelect.options[categorySelect.selectedIndex]?.text ||
-            'No Category Selected';
+    if (categorySelect) {
+        categorySelect.addEventListener('change', function() {
+            const categoryId = this.value;
+            if (!categoryId) return;
 
-        // Update DOM
-        document.getElementById('summary-nominee-name').textContent = fullName;
-        document.getElementById('summary-entry-title').textContent = entryTitle;
-        document.getElementById('summary-category').textContent = categoryText;
-
-        calculateTotal();
+            // Fetch details
+            fetch(`/api/category-details?category_id=${categoryId}`)
+                .then(response => response.json())
+                .then(data => {
+                    renderAwards(data.awards);
+                    renderQuestions(data.questions);
+                })
+                .catch(err => console.error('Error fetching details:', err));
+        });
     }
 
-    function calculateTotal() {
-        const basePrice = 299.99;
-        const quickCredCost = 125.00;
-        const adminFees = 35.00;
-        const discount = 100.00;
-
-        const quickCredSelect = document.getElementById('quick-cred-select');
-        const isQuickCred = quickCredSelect.value === 'yes';
-
-        let total = basePrice + adminFees - discount;
-
-        if (isQuickCred) {
-            total += quickCredCost;
-            document.getElementById('quick-cred-price').textContent = '$' + quickCredCost.toFixed(2);
+    function renderAwards(awards) {
+        awardsList.innerHTML = '';
+        if (awards && awards.length > 0) {
+            awardsContainer.style.display = 'block';
+            awards.forEach(award => {
+                const awardId = `award_${award.id}`;
+                const html = `
+                    <div class="col-md-6 col-lg-4">
+                        <label class="custom-radio-card h-100 p-3 d-flex align-items-center">
+                            <input type="radio" name="award_id" value="${award.id}" data-price="${award.amount}" class="award-radio" required>
+                            <div class="d-flex justify-content-between align-items-start w-100 gap-3">
+                                <span class="radio-text fw-bold text-white text-wrap" style="word-break: break-word; line-height: 1.4;">${award.name}</span>
+                                <span class="text-gold fw-bold flex-shrink-0">$${parseFloat(award.amount).toFixed(2)}</span>
+                            </div>
+                        </label>
+                    </div>
+                `;
+                awardsList.innerHTML += html;
+            });
+            
+            // Add listener to new radios
+            document.querySelectorAll('.award-radio').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    selectedAwardPrice = parseFloat(this.getAttribute('data-price'));
+                    // Update summaries immediately if on payment tab, forcing recalc
+                     if(document.getElementById('tab-payment').classList.contains('active')){
+                        updatePaymentSummary();
+                     }
+                });
+            });
         } else {
-            document.getElementById('quick-cred-price').textContent = '$0.00';
+            awardsContainer.style.display = 'none';
+             awardsList.innerHTML = '<p class="text-muted">No awards available for this category.</p>';
         }
-
-        document.getElementById('total-amount').textContent = '$' + total.toFixed(2);
     }
 
-    // Listeners
-    if (checkoutTabBtn) {
-        checkoutTabBtn.addEventListener('click', updateCheckoutSummary);
+    function renderQuestions(questions) {
+        questionsContainer.innerHTML = '';
+        if (questions && questions.length > 0) {
+            questions.forEach((q, index) => {
+                const html = `
+                    <div class="field-set floating-label mb-4">
+                        <textarea name="question_${q.id}" id="question_${q.id}" 
+                            class="form-control premium-input premium-textarea"
+                            rows="4" placeholder=" " required></textarea>
+                        <label for="question_${q.id}">${q.question}</label>
+                    </div>
+                `;
+                questionsContainer.innerHTML += html;
+            });
+        }
     }
-    checkoutNextBtns.forEach(btn => {
-        btn.addEventListener('click', updateCheckoutSummary);
-    });
 
-    const quickCredSelect = document.getElementById('quick-cred-select');
-    if (quickCredSelect) {
-        quickCredSelect.addEventListener('change', calculateTotal);
+    // Review Button Logic
+    const btnReview = document.getElementById('btn-review-application');
+    if(btnReview){
+        btnReview.addEventListener('click', function(){
+            alert("Review Mode: A PDF preview would be generated here.");
+            // In a real app, window.open('/generate-pdf-preview');
+        });
     }
+
 
     // Payment Tab Logic
     const paymentNextBtns = document.querySelectorAll('.btn-next-tab[data-next="payment"]');
+    const btnApplyDiscount = document.getElementById('btn-apply-discount');
+    const btnRemoveDiscount = document.getElementById('btn-remove-discount');
+    const discountRow = document.getElementById('discount-row');
+    let isDiscountApplied = false;
 
     function updatePaymentSummary() {
-        // Get values from DOM (reuse checkout logic values)
+        // Get values from DOM (Step 1 inputs)
         const fullName = document.getElementById('full_name').value || '-';
         const entryTitle = document.getElementById('contribution_title').value || '-';
         const categorySelect = document.querySelector('select[name="category"]');
         const categoryText = categorySelect.options[categorySelect.selectedIndex]?.text ||
             'No Category Selected';
-
-        // Get Total and QuickCred status from Checkout tab calculation
-        const quickCredSelect = document.getElementById('quick-cred-select');
-        const isQuickCred = quickCredSelect.value === 'yes';
 
         // Update Payment DOM
         document.getElementById('pay-nominee-name').textContent = fullName;
         document.getElementById('pay-entry-title').textContent = entryTitle;
         document.getElementById('pay-category').textContent = categoryText;
 
-        // Update QuickCred details in Payment Summary
-        const quickCredCost = 125.00;
-        if (isQuickCred) {
-            document.getElementById('pay-quickcred-status').textContent = 'Yes';
-            document.getElementById('pay-quickcred-amount').textContent = '$' + quickCredCost.toFixed(2);
-            document.getElementById('pay-quickcred-col-amount').textContent = '$' + quickCredCost.toFixed(
-                2);
+        calculatePaymentTotal();
+    }
+
+    function calculatePaymentTotal() {
+        // Use Dynamic Price from selected award, default to 299.99 if nothing selected yet (fallback)
+        const basePrice = selectedAwardPrice > 0 ? selectedAwardPrice : 0;
+        
+        const adminFees = 35.00;
+        const discountValue = 100.00;
+        
+        let total = basePrice + adminFees;
+        
+        if (isDiscountApplied) {
+            total -= discountValue;
+            
+            // UI Updates for Applied State
+            discountRow.classList.remove('d-none');
+            btnApplyDiscount.classList.add('d-none');
+            btnRemoveDiscount.classList.remove('d-none');
         } else {
-            document.getElementById('pay-quickcred-status').textContent = 'No';
-            document.getElementById('pay-quickcred-amount').textContent = '$0.00';
-            document.getElementById('pay-quickcred-col-amount').textContent = '$0.00';
+            // UI Updates for Default State
+            discountRow.classList.add('d-none');
+            btnApplyDiscount.classList.remove('d-none');
+            btnRemoveDiscount.classList.add('d-none');
         }
 
-        // Update Total
-        // Recalculate to be safe
-        const basePrice = 299.99;
-        const adminFees = 35.00;
-        const discount = 100.00;
-        let total = basePrice + adminFees - discount;
-        if (isQuickCred) total += quickCredCost;
-
+        // Update Summary Table Base Price
+        const baseAmountElement = document.getElementById('pay-base-amount');
+        if(baseAmountElement) {
+            baseAmountElement.textContent = '$' + basePrice.toFixed(2);
+        }
+        
         document.getElementById('pay-total-amount').textContent = '$' + total.toFixed(2);
     }
 
     paymentNextBtns.forEach(btn => {
         btn.addEventListener('click', updatePaymentSummary);
     });
+
+    if (btnApplyDiscount) {
+        btnApplyDiscount.addEventListener('click', function() {
+            isDiscountApplied = true;
+            calculatePaymentTotal();
+        });
+    }
+
+    if (btnRemoveDiscount) {
+        btnRemoveDiscount.addEventListener('click', function() {
+            isDiscountApplied = false;
+            calculatePaymentTotal();
+        });
+    }
 
 });

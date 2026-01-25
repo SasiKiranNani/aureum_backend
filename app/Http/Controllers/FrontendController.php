@@ -63,7 +63,37 @@ class FrontendController extends Controller
 
     public function nomination()
     {
-        return view('frontend.nomination');
+        $today = now();
+        $activeSeason = \App\Models\Season::whereDate('opening_date', '<=', $today)
+            ->whereDate('closing_date', '>=', $today)
+            ->where('is_active', true)
+            ->first();
+
+        $categories = \App\Models\Category::where('is_active', true)->get();
+
+        return view('frontend.nomination', compact('activeSeason', 'categories'));
+    }
+
+    public function getCategoryDetails(Request $request)
+    {
+        $categoryId = $request->query('category_id');
+        
+        if (!$categoryId) {
+            return response()->json(['error' => 'Category ID required'], 400);
+        }
+
+        $awards = \App\Models\Award::where('category_id', $categoryId)
+            ->where('is_active', true)
+            ->get(['id', 'name', 'amount']);
+
+        $questions = \App\Models\NomineeQuestion::where('category_id', $categoryId)
+            ->where('is_active', true)
+            ->get(['id', 'question']);
+
+        return response()->json([
+            'awards' => $awards,
+            'questions' => $questions
+        ]);
     }
 
     public function awardTrophy()
