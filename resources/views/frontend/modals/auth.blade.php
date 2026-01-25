@@ -1,119 +1,94 @@
-<!-- Auth Modal -->
+<!-- Premium Animated Auth Modal - Sliding Container Design -->
 <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content auth-modal-content" data-lenis-prevent>
-            <div class="modal-body p-0">
-                <div class="auth-container">
-                    <button type="button" class="btn-close btn-close-white auth-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+            <!-- Custom Close Button -->
+            <button type="button" class="auth-close" data-bs-dismiss="modal" aria-label="Close">
+                <i class="fa fa-times"></i>
+            </button>
 
-                    <div class="auth-forms-wrapper">
-                        <!-- Login Form -->
-                        <div class="auth-form" id="loginForm">
-                            <div class="auth-header">
-                                <h2 class="auth-title">Welcome Back</h2>
-                                <p class="auth-subtitle">Login to your account to continue</p>
-                            </div>
-                            <form action="#" method="POST">
-                                <div class="form-group mb-4">
-                                    <label class="auth-label">Email Address</label>
-                                    <div class="auth-input-wrapper">
-                                        <i class="fa fa-envelope auth-input-icon"></i>
-                                        <input type="email" class="form-control auth-input"
-                                            placeholder="email@example.com" required>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-4">
-                                    <label class="auth-label">Password</label>
-                                    <div class="auth-input-wrapper">
-                                        <i class="fa fa-lock auth-input-icon"></i>
-                                        <input type="password" class="form-control auth-input password-field"
-                                            placeholder="••••••••" required>
-                                        <i class="fa fa-eye-slash toggle-password auth-eye-icon"></i>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input auth-checkbox" type="checkbox" id="rememberMe">
-                                        <label class="form-check-label auth-checkbox-label" for="rememberMe">Remember
-                                            me</label>
-                                    </div>
-                                    <a href="javascript:void(0)" class="auth-link toggle-auth"
-                                        data-target="forgot">Forgot Password?</a>
-                                </div>
-                                <button type="submit" class="btn-main w-100 mb-4"><span>Login Now</span></button>
-                                <p class="auth-footer-text">Don't have an account? <a href="javascript:void(0)"
-                                        class="auth-link toggle-auth" data-target="signup">Sign Up</a></p>
-                            </form>
+            <div class="auth-container" id="authContainer">
+                <!-- Sign Up Form -->
+                <div class="auth-form-container auth-signup-container">
+                    <form action="#" method="POST" class="auth-form">
+                        <h2 class="auth-form-title">Create Account</h2>
+                        <span class="auth-form-span">Use your email for registration</span>
+                        <div class="auth-input-group">
+                            <i class="fa fa-user"></i>
+                            <input type="text" class="auth-input" placeholder="Name" required />
                         </div>
-
-                        <!-- Signup Form -->
-                        <div class="auth-form d-none" id="signupForm">
-                            <div class="auth-header">
-                                <h2 class="auth-title">Create Account</h2>
-                                <p class="auth-subtitle">Join us and start your journey</p>
-                            </div>
-                            <form action="#" method="POST">
-                                <div class="form-group mb-4">
-                                    <label class="auth-label">Full Name</label>
-                                    <div class="auth-input-wrapper">
-                                        <i class="fa fa-user auth-input-icon"></i>
-                                        <input type="text" class="form-control auth-input" placeholder="John Doe"
-                                            required>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-4">
-                                    <label class="auth-label">Email Address</label>
-                                    <div class="auth-input-wrapper">
-                                        <i class="fa fa-envelope auth-input-icon"></i>
-                                        <input type="email" class="form-control auth-input"
-                                            placeholder="email@example.com" required>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-4">
-                                    <label class="auth-label">Password</label>
-                                    <div class="auth-input-wrapper">
-                                        <i class="fa fa-lock auth-input-icon"></i>
-                                        <input type="password" class="form-control auth-input password-field"
-                                            placeholder="••••••••" required>
-                                        <i class="fa fa-eye-slash toggle-password auth-eye-icon"></i>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-4">
-                                    <label class="auth-label">Confirm Password</label>
-                                    <div class="auth-input-wrapper">
-                                        <i class="fa fa-lock auth-input-icon"></i>
-                                        <input type="password" class="form-control auth-input password-field"
-                                            placeholder="••••••••" required>
-                                        <i class="fa fa-eye-slash toggle-password auth-eye-icon"></i>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn-main w-100 mb-4"><span>Sign Up Now</span></button>
-                                <p class="auth-footer-text">Already have an account? <a href="javascript:void(0)"
-                                        class="auth-link toggle-auth" data-target="login">Login</a></p>
-                            </form>
+                        <div class="auth-input-group">
+                            <i class="fa fa-envelope"></i>
+                            <input type="email" class="auth-input" placeholder="Email" required />
                         </div>
+                        <div class="auth-input-group">
+                            <i class="fa fa-lock"></i>
+                            <input type="password" class="auth-input password-field" placeholder="Password" required />
+                            <i class="fa fa-eye-slash toggle-password auth-toggle-icon"></i>
+                        </div>
+                        <div class="auth-input-group">
+                            <i class="fa fa-lock"></i>
+                            <input type="password" class="auth-input password-field" placeholder="Confirm Password"
+                                required />
+                            <i class="fa fa-eye-slash toggle-password auth-toggle-icon"></i>
+                        </div>
+                        <button type="submit" class="auth-btn">Sign Up</button>
+                    </form>
+                </div>
 
-                        <!-- Forgot Password Form -->
-                        <div class="auth-form d-none" id="forgotForm">
-                            <div class="auth-header">
-                                <h2 class="auth-title">Reset Password</h2>
-                                <p class="auth-subtitle">Enter your email to receive a reset link</p>
-                            </div>
-                            <form action="#" method="POST">
-                                <div class="form-group mb-4">
-                                    <label class="auth-label">Email Address</label>
-                                    <div class="auth-input-wrapper">
-                                        <i class="fa fa-envelope auth-input-icon"></i>
-                                        <input type="email" class="form-control auth-input"
-                                            placeholder="email@example.com" required>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn-main w-100 mb-4"><span>Send Reset
-                                        Link</span></button>
-                                <p class="auth-footer-text">Remember your password? <a href="javascript:void(0)"
-                                        class="auth-link toggle-auth" data-target="login">Login</a></p>
-                            </form>
+                <!-- Sign In Form -->
+                <div class="auth-form-container auth-signin-container">
+                    <form action="#" method="POST" class="auth-form">
+                        <h2 class="auth-form-title">Sign In</h2>
+                        <span class="auth-form-span">Use your account credentials</span>
+                        <div class="auth-input-group">
+                            <i class="fa fa-envelope"></i>
+                            <input type="email" class="auth-input" placeholder="Email" required />
+                        </div>
+                        <div class="auth-input-group">
+                            <i class="fa fa-lock"></i>
+                            <input type="password" class="auth-input password-field" placeholder="Password" required />
+                            <i class="fa fa-eye-slash toggle-password auth-toggle-icon"></i>
+                        </div>
+                        <a href="javascript:void(0)" class="auth-forgot-link" id="showForgotPassword">Forgot your
+                            password?</a>
+                        <button type="submit" class="auth-btn">Sign In</button>
+                    </form>
+                </div>
+
+                <!-- Forgot Password Form -->
+                <div class="auth-form-container auth-forgot-container">
+                    <form action="#" method="POST" class="auth-form">
+                        <div class="auth-forgot-icon">
+                            <i class="fa fa-lock"></i>
+                        </div>
+                        <h2 class="auth-form-title">Reset Password</h2>
+                        <p class="auth-forgot-description">Enter your email address and we'll send you a link to reset
+                            your password</p>
+                        <div class="auth-input-group">
+                            <i class="fa fa-envelope"></i>
+                            <input type="email" class="auth-input" placeholder="Email Address" required />
+                        </div>
+                        <button type="submit" class="auth-btn">Send Reset Link</button>
+                        <a href="javascript:void(0)" class="auth-back-link" id="backToSignIn">
+                            <i class="fa fa-arrow-left"></i> Back to Sign In
+                        </a>
+                    </form>
+                </div>
+
+                <!-- Overlay Container -->
+                <div class="auth-overlay-container">
+                    <div class="auth-overlay">
+                        <div class="auth-overlay-panel auth-overlay-left">
+                            <h2 class="auth-overlay-title">Welcome Back!</h2>
+                            <p class="auth-overlay-text">To keep connected with us please login with your personal info
+                            </p>
+                            <button class="auth-btn auth-btn-ghost" id="signIn">Sign In</button>
+                        </div>
+                        <div class="auth-overlay-panel auth-overlay-right">
+                            <h2 class="auth-overlay-title">Hello, Friend!</h2>
+                            <p class="auth-overlay-text">Enter your personal details and start journey with us</p>
+                            <button class="auth-btn auth-btn-ghost" id="signUp">Sign Up</button>
                         </div>
                     </div>
                 </div>
@@ -124,39 +99,30 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const toggleLinks = document.querySelectorAll('.toggle-auth');
-        const forms = {
-            login: document.getElementById('loginForm'),
-            signup: document.getElementById('signupForm'),
-            forgot: document.getElementById('forgotForm')
-        };
+        const signUpButton = document.getElementById('signUp');
+        const signInButton = document.getElementById('signIn');
+        const showForgotPassword = document.getElementById('showForgotPassword');
+        const backToSignIn = document.getElementById('backToSignIn');
+        const container = document.getElementById('authContainer');
+        const authModal = document.getElementById('authModal');
 
-        function switchForm(targetId) {
-            // Find current active form
-            let activeForm = null;
-            for (let key in forms) {
-                if (!forms[key].classList.contains('d-none')) {
-                    activeForm = forms[key];
-                    break;
-                }
-            }
+        signUpButton.addEventListener('click', () => {
+            container.classList.remove('auth-forgot-active');
+            container.classList.add('auth-right-panel-active');
+        });
 
-            if (activeForm && activeForm !== forms[targetId]) {
-                activeForm.classList.add('fade-out');
-                setTimeout(() => {
-                    activeForm.classList.add('d-none');
-                    activeForm.classList.remove('fade-out');
-                    forms[targetId].classList.remove('d-none');
-                    forms[targetId].classList.add('fade-in');
-                }, 300);
-            }
-        }
+        signInButton.addEventListener('click', () => {
+            container.classList.remove('auth-forgot-active');
+            container.classList.remove('auth-right-panel-active');
+        });
 
-        toggleLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                const target = this.getAttribute('data-target');
-                switchForm(target);
-            });
+        showForgotPassword.addEventListener('click', () => {
+            container.classList.add('auth-forgot-active');
+            container.classList.remove('auth-right-panel-active');
+        });
+
+        backToSignIn.addEventListener('click', () => {
+            container.classList.remove('auth-forgot-active');
         });
 
         // Password Visibility Toggle
@@ -174,6 +140,12 @@
                     this.classList.add('fa-eye-slash');
                 }
             });
+        });
+
+        // Reset to sign-in when modal closes
+        authModal.addEventListener('hidden.bs.modal', function() {
+            container.classList.remove('auth-right-panel-active');
+            container.classList.remove('auth-forgot-active');
         });
     });
 </script>

@@ -340,7 +340,7 @@
                                 </div>
 
                                 <!-- Section 4: Global Reach -->
-                                <div class="form-section">
+                                {{-- <div class="form-section">
                                     <div class="section-header">
                                         <div class="section-icon"><i class="icofont-world"></i></div>
                                         <h3 class="section-title">Global Reach</h3>
@@ -366,7 +366,7 @@
                                             </label>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <!-- Section 5: Evidence -->
                                 <div class="form-section">

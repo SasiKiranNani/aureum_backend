@@ -15,6 +15,7 @@
     <link href="{{ asset('frontend/css/vendors.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('frontend/css/style.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('frontend/css/custom.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('frontend/css/auth-animated.css') }}" rel="stylesheet" type="text/css">
     <!-- color scheme -->
     <link id="colors" href="{{ 'frontend/css/colors/scheme-01.css' }}" rel="stylesheet" type="text/css">
 
