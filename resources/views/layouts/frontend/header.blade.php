@@ -26,8 +26,12 @@
                                         href="{{ route('about-us') }}">About</a></li>
                                 <li><a class="menu-item {{ Route::is('categories') ? 'active' : '' }}"
                                         href="{{ route('categories') }}">Categories</a></li>
-                                <li><a class="menu-item {{ Route::is('news-room') ? 'active' : '' }}"
-                                        href="{{ route('news-room') }}">NewsRoom</a></li>
+                                <li><a class="menu-item {{ Route::is('judges') ? 'active' : '' }}"
+                                        href="{{ route('judges') }}">Judges</a></li>
+                                <li><a class="menu-item {{ Route::is('past-winners') ? 'active' : '' }}"
+                                        href="{{ route('past-winners') }}">Winners</a></li>
+                                <li><a class="menu-item {{ Route::is('award-trophy') ? 'active' : '' }}"
+                                        href="{{ route('award-trophy') }}">Award Trophy</a></li>
                                 <li><a class="menu-item {{ Route::is('contact-us') ? 'active' : '' }}"
                                         href="{{ route('contact-us') }}">Contact</a></li>
                             </ul>

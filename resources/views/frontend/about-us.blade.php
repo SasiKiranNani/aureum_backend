@@ -14,7 +14,7 @@
                     <div class="">
                         <!-- me-lg-5 pe-lg-5 py-5 my-5 -->
                         <!-- <div class="subtitle wow fadeInUp" data-wow-delay=".2s">About Aureum</div>
-                                                            <h2 class="wow fadeInUp" data-wow-delay=".4s">Welcome to Aureum International Awards</h2> -->
+                                                                    <h2 class="wow fadeInUp" data-wow-delay=".4s">Welcome to Aureum International Awards</h2> -->
                         <p class="wow fadeInUp" data-wow-delay=".6s">Aureum International Awards transcend the
                             confines of a traditional ceremony, rising as a monumental global
                             beacon that unites nations in celebration of extraordinary visionaries—those intrepid
@@ -148,6 +148,134 @@
                     </div>
                 </div>
             </div>
+
+
+            <!-- Stepped Timeline Section - Match Reference Design -->
+            <section id="section-timeline" class="bg-dark section-dark text-light stepped-timeline-section">
+                <div class="container">
+                    <div class="row g-4 mb-5">
+                        <div class="col-lg-8 offset-lg-2 text-center">
+                            <div class="subtitle wow fadeInUp mb-3">7 MILESTONES</div>
+                            <h2 class="wow fadeInUp" data-wow-delay=".2s">Our Journey to Excellence</h2>
+                            <p class="lead mb-0 wow fadeInUp" data-wow-delay=".4s">From 2019 to 2025 - Celebrating
+                                technological
+                                innovation</p>
+                        </div>
+                    </div>
+
+                    <!-- Stepped Timeline Container -->
+                    <div class="stepped-timeline" data-aos="fade-up">
+                        <!-- Row 1: Steps 1, 2, 3 -->
+                        <div class="timeline-row">
+                            <!-- Step 1 - 2019 -->
+                            <div class="timeline-step step-connect-right" data-aos="fade-right" data-aos-delay="100">
+                                <div class="step-card">
+                                    <div class="step-circle">
+                                        <span class="step-number">1</span>
+                                        <span class="step-year">2019</span>
+                                    </div>
+                                    <div class="step-title">FOUNDATION & VISION</div>
+                                    <p>Established the Aureum Awards framework to recognize exceptional achievements in
+                                        technology.
+                                    </p>
+                                </div>
+                                <!-- Connector to Step 2 via CSS -->
+                            </div>
+
+                            <!-- Step 2 - 2020 -->
+                            <div class="timeline-step step-connect-right" data-aos="fade-up" data-aos-delay="200">
+                                <div class="step-card">
+                                    <div class="step-circle">
+                                        <span class="step-number">2</span>
+                                        <span class="step-year">2020</span>
+                                    </div>
+                                    <div class="step-title">FIRST LAUNCH</div>
+                                    <p>Successfully hosted inaugural ceremony, honoring 50+ outstanding achievers from
+                                        diverse
+                                        sectors.</p>
+                                </div>
+                                <!-- Connector to Step 3 via CSS -->
+                            </div>
+
+                            <!-- Step 3 - 2021 -->
+                            <div class="timeline-step step-row-1-end" data-aos="fade-left" data-aos-delay="300">
+                                <div class="step-card">
+                                    <div class="step-circle">
+                                        <span class="step-number">3</span>
+                                        <span class="step-year">2021</span>
+                                    </div>
+                                    <div class="step-title">DIGITAL TRANSFORMATION</div>
+                                    <p>Launched online nomination platform, enabling transparent submissions and digital
+                                        excellence.
+                                    </p>
+                                </div>
+                                <!-- CSS Connector will be added via class -->
+                            </div>
+                        </div>
+
+                        <!-- Row 2: Steps 6, 5, 4 (Reversed) -->
+                        <div class="timeline-row timeline-row-reverse">
+                            <!-- Step 6 - 2024 -->
+                            <div class="timeline-step step-row-2-end" data-aos="fade-right" data-aos-delay="100">
+                                <div class="step-card">
+                                    <div class="step-circle">
+                                        <span class="step-number">6</span>
+                                        <span class="step-year">2024</span>
+                                    </div>
+                                    <div class="step-title">RECORD PARTICIPATION</div>
+                                    <p>Reached milestone with 500+ nominations and 100+ winners, solidifying premier
+                                        position.</p>
+                                </div>
+                                <!-- CSS Connector will be added via class -->
+                            </div>
+
+                            <!-- Step 5 - 2023 -->
+                            <div class="timeline-step step-connect-left" data-aos="fade-up" data-aos-delay="200">
+                                <div class="step-card">
+                                    <div class="step-circle">
+                                        <span class="step-number">5</span>
+                                        <span class="step-year">2023</span>
+                                    </div>
+                                    <div class="step-title">INNOVATION CATEGORIES</div>
+                                    <p>Introduced cutting-edge categories including AI, Machine Learning, and Blockchain
+                                        technology.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Step 4 - 2022 -->
+                            <div class="timeline-step step-connect-left" data-aos="fade-left" data-aos-delay="300">
+                                <div class="step-card">
+                                    <div class="step-circle">
+                                        <span class="step-number">4</span>
+                                        <span class="step-year">2022</span>
+                                    </div>
+                                    <div class="step-title">GLOBAL EXPANSION</div>
+                                    <p>Achieved international recognition with participants from 25+ countries establishing
+                                        global
+                                        presence.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 3: Step 7 (Final - Current Year) -->
+                        <div class="timeline-row timeline-row-final">
+                            <div class="timeline-step timeline-step-final" data-aos="fade-up" data-aos-delay="100">
+                                <div class="step-card step-card-current">
+                                    <div class="step-circle step-circle-current">
+                                        <span class="step-number">7</span>
+                                        <span class="step-year">2025</span>
+                                    </div>
+                                    <div class="step-title">EXCELLENCE REDEFINED</div>
+                                    <p>Setting new benchmarks with enhanced evaluation criteria and expanded global reach
+                                        for 2025.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             <!-- 3D Flip Cards for Mission & Vision -->
             <div class="row g-4">
