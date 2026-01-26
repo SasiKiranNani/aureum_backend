@@ -648,4 +648,23 @@
     </section>
 
     <script src="{{ asset('frontend/js/nomination.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (!$activeSeason)
+                const modalElement = document.getElementById('seasonClosedModal');
+                const modal = new bootstrap.Modal(modalElement);
+                modal.show();
+
+                // Redirect to home when modal is closed
+                modalElement.addEventListener('hidden.bs.modal', function() {
+                    window.location.href = "{{ route('home') }}";
+                });
+
+                // Also disable form fields
+                document.querySelectorAll('input, select, textarea, button[type="submit"]').forEach(el => {
+                    el.disabled = true;
+                });
+            @endif
+        });
+    </script>
 @endsection

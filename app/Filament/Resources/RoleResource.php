@@ -74,8 +74,7 @@ class RoleResource extends Resource
                                 Forms\Components\CheckboxList::make('permissions')
                                     ->relationship('permissions', 'name', modifyQueryUsing: fn($query) => $query->where('name', 'like', 'view_page_%'))
                                     ->getOptionLabelFromRecordUsing(fn($record) => ucwords(str_replace(['view_page_', '_'], ['', ' '], $record->name)))
-                                    ->columns(2)
-                                    ->dehydrated(true),
+                                    ->columns(2),
                             ]),
                         Forms\Components\Tabs\Tab::make('Widgets')
                             ->badge(fn() => \Spatie\Permission\Models\Permission::where('name', 'like', 'view_widget_%')->count())
@@ -83,8 +82,7 @@ class RoleResource extends Resource
                                 Forms\Components\CheckboxList::make('permissions')
                                     ->relationship('permissions', 'name', modifyQueryUsing: fn($query) => $query->where('name', 'like', 'view_widget_%'))
                                     ->getOptionLabelFromRecordUsing(fn($record) => ucwords(str_replace(['view_widget_', '_'], ['', ' '], $record->name)))
-                                    ->columns(2)
-                                    ->dehydrated(true),
+                                    ->columns(2),
                             ]),
                         Forms\Components\Tabs\Tab::make('Custom Permissions')
                             ->badge(function () {
@@ -107,8 +105,7 @@ class RoleResource extends Resource
                                             $query->where('name', 'not like', "%_{$resource}");
                                         }
                                     })
-                                    ->columns(2)
-                                    ->dehydrated(true),
+                                    ->columns(2),
                             ]),
                     ])->columnSpanFull(),
             ]);
@@ -142,15 +139,13 @@ class RoleResource extends Resource
                             $set('permissions', array_values(array_diff($state ?? [], $permissions)));
                         }),
                 ])->alignEnd(),
-
                 Forms\Components\CheckboxList::make('permissions')
                     ->label('')
                     ->relationship('permissions', 'name', modifyQueryUsing: function ($query) use ($resourceName) {
                         return $query->where('name', 'like', "%_{$resourceName}");
                     })
                     ->getOptionLabelFromRecordUsing(fn($record) => ucwords(str_replace(["_{$resourceName}", '_'], ['', ' '], $record->name)))
-                    ->columns(2)
-                    ->dehydrated(true),
+                    ->columns(2),
             ])
             ->columnSpan(1);
     }

@@ -1,7 +1,16 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FrontendController;
 use Illuminate\Support\Facades\Route;
+
+// Auth Routes
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->name('password.email');
+Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update.submit');
 
 // Route::get('/', function () {
 //     return view('frontend.index');
@@ -33,3 +42,10 @@ Route::get('/terms-and-conditions', [FrontendController::class, 'termsAndConditi
 Route::get('/cookie-policy', [FrontendController::class, 'cookiePolicy'])->name('cookie-policy');
 Route::get('/cancellation-refund-policy', [FrontendController::class, 'cancellationRefundPolicy'])->name('cancellation-refund-policy');
 Route::get('/shipping-return-policy', [FrontendController::class, 'shippingReturnPolicy'])->name('shipping-return-policy');
+
+// Protected Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [FrontendController::class, 'dashboard'])->name('dashboard');
+    Route::post('/profile/update', [AuthController::class, 'updateProfile'])->name('profile.update');
+    Route::post('/password/update', [AuthController::class, 'updatePassword'])->name('password.update');
+});

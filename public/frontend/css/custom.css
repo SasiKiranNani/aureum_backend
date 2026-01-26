@@ -9877,3 +9877,233 @@ body.modal-open .scrollbar-v {
     letter-spacing: 0.3px;
 }
 
+
+/* Header Profile Dropdown */
+.header-profile-dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px 0;
+}
+
+.profile-trigger {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 5px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50px;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.header-profile-dropdown:hover .profile-trigger {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: #FFD700;
+}
+
+.profile-icon {
+    font-size: 24px;
+    color: #FFD700;
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-name {
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.profile-info i {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.5);
+    transition: transform 0.3s ease;
+}
+
+.header-profile-dropdown:hover .profile-info i {
+    transform: rotate(180deg);
+}
+
+.profile-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 280px;
+    background: #111;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    margin-top: 15px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.header-profile-dropdown:hover .profile-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.menu-header {
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), transparent);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.menu-user-img {
+    width: 45px;
+    height: 45px;
+    background: #222;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #FFD700;
+}
+
+.menu-user-img i {
+    color: #FFD700;
+    font-size: 20px;
+}
+
+.menu-user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-user-info .name {
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.menu-user-info .email {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+}
+
+.menu-list {
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+}
+
+.menu-list li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    color: rgba(255, 255, 255, 0.8) !important;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.menu-list li a:hover {
+    background: rgba(255, 215, 0, 0.05);
+    color: #FFD700 !important;
+}
+
+.menu-list li a i {
+    width: 20px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.logout-link:hover {
+    color: #ff4d4d !important;
+    background: rgba(255, 77, 77, 0.05) !important;
+}
+
+
+/* Premium Toast Styles */
+.premium-toast {
+    border: 1px solid rgba(255, 215, 0, 0.3) !important;
+    border-radius: 12px !important;
+    backdrop-filter: blur(15px) !important;
+    background: rgba(17, 17, 17, 0.95) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 215, 0, 0.1) !important;
+    padding: 15px 20px !important;
+    width: auto !important;
+    min-width: 320px !important;
+}
+
+.premium-toast-title {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: #fff !important;
+    margin: 0 !important;
+    padding: 5px 0 !important;
+    line-height: 1.4 !important;
+    text-align: left !important;
+}
+
+.swal2-icon {
+    border: none !important;
+    margin-right: 15px !important;
+    scale: 0.7 !important;
+}
+
+.premium-toast-progress {
+    background: linear-gradient(90deg, #FFD700, #FF6B00) !important;
+    height: 3px !important;
+}
+
+/* Fix for first line display issue */
+.swal2-html-container {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.swal2-popup.swal2-toast .swal2-title {
+    margin: 0 0 0 10px !important;
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeOutRight {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+}
+
+.animate__fadeInRight {
+    animation: fadeInRight 0.5s ease forwards;
+}
+
+.animate__fadeOutRight {
+    animation: fadeOutRight 0.5s ease forwards;
+}
+

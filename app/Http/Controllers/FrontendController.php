@@ -63,15 +63,11 @@ class FrontendController extends Controller
 
     public function nomination()
     {
-        $today = now();
-        $activeSeason = \App\Models\Season::whereDate('opening_date', '<=', $today)
-            ->whereDate('closing_date', '>=', $today)
-            ->where('is_active', true)
-            ->first();
-
+        $activeSeason = view()->shared('activeSeason');
+        
         $categories = \App\Models\Category::where('is_active', true)->get();
 
-        return view('frontend.nomination', compact('activeSeason', 'categories'));
+        return view('frontend.nomination', compact('categories'));
     }
 
     public function getCategoryDetails(Request $request)
@@ -129,6 +125,11 @@ class FrontendController extends Controller
     public function pastWinnerDetails()
     {
         return view('frontend.past-winner-details');
+    }
+
+    public function dashboard()
+    {
+        return view('frontend.dashboard');
     }
 
     public function whyEnter()

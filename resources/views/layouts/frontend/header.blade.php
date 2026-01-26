@@ -39,13 +39,60 @@
                     </div>
 
                     <div class="de-flex-col">
-                        <a class="btn-main fx-slide w-100" href="javascript:void(0)" data-bs-toggle="modal"
-                            data-bs-target="#authModal">
-                            <span class="auth-icon-wrap">
-                                <i class="fa fa-user auth-btn-icon"></i>
-                            </span>
-                            <span class="auth-btn-text">Login/Register</span>
-                        </a>
+                        @guest
+                            <a class="btn-main fx-slide w-100" href="javascript:void(0)" data-bs-toggle="modal"
+                                data-bs-target="#authModal">
+                                <span class="auth-icon-wrap">
+                                    <i class="fa fa-user auth-btn-icon"></i>
+                                </span>
+                                <span class="auth-btn-text">Login/Register</span>
+                            </a>
+                        @endguest
+
+                        @auth
+                            <div class="header-profile-dropdown">
+                                <div class="profile-trigger">
+                                    <div class="profile-icon">
+                                        <i class="fa fa-user-circle"></i>
+                                    </div>
+                                    <div class="profile-info">
+                                        <span class="user-name">{{ Auth::user()->name }}</span>
+                                        <i class="fa fa-chevron-down"></i>
+                                    </div>
+                                </div>
+                                <div class="profile-menu">
+                                    <div class="menu-header">
+                                        <div class="menu-user-img">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <div class="menu-user-info">
+                                            <span class="name">{{ Auth::user()->name }}</span>
+                                            <span class="email">{{ Auth::user()->email }}</span>
+                                        </div>
+                                    </div>
+                                    <ul class="menu-list">
+                                        <li>
+                                            <a href="{{ route('dashboard') }}">
+                                                <i class="fa fa-th-large"></i>
+                                                Dashboard
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)"
+                                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                                class="logout-link">
+                                                <i class="fa fa-sign-out"></i>
+                                                Logout
+                                            </a>
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                                class="d-none">
+                                                @csrf
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        @endauth
 
                         <div class="menu_side_area">
                             <span id="menu-btn"></span>

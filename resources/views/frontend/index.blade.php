@@ -24,21 +24,23 @@
                             </div>
 
                             <!-- <div class="d-flex justify-content-center align-items-center mx-4">
-                                                                <i class="fa fa-calendar id-color me-3"></i>
-                                                                <h4 class="mb-0">October 1–5, 2025</h4>
-                                                            </div> -->
+                                                                                <i class="fa fa-calendar id-color me-3"></i>
+                                                                                <h4 class="mb-0">October 1–5, 2025</h4>
+                                                                            </div> -->
 
                             <!-- <div class="d-flex justify-content-center align-items-center mx-4">
-                                                                <i class="fa fa-location-pin id-color me-3"></i>
-                                                                <h4 class="mb-0">San Francisco, CA</h4>
-                                                            </div> -->
+                                                                                <i class="fa fa-location-pin id-color me-3"></i>
+                                                                                <h4 class="mb-0">San Francisco, CA</h4>
+                                                                            </div> -->
                         </div>
 
                         <div class="spacer-single"></div>
 
                         {{-- <a class="btn-main mx-2 fx-slide" href="#section-tickets"><span>Nominate Now</span></a> --}}
-                        <a class="btn-main btn-line mx-2 fx-slide" href="{{ route('nomination') }}"><span>submit your
-                                achievement</span></a>
+                        <a class="btn-main btn-line mx-2 fx-slide @if (!$activeSeason) open-season-closed-modal @endif"
+                            href="{{ $activeSeason ? route('nomination') : 'javascript:void(0)' }}">
+                            <span>submit your achievement</span>
+                        </a>
                         {{-- <a class="btn-main mx-2 fx-slide" href="#section-tickets"><span>Verify Nominations</span></a> --}}
                     </div>
                 </div>
@@ -51,8 +53,16 @@
                     <div class="gradient-edge-bottom color start-0 h-50 op-5"></div>
                     <div class="row g-4 justify-content-between align-items-center relative z-2">
                         <div class="col-lg-3 col-md-12 text-center text-lg-start">
-                            <h2 class="mb-0">Hurry Up!</h2>
-                            <h4 class="mb-0">Apply for Nominations Now</h4>
+                            @if ($activeSeason)
+                                <h2 class="mb-0">Hurry Up!</h2>
+                                <h4 class="mb-0">Apply for Nominations Now</h4>
+                            @elseif($nextSeason)
+                                <h2 class="mb-0">Coming Soon!</h2>
+                                <h4 class="mb-0">Next Season Starts From</h4>
+                            @else
+                                <h2 class="mb-0">Closed</h2>
+                                <h4 class="mb-0">Submissions are currently closed</h4>
+                            @endif
                         </div>
                         <div class="col-lg-4 col-md-12 text-center">
                             <div id="defaultCountdown" class="pt-2"></div>
@@ -278,6 +288,96 @@
                 once: true,
                 offset: 100
             });
+
+            // Season closed modal trigger
+            const seasonClosedModalBtn = document.querySelector('.open-season-closed-modal');
+            if (seasonClosedModalBtn) {
+                seasonClosedModalBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const modal = new bootstrap.Modal(document.getElementById('seasonClosedModal'));
+                    modal.show();
+                });
+            }
+
+            // Dynamic Countdown for Active or Next Season
+            @if ($activeSeason)
+                const targetDate = new Date(
+                    "{{ $activeSeason->application_deadline_date->format('Y-m-d 23:59:59') }}");
+                $('#defaultCountdown').countdown('destroy');
+                $('#defaultCountdown').countdown({
+                    until: targetDate,
+                    format: 'DHMS',
+                    layout: '<div class="d-flex justify-content-center gap-3">' +
+                        '<div class="countdown-item"><span class="days fs-30 fw-bold">{dn}</span><small class="d-block">Days</small></div>' +
+                        '<div class="countdown-item"><span class="hours fs-30 fw-bold">{hn}</span><small class="d-block">Hrs</small></div>' +
+                        '<div class="countdown-item"><span class="minutes fs-30 fw-bold">{mn}</span><small class="d-block">Mins</small></div>' +
+                        '<div class="countdown-item"><span class="seconds fs-30 fw-bold">{sn}</span><small class="d-block">Secs</small></div>' +
+                        '</div>'
+                });
+            @elseif ($nextSeason)
+                const targetDate = new Date("{{ $nextSeason->opening_date->format('Y-m-d 00:00:00') }}");
+                $('#defaultCountdown').countdown('destroy');
+                $('#defaultCountdown').countdown({
+                    until: targetDate,
+                    format: 'DHMS',
+                    layout: '<div class="d-flex justify-content-center gap-3">' +
+                        '<div class="countdown-item"><span class="days fs-30 fw-bold">{dn}</span><small class="d-block">Days</small></div>' +
+                        '<div class="countdown-item"><span class="hours fs-30 fw-bold">{hn}</span><small class="d-block">Hrs</small></div>' +
+                        '<div class="countdown-item"><span class="minutes fs-30 fw-bold">{mn}</span><small class="d-block">Mins</small></div>' +
+                        '<div class="countdown-item"><span class="seconds fs-30 fw-bold">{sn}</span><small class="d-block">Secs</small></div>' +
+                        '</div>'
+                });
+            @else
+                $('#defaultCountdown').html('<h4 class="text-gold mb-0">Stay Tuned for Next Season</h4>');
+            @endif
         });
     </script>
+
+    <style>
+        #defaultCountdown .countdown-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 15px;
+            border-radius: 8px;
+            min-width: 70px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            transition: all 0.3s ease;
+            display: inline-block;
+            line-height: 1.2;
+        }
+
+        #defaultCountdown .countdown-item:hover {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: rgba(255, 215, 0, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        #defaultCountdown .fs-30 {
+            font-size: 28px;
+            color: #FFD700;
+            display: block;
+        }
+
+        #defaultCountdown small {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            #defaultCountdown .gap-3 {
+                gap: 10px !important;
+            }
+
+            #defaultCountdown .countdown-item {
+                min-width: 60px;
+                padding: 8px 10px;
+            }
+
+            #defaultCountdown .fs-30 {
+                font-size: 22px;
+            }
+        }
+    </style>
 @endsection
