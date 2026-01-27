@@ -2,6 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Award;
+use App\Models\Nomination;
+use App\Models\AdminFee;
+use App\Models\Discount;
+use App\Models\PaymentGateway;
+use App\Models\Season;
 use Illuminate\Http\Request;
 
 class FrontendController extends Controller
@@ -61,13 +68,30 @@ class FrontendController extends Controller
         return view('frontend.shipping-return-policy');
     }
 
-    public function nomination()
+    public function nomination(Request $request)
     {
-        $activeSeason = view()->shared('activeSeason');
-        
-        $categories = \App\Models\Category::where('is_active', true)->get();
+        $categories = Category::where('is_active', true)->with('awards')->get();
+        $adminFee = AdminFee::where('is_active', true)->first();
+        $discounts = Discount::where('is_active', true)
+            ->where(function($query) {
+                $query->whereNull('user_id')->orWhere('user_id', auth()->id());
+            })->get();
+        $paymentGateways = PaymentGateway::where('is_active', true)->get();
 
-        return view('frontend.nomination', compact('categories'));
+        $nomination = null;
+        if ($request->has('app_id')) {
+            $nomination = Nomination::with(['answers', 'evidence', 'award'])
+                ->where('user_id', auth()->id())
+                ->where('application_id', $request->app_id)
+                ->where('payment_status', 'pending')
+                ->first();
+                
+            if (!$nomination) {
+                return redirect()->route('dashboard.nominations')->with('error', 'Nomination not found or already paid.');
+            }
+        }
+
+        return view('frontend.nomination', compact('categories', 'adminFee', 'discounts', 'paymentGateways', 'nomination'));
     }
 
     public function getCategoryDetails(Request $request)
@@ -127,9 +151,40 @@ class FrontendController extends Controller
         return view('frontend.past-winner-details');
     }
 
-    public function dashboard()
+    public function dashboardOverview()
     {
-        return view('frontend.dashboard');
+        $nominationCount = \App\Models\Nomination::where('user_id', auth()->id())->count();
+        return view('frontend.dashboard.overview', compact('nominationCount'));
+    }
+
+    public function dashboardProfile()
+    {
+        return view('frontend.dashboard.profile');
+    }
+
+    public function dashboardPassword()
+    {
+        return view('frontend.dashboard.password');
+    }
+
+    public function dashboardNominations()
+    {
+        $nominations = \App\Models\Nomination::with(['category', 'award'])
+            ->where('user_id', auth()->id())
+            ->orderBy('id', 'desc')
+            ->get();
+            
+        return view('frontend.dashboard.nominations', compact('nominations'));
+    }
+
+    public function viewNomination($application_id)
+    {
+        $nomination = Nomination::with(['category', 'award', 'answers.nomineeQuestion', 'evidence', 'payments'])
+            ->where('user_id', auth()->id())
+            ->where('application_id', $application_id)
+            ->firstOrFail();
+            
+        return view('frontend.dashboard.nomination-view', compact('nomination'));
     }
 
     public function whyEnter()

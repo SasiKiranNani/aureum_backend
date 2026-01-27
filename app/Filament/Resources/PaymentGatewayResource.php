@@ -57,7 +57,7 @@ class PaymentGatewayResource extends Resource
                                             ->label('Public Key / Key ID')
                                             ->maxLength(255),
                                         Forms\Components\TextInput::make('secret')
-                                            ->label('Secret Key')
+                                            ->label('Secret Key / Salt')
                                             ->password()
                                             ->revealable()
                                             ->maxLength(255),

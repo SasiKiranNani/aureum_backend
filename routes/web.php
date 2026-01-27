@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\NominationController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 // Auth Routes
@@ -18,6 +20,20 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('
 
 // API Routes for Frontend
 Route::get('/api/category-details', [FrontendController::class, 'getCategoryDetails'])->name('api.category-details');
+
+// Nomination Routes
+Route::post('/nomination/submit', [NominationController::class, 'store'])->name('nomination.submit');
+Route::post('/nomination/check-discount', [NominationController::class, 'checkDiscount'])->name('nomination.check-discount');
+Route::get('/nomination/pdf/{application_id}', [NominationController::class, 'generatePdf'])->name('nomination.pdf');
+Route::post('/nomination/preview-pdf', [NominationController::class, 'previewPdf'])->name('nomination.preview-pdf');
+Route::get('/nomination/evidence/download/{id}', [NominationController::class, 'downloadEvidence'])->name('nomination.evidence.download');
+Route::get('/nomination/headshot/download/{application_id}', [NominationController::class, 'downloadHeadshot'])->name('nomination.headshot.download');
+
+// Payment Routes
+Route::post('/payment/initiate', [PaymentController::class, 'initiate'])->name('payment.initiate');
+Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
+Route::get('/payment/failure', [PaymentController::class, 'failure'])->name('payment.failure');
+Route::post('/payment/webhook/{gateway}', [PaymentController::class, 'webhook'])->name('payment.webhook');
 
 Route::get('/', [FrontendController::class, 'index'])->name('home');
 Route::get('/about-us', [FrontendController::class, 'aboutUs'])->name('about-us');
@@ -45,7 +61,12 @@ Route::get('/shipping-return-policy', [FrontendController::class, 'shippingRetur
 
 // Protected Routes
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [FrontendController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [FrontendController::class, 'dashboardOverview'])->name('dashboard');
+    Route::get('/dashboard/profile', [FrontendController::class, 'dashboardProfile'])->name('dashboard.profile');
+    Route::get('/dashboard/password', [FrontendController::class, 'dashboardPassword'])->name('dashboard.password');
+    Route::get('/dashboard/nominations', [FrontendController::class, 'dashboardNominations'])->name('dashboard.nominations');
+    Route::get('/dashboard/nominations/{application_id}', [FrontendController::class, 'viewNomination'])->name('dashboard.nominations.view');
+    
     Route::post('/profile/update', [AuthController::class, 'updateProfile'])->name('profile.update');
     Route::post('/password/update', [AuthController::class, 'updatePassword'])->name('password.update');
 });
