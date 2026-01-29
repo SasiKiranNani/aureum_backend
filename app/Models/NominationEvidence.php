@@ -25,9 +25,22 @@ class NominationEvidence extends Model
     ];
 
     // Relationships
-    public function nomination(): BelongsTo
+    public function getThumbnailUrlAttribute(): string
     {
-        return $this->belongsTo(Nomination::class);
+        if ($this->type === 'file' && \Illuminate\Support\Str::contains($this->file_name, ['.jpg', '.jpeg', '.png', '.webp', '.gif'])) {
+            return $this->file_url;
+        }
+
+        if ($this->type === 'video' || ($this->type === 'link' && \Illuminate\Support\Str::contains($this->reference_url, ['youtube', 'vimeo']))) {
+            return 'https://ui-avatars.com/api/?name=VIDEO&background=000&color=fff&size=512&font-size=0.33';
+        }
+
+        if ($this->type === 'link') {
+            return 'https://ui-avatars.com/api/?name=LINK&background=0284c7&color=fff&size=512&font-size=0.33';
+        }
+
+        // Documents / Others
+        return 'https://ui-avatars.com/api/?name=DOC&background=ef4444&color=fff&size=512&font-size=0.33';
     }
 
     // Accessors

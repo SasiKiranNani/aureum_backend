@@ -58,12 +58,22 @@ class User extends Authenticatable
         return Str::of($this->name)
             ->explode(' ')
             ->take(2)
-            ->map(fn ($word) => Str::substr($word, 0, 1))
+            ->map(fn($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
 
     public function discounts(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Discount::class);
+    }
+
+    public function judgeNominations(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Nomination::class, 'judge_id');
+    }
+
+    public function nominationEvaluations(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(NominationEvaluation::class);
     }
 }

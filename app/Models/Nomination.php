@@ -43,7 +43,21 @@ class Nomination extends Model
         'discount_applied',
         'discount_id',
         'payment_gateway_id',
+        'judge_id',
+        'status',
+        'final_score',
+        'final_grade',
     ];
+
+    public function judge(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'judge_id');
+    }
+
+    public function evaluation(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(NominationEvaluation::class);
+    }
 
     public function paymentGateway(): BelongsTo
     {

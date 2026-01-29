@@ -29,7 +29,7 @@
                                 </td>
                                 <td>
                                     <div class="award-info">
-                                        <div class="category-name">{{ $nomination->category->name }}</div>
+                                        <div class="category-name text-white">{{ $nomination->category->name }}</div>
                                         <div class="award-name text-muted fs-12">{{ $nomination->award->name }}</div>
                                     </div>
                                 </td>
@@ -39,7 +39,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <span class="date">{{ $nomination->created_at->format('d M Y') }}</span>
+                                    <span class="date text-muted">{{ $nomination->created_at->format('d M Y') }}</span>
                                 </td>
                                 <td class="text-end">
                                     <div class="d-flex gap-2">
