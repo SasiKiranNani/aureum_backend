@@ -24,14 +24,14 @@
                             </div>
 
                             <!-- <div class="d-flex justify-content-center align-items-center mx-4">
-                                                                                <i class="fa fa-calendar id-color me-3"></i>
-                                                                                <h4 class="mb-0">October 1–5, 2025</h4>
-                                                                            </div> -->
+                                                                                            <i class="fa fa-calendar id-color me-3"></i>
+                                                                                            <h4 class="mb-0">October 1–5, 2025</h4>
+                                                                                        </div> -->
 
                             <!-- <div class="d-flex justify-content-center align-items-center mx-4">
-                                                                                <i class="fa fa-location-pin id-color me-3"></i>
-                                                                                <h4 class="mb-0">San Francisco, CA</h4>
-                                                                            </div> -->
+                                                                                            <i class="fa fa-location-pin id-color me-3"></i>
+                                                                                            <h4 class="mb-0">San Francisco, CA</h4>
+                                                                                        </div> -->
                         </div>
 
                         <div class="spacer-single"></div>
@@ -113,38 +113,25 @@
         </div>
     </section>
 
-    <section class="section-dark p-0" aria-label="section">
+    <section class="section-dark p-0 scrolls" aria-label="section">
         <div class="bg-color text-light d-flex py-4 lh-1 rot-2">
             <div class="de-marquee-list-1 wow fadeInLeft" data-wow-duration="3s">
-                <span class="fs-60 mx-3">Next Intelligence</span>
-                <span class="fs-60 mx-3 op-2">/</span>
-                <span class="fs-60 mx-3">Future Now</span>
-                <span class="fs-60 mx-3 op-2">/</span>
-                <span class="fs-60 mx-3">Empowering Innovation</span>
-                <span class="fs-60 mx-3 op-2">/</span>
-                <span class="fs-60 mx-3">Smarter Tomorrow</span>
-                <span class="fs-60 mx-3 op-2">/</span>
-                <span class="fs-60 mx-3">Think Forward</span>
-                <span class="fs-60 mx-3 op-2">/</span>
-                <span class="fs-60 mx-3">Cognitive Shift</span>
-                <span class="fs-60 mx-3 op-2">/</span>
+                @php
+                    $scrolls = \App\Models\Scroll::where('is_active', true)->get();
+                @endphp
+                @foreach ($scrolls as $scroll)
+                    <span class="fs-60 mx-3">{{ $scroll->content }}</span>
+                    <span class="fs-60 mx-3 op-2">/</span>
+                @endforeach
             </div>
         </div>
 
         <div class="bg-color-2 text-light d-flex py-4 lh-1 rot-min-1 mt-min-20">
             <div class="de-marquee-list-2 wow fadeInRight" data-wow-duration="3s">
-                <span class="fs-60 mx-3">Next Intelligence</span>
-                <span class="fs-60 mx-3 op-2">/</span>
-                <span class="fs-60 mx-3">Future Now</span>
-                <span class="fs-60 mx-3 op-2">/</span>
-                <span class="fs-60 mx-3">Empowering Innovation</span>
-                <span class="fs-60 mx-3 op-2">/</span>
-                <span class="fs-60 mx-3">Smarter Tomorrow</span>
-                <span class="fs-60 mx-3 op-2">/</span>
-                <span class="fs-60 mx-3">Think Forward</span>
-                <span class="fs-60 mx-3 op-2">/</span>
-                <span class="fs-60 mx-3">Cognitive Shift</span>
-                <span class="fs-60 mx-3 op-2">/</span>
+                @foreach ($scrolls as $scroll)
+                    <span class="fs-60 mx-3">{{ $scroll->content }}</span>
+                    <span class="fs-60 mx-3 op-2">/</span>
+                @endforeach
             </div>
         </div>
     </section>
