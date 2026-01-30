@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Kahusoftware\FilamentCkeditorField\CKEditor;
 
 class BlogResource extends Resource
 {
@@ -30,7 +31,7 @@ class BlogResource extends Resource
                     ->directory('blog'),
                 Forms\Components\DatePicker::make('date')
                     ->required(),
-                \Kahusoftware\FilamentCkeditor\FilamentCkeditor::make('description')
+                CKEditor::make('description')
                     ->columnSpanFull(),
                 Forms\Components\Toggle::make('is_active')
                     ->required()
