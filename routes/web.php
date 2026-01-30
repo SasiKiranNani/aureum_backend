@@ -39,7 +39,9 @@ Route::get('/', [FrontendController::class, 'index'])->name('home');
 Route::get('/about-us', [FrontendController::class, 'aboutUs'])->name('about-us');
 Route::get('/categories', [FrontendController::class, 'categories'])->name('categories');
 Route::get('/news-room', [FrontendController::class, 'newsRoom'])->name('news-room');
-Route::get('/news-room-details', [FrontendController::class, 'newsRoomDetails'])->name('news-room-details');
+Route::get('/news-room/{id}', [FrontendController::class, 'newsRoomDetails'])->name('news-room-details');
+Route::get('/blog', [FrontendController::class, 'blog'])->name('blog');
+Route::get('/blog/{id}', [FrontendController::class, 'blogDetails'])->name('blog-details');
 Route::get('/contact-us', [FrontendController::class, 'contactUs'])->name('contact-us');
 Route::get('/nomination', [FrontendController::class, 'nomination'])->name('nomination');
 
@@ -66,7 +68,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/password', [FrontendController::class, 'dashboardPassword'])->name('dashboard.password');
     Route::get('/dashboard/nominations', [FrontendController::class, 'dashboardNominations'])->name('dashboard.nominations');
     Route::get('/dashboard/nominations/{application_id}', [FrontendController::class, 'viewNomination'])->name('dashboard.nominations.view');
-    
+
     Route::post('/profile/update', [AuthController::class, 'updateProfile'])->name('profile.update');
     Route::post('/password/update', [AuthController::class, 'updatePassword'])->name('password.update');
 });

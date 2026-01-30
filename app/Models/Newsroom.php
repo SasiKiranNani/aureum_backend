@@ -2,21 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MediaPublisher extends Model
+class Newsroom extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
-        'name',
-        'amount',
+        'title',
+        'image',
+        'date',
+        'description',
         'is_active',
     ];
 
     protected $casts = [
-        'amount' => 'decimal:2',
+        'date' => 'date',
         'is_active' => 'boolean',
     ];
 }

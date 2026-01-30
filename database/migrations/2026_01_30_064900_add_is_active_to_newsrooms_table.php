@@ -4,19 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('media_publishers', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->decimal('amount', 10, 2);
+        Schema::table('newsrooms', function (Blueprint $table) {
             $table->boolean('is_active')->default(true);
-            $table->timestamps();
         });
     }
 
@@ -25,6 +20,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('media_publishers');
+        Schema::table('newsrooms', function (Blueprint $table) {
+            //
+        });
     }
 };

@@ -11,6 +11,8 @@ use App\Models\PaymentGateway;
 use App\Models\Season;
 use Illuminate\Http\Request;
 
+use App\Models\Newsroom;
+
 class FrontendController extends Controller
 {
     public function index()
@@ -30,12 +32,26 @@ class FrontendController extends Controller
 
     public function newsRoom()
     {
-        return view('frontend.news-room');
+        $newsrooms = Newsroom::where('is_active', true)->orderBy('date', 'desc')->paginate(9);
+        return view('frontend.news-room', compact('newsrooms'));
     }
 
-    public function newsRoomDetails()
+    public function newsRoomDetails($id)
     {
-        return view('frontend.news-room-details');
+        $newsroom = Newsroom::findOrFail($id);
+        return view('frontend.news-room-details', compact('newsroom'));
+    }
+
+    public function blog()
+    {
+        $blogs = \App\Models\Blog::where('is_active', true)->orderBy('date', 'desc')->paginate(9);
+        return view('frontend.blog', compact('blogs'));
+    }
+
+    public function blogDetails($id)
+    {
+        $blog = \App\Models\Blog::findOrFail($id);
+        return view('frontend.blog-details', compact('blog'));
     }
 
     public function contactUs()
@@ -73,7 +89,7 @@ class FrontendController extends Controller
         $categories = Category::where('is_active', true)->with('awards')->get();
         $adminFee = AdminFee::where('is_active', true)->first();
         $discounts = Discount::where('is_active', true)
-            ->where(function($query) {
+            ->where(function ($query) {
                 $query->whereNull('user_id')->orWhere('user_id', auth()->id());
             })->get();
         $paymentGateways = PaymentGateway::where('is_active', true)->get();
@@ -85,7 +101,7 @@ class FrontendController extends Controller
                 ->where('application_id', $request->app_id)
                 ->where('payment_status', 'pending')
                 ->first();
-                
+
             if (!$nomination) {
                 return redirect()->route('dashboard.nominations')->with('error', 'Nomination not found or already paid.');
             }
@@ -97,7 +113,7 @@ class FrontendController extends Controller
     public function getCategoryDetails(Request $request)
     {
         $categoryId = $request->query('category_id');
-        
+
         if (!$categoryId) {
             return response()->json(['error' => 'Category ID required'], 400);
         }
@@ -173,7 +189,7 @@ class FrontendController extends Controller
             ->where('user_id', auth()->id())
             ->orderBy('id', 'desc')
             ->get();
-            
+
         return view('frontend.dashboard.nominations', compact('nominations'));
     }
 
@@ -183,7 +199,7 @@ class FrontendController extends Controller
             ->where('user_id', auth()->id())
             ->where('application_id', $application_id)
             ->firstOrFail();
-            
+
         return view('frontend.dashboard.nomination-view', compact('nomination'));
     }
 
