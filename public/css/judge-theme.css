@@ -65,6 +65,17 @@ body {
     opacity: 1;
 }
 
+/* Tabs Highlighting */
+.fi-tabs-item-active {
+    border: 1px dotted #fbbf24 !important;
+    /* Amber 400 */
+    color: #fbbf24 !important;
+}
+
+.fi-tabs-item-active span {
+    color: #fbbf24 !important;
+}
+
 /* Header/Topbar */
 .fi-topbar {
     background-color: #ffffff !important;

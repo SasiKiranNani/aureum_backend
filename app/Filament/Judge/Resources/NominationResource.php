@@ -43,6 +43,15 @@ class NominationResource extends Resource
                     ->colors(['gray' => 'pending', 'warning' => 'processing', 'success' => 'awarded', 'danger' => 'rejected']),
                 Tables\Columns\TextColumn::make('created_at')->label('Submitted')->dateTime('M d, Y'),
             ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('season')
+                    ->relationship('season', 'name')
+                    ->label('Season'),
+                Tables\Filters\SelectFilter::make('category')
+                    ->relationship('category', 'name')
+                    ->label('Category')
+                    ->searchable(),
+            ], layout: \Filament\Tables\Enums\FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\Action::make('download_pdf')->label('PDF')->icon('heroicon-o-arrow-down-tray')->url(fn(Nomination $record) => route('nomination.pdf', $record->application_id))->openUrlInNewTab(),
