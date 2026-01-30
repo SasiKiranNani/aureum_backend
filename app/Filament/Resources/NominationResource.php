@@ -63,290 +63,296 @@ class NominationResource extends Resource
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist
-            ->schema([
-                // HERO HEADER (Premium Dark Gradient)
-                Infolists\Components\Section::make()
-                    ->schema([
-                        Infolists\Components\Grid::make(12)->schema([
-                            // HEADSHOT
-                            Infolists\Components\ImageEntry::make('headshot')
+            ->schema(self::getInfolistSchema());
+    }
+
+    public static function getInfolistSchema(): array
+    {
+        return [
+            // HERO HEADER (Premium Dark Gradient)
+            Infolists\Components\Section::make()
+                ->schema([
+                    Infolists\Components\Grid::make(12)->schema([
+                        // HEADSHOT
+                        Infolists\Components\ImageEntry::make('headshot')
+                            ->hiddenLabel()
+                            ->height(200)
+                            ->width(200)
+                            ->circular()
+                            ->defaultImageUrl(url('/images/default-avatar.png'))
+                            ->extraAttributes(['class' => 'border-[4px] border-white/20 shadow-2xl'])
+                            ->columnSpan(3),
+
+                        // MAIN TITLE & INFO
+                        Infolists\Components\Group::make([
+                            Infolists\Components\TextEntry::make('full_name')
                                 ->hiddenLabel()
-                                ->height(200)
-                                ->width(200)
-                                ->circular()
-                                ->defaultImageUrl(url('/images/default-avatar.png'))
-                                ->extraAttributes(['class' => 'border-[4px] border-white/20 shadow-2xl'])
-                                ->columnSpan(3),
+                                ->size('5xl')
+                                ->weight('black')
+                                ->fontFamily('font-serif')
+                                ->color('white')
+                                ->extraAttributes(['class' => 'leading-tight drop-shadow-md']),
 
-                            // MAIN TITLE & INFO
-                            Infolists\Components\Group::make([
-                                Infolists\Components\TextEntry::make('full_name')
-                                    ->hiddenLabel()
-                                    ->size('5xl')
-                                    ->weight('black')
-                                    ->fontFamily('font-serif')
-                                    ->color('white')
-                                    ->extraAttributes(['class' => 'leading-tight drop-shadow-md']),
+                            Infolists\Components\TextEntry::make('organization')
+                                ->hiddenLabel()
+                                ->size('2xl')
+                                ->weight('light')
+                                ->color('gray')
+                                ->icon('heroicon-m-building-office')
+                                ->extraAttributes(['class' => 'mb-6 text-gray-300']),
 
-                                Infolists\Components\TextEntry::make('organization')
-                                    ->hiddenLabel()
-                                    ->size('2xl')
-                                    ->weight('light')
-                                    ->color('gray')
-                                    ->icon('heroicon-m-building-office')
-                                    ->extraAttributes(['class' => 'mb-6 text-gray-300']),
-
-                                // KEY HIGHLIGHTS ROW
-                                Infolists\Components\Grid::make(3)->schema([
-                                    Infolists\Components\TextEntry::make('category.name')
-                                        ->label('CATEGORY')
-                                        ->color('warning')
-                                        ->weight('bold')
-                                        ->extraAttributes(['class' => 'tracking-widest text-xs opacity-80']),
-
-                                    Infolists\Components\TextEntry::make('award.name')
-                                        ->label('AWARD')
-                                        ->color('warning')
-                                        ->weight('bold')
-                                        ->extraAttributes(['class' => 'tracking-widest text-xs opacity-80']),
-
-                                    Infolists\Components\TextEntry::make('application_id')
-                                        ->label('APPLICATION ID')
-                                        ->color('white')
-                                        ->weight('bold')
-                                        ->extraAttributes(['class' => 'tracking-widest text-xs opacity-80']),
-                                ]),
-                            ])->columnSpan(9)->extraAttributes(['class' => 'pl-4 flex flex-col justify-center']),
-                        ]),
-                    ])->extraAttributes([
-                            'class' => 'bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 rounded-2xl shadow-xl border-none mb-8 p-8 overflow-hidden relative',
-                        ]),
-
-                // CONTENT LAYOUT: 2-COLUMN (8 Main / 4 Sidebar)
-                Infolists\Components\Grid::make(12)->schema([
-
-                    // === LEFT MAIN COLUMN (Story & Evidence) ===
-                    Infolists\Components\Group::make([
-
-                        // 1. CONTRIBUTION NARRATIVE
-                        Infolists\Components\Section::make('Nomination Narrative')
-                            ->icon('heroicon-o-book-open')
-                            ->schema([
-                                Infolists\Components\TextEntry::make('contribution_title')
-                                    ->label('Contribution Title')
-                                    ->size('2xl')
+                            // KEY HIGHLIGHTS ROW
+                            Infolists\Components\Grid::make(3)->schema([
+                                Infolists\Components\TextEntry::make('category.name')
+                                    ->label('CATEGORY')
+                                    ->color('warning')
                                     ->weight('bold')
-                                    ->extraAttributes(['class' => 'text-slate-800 mb-2']),
+                                    ->extraAttributes(['class' => 'tracking-widest text-xs opacity-80']),
 
-                                Infolists\Components\TextEntry::make('timeframe')
-                                    ->label('Timeframe')
-                                    ->badge()
-                                    ->color('gray'),
+                                Infolists\Components\TextEntry::make('award.name')
+                                    ->label('AWARD')
+                                    ->color('warning')
+                                    ->weight('bold')
+                                    ->extraAttributes(['class' => 'tracking-widest text-xs opacity-80']),
 
-                                Infolists\Components\TextEntry::make('eligibility_justification')
-                                    ->label('Eligibility Justification (Why this contribution fits?)')
-                                    ->markdown()
-                                    ->prose()
-                                    ->extraAttributes(['class' => 'bg-slate-50 p-6 rounded-lg text-lg leading-relaxed text-slate-700 shadow-inner mt-4']),
+                                Infolists\Components\TextEntry::make('application_id')
+                                    ->label('APPLICATION ID')
+                                    ->color('white')
+                                    ->weight('bold')
+                                    ->extraAttributes(['class' => 'tracking-widest text-xs opacity-80']),
                             ]),
+                        ])->columnSpan(9)->extraAttributes(['class' => 'pl-4 flex flex-col justify-center']),
+                    ]),
+                ])->extraAttributes([
+                        'class' => 'bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 rounded-2xl shadow-xl border-none mb-8 p-8 overflow-hidden relative',
+                    ]),
 
-                        // 2. Q&A
-                        Infolists\Components\Section::make('Category Question')
-                            ->icon('heroicon-o-chat-bubble-left-right')
-                            // ->collapsed()
-                            ->schema([
-                                Infolists\Components\RepeatableEntry::make('answers')
-                                    ->hiddenLabel()
-                                    ->contained(false)
-                                    ->schema([
-                                        Infolists\Components\TextEntry::make('nomineeQuestion.question')
-                                            ->hiddenLabel()
-                                            ->weight('bold')
-                                            ->color('primary')
-                                            ->extraAttributes(['class' => 'mb-1 text-sm uppercase tracking-wide']),
-                                        Infolists\Components\TextEntry::make('answer')
-                                            ->hiddenLabel()
-                                            ->markdown()
-                                            ->extraAttributes(['class' => 'mb-6 text-slate-600 border-l-4 border-slate-200 pl-4']),
-                                    ]),
-                            ]),
+            // CONTENT LAYOUT: 2-COLUMN (8 Main / 4 Sidebar)
+            Infolists\Components\Grid::make(12)->schema([
 
-                        // 3. EVIDENCE GALLERY
-                        Infolists\Components\Section::make('Evidence & Attachments')
-                            ->icon('heroicon-o-photo')
-                            ->schema([
-                                Infolists\Components\RepeatableEntry::make('evidence')
-                                    ->hiddenLabel()
-                                    ->grid(2)
-                                    ->schema([
-                                        Infolists\Components\Grid::make(12)->schema([
-                                            // Icon (Computed State)
-                                            Infolists\Components\TextEntry::make('ev_icon')
-                                                ->hiddenLabel()
-                                                ->state(' ')
-                                                ->icon(fn($record) => match (true) {
-                                                    ($record->type ?? '') === 'link' => 'heroicon-m-link',
-                                                    ($record->type ?? '') === 'video' => 'heroicon-m-video-camera',
-                                                    Str::contains($record->file_type ?? '', 'image') => 'heroicon-m-photo',
-                                                    Str::contains($record->file_type ?? '', 'pdf') => 'heroicon-m-document-text',
-                                                    Str::contains($record->file_type ?? '', 'video') => 'heroicon-m-video-camera',
-                                                    default => 'heroicon-m-paper-clip',
-                                                })
-                                                ->color('warning')
-                                                ->size('lg')
-                                                ->columnSpan(1),
+                // === LEFT MAIN COLUMN (Story & Evidence) ===
+                Infolists\Components\Group::make([
 
-                                            // Name/URL (Computed State)
-                                            Infolists\Components\TextEntry::make('ev_name')
-                                                ->hiddenLabel()
-                                                ->state(fn($record) => $record->type === 'link' ? $record->reference_url : $record->file_name)
-                                                ->limit(20)
-                                                ->tooltip(fn($state) => $state)
-                                                ->weight('medium')
-                                                ->columnSpan(9)
-                                                ->url(fn($record) => $record->type === 'link' ? $record->reference_url : null)
-                                                ->openUrlInNewTab(),
+                    // 1. CONTRIBUTION NARRATIVE
+                    Infolists\Components\Section::make('Nomination Narrative')
+                        ->icon('heroicon-o-book-open')
+                        ->schema([
+                            Infolists\Components\TextEntry::make('contribution_title')
+                                ->label('Contribution Title')
+                                ->size('2xl')
+                                ->weight('bold')
+                                ->extraAttributes(['class' => 'text-slate-800 mb-2']),
 
-                                            // Action
-                                            Infolists\Components\Actions::make([
-                                                Infolists\Components\Actions\Action::make('access')
-                                                    ->hiddenLabel()
-                                                    ->icon('heroicon-m-arrow-top-right-on-square')
-                                                    ->color('gray')
-                                                    ->url(fn($record) => $record->file_url ?? $record->reference_url)
-                                                    ->openUrlInNewTab(),
-                                            ])->columnSpan(2)->alignEnd(),
-                                        ])->extraAttributes(['class' => 'items-center']),
-                                    ])->extraAttributes(['class' => 'gap-4']),
-                            ]),
+                            Infolists\Components\TextEntry::make('timeframe')
+                                ->label('Timeframe')
+                                ->badge()
+                                ->color('gray'),
 
-                        // 4. COMPLIANCE
-                        Infolists\Components\Section::make('Compliance')
-                            ->icon('heroicon-o-scale')
-                            // ->collapsed()
-                            ->columns(3)
-                            ->schema([
-                                Infolists\Components\TextEntry::make('sensitive_data')->label('Sensitive Data')->badge()->color(fn($state) => $state === 'yes' ? 'danger' : 'success'),
-                                Infolists\Components\TextEntry::make('controversies')->label('Controversies')->badge()->color(fn($state) => $state === 'yes' ? 'danger' : 'success'),
-                                Infolists\Components\TextEntry::make('industry_influence')->label('Industry Influence')->badge()->color(fn($state) => $state === 'yes' ? 'danger' : 'success'),
-                                Infolists\Components\TextEntry::make('declaration_accurate')
-                                    ->label('Declared Accurate')
-                                    ->badge()
-                                    ->formatStateUsing(fn(bool $state) => $state ? 'Yes' : 'No')
-                                    ->color(fn(bool $state) => $state ? 'success' : 'danger')
-                                    ->icon(fn(bool $state) => $state ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
+                            Infolists\Components\TextEntry::make('eligibility_justification')
+                                ->label('Eligibility Justification (Why this contribution fits?)')
+                                ->markdown()
+                                ->prose()
+                                ->extraAttributes(['class' => 'bg-slate-50 p-6 rounded-lg text-lg leading-relaxed text-slate-700 shadow-inner mt-4']),
+                        ]),
 
-                                Infolists\Components\TextEntry::make('declaration_privacy')
-                                    ->label('Declared Privacy')
-                                    ->badge()
-                                    ->formatStateUsing(fn(bool $state) => $state ? 'Yes' : 'No')
-                                    ->color(fn(bool $state) => $state ? 'success' : 'danger')
-                                    ->icon(fn(bool $state) => $state ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
-                            ]),
-
-                    ])->columnSpan(8),
-
-
-                    // === RIGHT SIDEBAR COLUMN (Data & Meta) ===
-                    Infolists\Components\Group::make([
-
-                        // 1. EXECUTIVE SUMMARY CARD
-                        Infolists\Components\Section::make('Executive Summary')
-                            ->icon('heroicon-o-user')
-                            ->schema([
-                                Infolists\Components\TextEntry::make('nominee_type')->label('Type')->badge()->color('gray'),
-                                Infolists\Components\TextEntry::make('industry')->label('Industry')->badge()->color('gray'),
-                                Infolists\Components\TextEntry::make('workforce_size')->label('Workforce')->icon('heroicon-m-users'),
-                                Infolists\Components\TextEntry::make('status')
-                                    ->badge()
-                                    ->color(fn($state) => match ($state) { 'awarded' => 'success', 'rejected' => 'danger', default => 'warning'}),
-                            ])->columns(2),
-
-                        // 2. EVALUATION OVERVIEW
-                        Infolists\Components\Section::make('Evaluation Overview')
-                            ->icon('heroicon-o-clipboard-document-check')
-                            ->schema([
-                                Infolists\Components\TextEntry::make('judge.name')
-                                    ->label('Assigned Judge')
-                                    ->icon('heroicon-m-user')
-                                    ->placeholder('Unassigned'),
-
-                                Infolists\Components\Grid::make(3)->schema([
-                                    Infolists\Components\TextEntry::make('final_grade')
-                                        ->label('Grade')
-                                        ->badge()
-                                        ->color(fn($state) => match ($state) {
-                                            'A', 'B' => 'success',
-                                            'C' => 'warning',
-                                            'D', 'F' => 'danger',
-                                            default => 'gray'
-                                        })
-                                        ->size('lg'),
-
-                                    Infolists\Components\TextEntry::make('final_score')
-                                        ->label('Score')
-                                        ->numeric(2)
+                    // 2. Q&A
+                    Infolists\Components\Section::make('Category Question')
+                        ->icon('heroicon-o-chat-bubble-left-right')
+                        // ->collapsed()
+                        ->schema([
+                            Infolists\Components\RepeatableEntry::make('answers')
+                                ->hiddenLabel()
+                                ->contained(false)
+                                ->schema([
+                                    Infolists\Components\TextEntry::make('nomineeQuestion.question')
+                                        ->hiddenLabel()
                                         ->weight('bold')
-                                        ->size('lg'),
-
-                                    Infolists\Components\TextEntry::make('status')
-                                        ->label('Status')
-                                        ->badge()
-                                        ->color(fn($state) => match ($state) { 'awarded' => 'success', 'rejected' => 'danger', default => 'gray'})
+                                        ->color('primary')
+                                        ->extraAttributes(['class' => 'mb-1 text-sm uppercase tracking-wide']),
+                                    Infolists\Components\TextEntry::make('answer')
+                                        ->hiddenLabel()
+                                        ->markdown()
+                                        ->extraAttributes(['class' => 'mb-6 text-slate-600 border-l-4 border-slate-200 pl-4']),
                                 ]),
-                            ]),
-                        Infolists\Components\Section::make('Financials')
-                            ->icon('heroicon-o-currency-dollar')
-                            ->schema([
-                                Infolists\Components\TextEntry::make('payments.transaction_id')
-                                    ->label('Txn ID')
-                                    ->size('3xl')
-                                    ->weight('black')
-                                    ->alignCenter()
-                                    ->extraAttributes(['class' => 'mb-2']),
+                        ]),
 
-                                Infolists\Components\TextEntry::make('payment_method')
-                                    ->label('Via')
+                    // 3. EVIDENCE GALLERY
+                    Infolists\Components\Section::make('Evidence & Attachments')
+                        ->icon('heroicon-o-photo')
+                        ->schema([
+                            Infolists\Components\RepeatableEntry::make('evidence')
+                                ->hiddenLabel()
+                                ->grid(2)
+                                ->schema([
+                                    Infolists\Components\Grid::make(12)->schema([
+                                        // Icon (Computed State)
+                                        Infolists\Components\TextEntry::make('ev_icon')
+                                            ->hiddenLabel()
+                                            ->state(' ')
+                                            ->icon(fn($record) => match (true) {
+                                                ($record->type ?? '') === 'link' => 'heroicon-m-link',
+                                                ($record->type ?? '') === 'video' => 'heroicon-m-video-camera',
+                                                Str::contains($record->file_type ?? '', 'image') => 'heroicon-m-photo',
+                                                Str::contains($record->file_type ?? '', 'pdf') => 'heroicon-m-document-text',
+                                                Str::contains($record->file_type ?? '', 'video') => 'heroicon-m-video-camera',
+                                                default => 'heroicon-m-paper-clip',
+                                            })
+                                            ->color('warning')
+                                            ->size('lg')
+                                            ->columnSpan(1),
+
+                                        // Name/URL (Computed State)
+                                        Infolists\Components\TextEntry::make('ev_name')
+                                            ->hiddenLabel()
+                                            ->state(fn($record) => $record->type === 'link' ? $record->reference_url : $record->file_name)
+                                            ->limit(20)
+                                            ->tooltip(fn($state) => $state)
+                                            ->weight('medium')
+                                            ->columnSpan(9)
+                                            ->url(fn($record) => $record->type === 'link' ? $record->reference_url : null)
+                                            ->openUrlInNewTab(),
+
+                                        // Action
+                                        Infolists\Components\Actions::make([
+                                            Infolists\Components\Actions\Action::make('access')
+                                                ->hiddenLabel()
+                                                ->icon('heroicon-m-arrow-top-right-on-square')
+                                                ->color('gray')
+                                                ->url(fn($record) => $record->file_url ?? $record->reference_url)
+                                                ->openUrlInNewTab(),
+                                        ])->columnSpan(2)->alignEnd(),
+                                    ])->extraAttributes(['class' => 'items-center']),
+                                ])->extraAttributes(['class' => 'gap-4']),
+                        ]),
+
+                    // 4. COMPLIANCE
+                    Infolists\Components\Section::make('Compliance')
+                        ->icon('heroicon-o-scale')
+                        // ->collapsed()
+                        ->columns(3)
+                        ->schema([
+                            Infolists\Components\TextEntry::make('sensitive_data')->label('Sensitive Data')->badge()->color(fn($state) => $state === 'yes' ? 'danger' : 'success'),
+                            Infolists\Components\TextEntry::make('controversies')->label('Controversies')->badge()->color(fn($state) => $state === 'yes' ? 'danger' : 'success'),
+                            Infolists\Components\TextEntry::make('industry_influence')->label('Industry Influence')->badge()->color(fn($state) => $state === 'yes' ? 'danger' : 'success'),
+                            Infolists\Components\TextEntry::make('declaration_accurate')
+                                ->label('Declared Accurate')
+                                ->badge()
+                                ->formatStateUsing(fn(bool $state) => $state ? 'Yes' : 'No')
+                                ->color(fn(bool $state) => $state ? 'success' : 'danger')
+                                ->icon(fn(bool $state) => $state ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
+
+                            Infolists\Components\TextEntry::make('declaration_privacy')
+                                ->label('Declared Privacy')
+                                ->badge()
+                                ->formatStateUsing(fn(bool $state) => $state ? 'Yes' : 'No')
+                                ->color(fn(bool $state) => $state ? 'success' : 'danger')
+                                ->icon(fn(bool $state) => $state ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
+                        ]),
+
+                ])->columnSpan(8),
+
+
+                // === RIGHT SIDEBAR COLUMN (Data & Meta) ===
+                Infolists\Components\Group::make([
+
+                    // 1. EXECUTIVE SUMMARY CARD
+                    Infolists\Components\Section::make('Executive Summary')
+                        ->icon('heroicon-o-user')
+                        ->schema([
+                            Infolists\Components\TextEntry::make('nominee_type')->label('Type')->badge()->color('gray'),
+                            Infolists\Components\TextEntry::make('industry')->label('Industry')->badge()->color('gray'),
+                            Infolists\Components\TextEntry::make('workforce_size')->label('Workforce')->icon('heroicon-m-users'),
+                            Infolists\Components\TextEntry::make('status')
+                                ->badge()
+                                ->color(fn($state) => match ($state) { 'awarded' => 'success', 'rejected' => 'danger', default => 'warning'}),
+                        ])->columns(2),
+
+                    // 2. EVALUATION OVERVIEW
+                    Infolists\Components\Section::make('Evaluation Overview')
+                        ->icon('heroicon-o-clipboard-document-check')
+                        ->schema([
+                            Infolists\Components\TextEntry::make('judge.name')
+                                ->label('Assigned Judge')
+                                ->icon('heroicon-m-user')
+                                ->placeholder('Unassigned'),
+
+                            Infolists\Components\Grid::make(3)->schema([
+                                Infolists\Components\TextEntry::make('final_grade')
+                                    ->label('Grade')
+                                    ->badge()
+                                    ->color(fn($state) => match ($state) {
+                                        'A', 'B' => 'success',
+                                        'C' => 'warning',
+                                        'D', 'F' => 'danger',
+                                        default => 'gray'
+                                    })
+                                    ->size('lg'),
+
+                                Infolists\Components\TextEntry::make('final_score')
+                                    ->label('Score')
+                                    ->numeric(2)
+                                    ->weight('bold')
+                                    ->size('lg'),
+
+                                Infolists\Components\TextEntry::make('status')
+                                    ->label('Status')
+                                    ->badge()
+                                    ->color(fn($state) => match ($state) { 'awarded' => 'success', 'rejected' => 'danger', default => 'gray'})
+                            ]),
+                        ]),
+                    Infolists\Components\Section::make('Financials')
+                        ->icon('heroicon-o-currency-dollar')
+                        ->hidden(fn() => auth()->user()->hasRole('judge'))
+                        ->schema([
+                            Infolists\Components\TextEntry::make('payments.transaction_id')
+                                ->label('Txn ID')
+                                ->size('3xl')
+                                ->weight('black')
+                                ->alignCenter()
+                                ->extraAttributes(['class' => 'mb-2']),
+
+                            Infolists\Components\TextEntry::make('payment_method')
+                                ->label('Via')
+                                ->money('USD')
+                                ->size('3xl')
+                                ->weight('black')
+                                ->color('success')
+                                ->alignCenter()
+                                ->badge()->formatStateUsing(fn($state) => strtoupper($state))
+                                ->extraAttributes(['class' => 'mb-2']),
+
+                            Infolists\Components\Grid::make(2)->schema([
+                                Infolists\Components\TextEntry::make('award.amount')->label('Award Price')->money('USD')->size('xs'),
+                                Infolists\Components\TextEntry::make('admin_fee')->label('Admin Fee')->money('USD')->size('xs'),
+                                Infolists\Components\TextEntry::make('discount_applied')->label('Discount')->money('USD')->color('danger')->size('xs'),
+                                // Infolists\Components\TextEntry::make('payment_method')->label('Via')->badge()->formatStateUsing(fn($state) => strtoupper($state)),
+                                // Infolists\Components\TextEntry::make('payments.transaction_id')->label('Txn ID')->fontFamily('font-mono')->size('xs')->limit(12),
+
+                                Infolists\Components\TextEntry::make('amount_paid')
+                                    ->label('TOTAL PAID')
                                     ->money('USD')
                                     ->size('3xl')
                                     ->weight('black')
                                     ->color('success')
-                                    ->alignCenter()
-                                    ->badge()->formatStateUsing(fn($state) => strtoupper($state))
                                     ->extraAttributes(['class' => 'mb-2']),
-
-                                Infolists\Components\Grid::make(2)->schema([
-                                    Infolists\Components\TextEntry::make('award.amount')->label('Award Price')->money('USD')->size('xs'),
-                                    Infolists\Components\TextEntry::make('admin_fee')->label('Admin Fee')->money('USD')->size('xs'),
-                                    Infolists\Components\TextEntry::make('discount_applied')->label('Discount')->money('USD')->color('danger')->size('xs'),
-                                    // Infolists\Components\TextEntry::make('payment_method')->label('Via')->badge()->formatStateUsing(fn($state) => strtoupper($state)),
-                                    // Infolists\Components\TextEntry::make('payments.transaction_id')->label('Txn ID')->fontFamily('font-mono')->size('xs')->limit(12),
-
-                                    Infolists\Components\TextEntry::make('amount_paid')
-                                        ->label('TOTAL PAID')
-                                        ->money('USD')
-                                        ->size('3xl')
-                                        ->weight('black')
-                                        ->color('success')
-                                        ->extraAttributes(['class' => 'mb-2']),
-                                ]),
                             ]),
+                        ]),
 
-                        // 3. CONTACT & LOCATION
-                        Infolists\Components\Section::make('Contact')
-                            ->icon('heroicon-o-at-symbol')
-                            ->schema([
-                                Infolists\Components\TextEntry::make('curr_email')->label('Email')->default(fn($record) => $record->email)->icon('heroicon-m-envelope')->url(fn($state) => 'mailto:' . $state),
-                                Infolists\Components\TextEntry::make('curr_phone')->label('Phone')->default(fn($record) => $record->phone)->icon('heroicon-m-phone'),
-                                Infolists\Components\TextEntry::make('linkedin_url')->label('LinkedIn')->icon('heroicon-m-link')->url(fn($state) => $state)->openUrlInNewTab()->limit(30),
-                                Infolists\Components\TextEntry::make('address')->icon('heroicon-m-map-pin')->size('xs')->color('gray'),
-                                Infolists\Components\TextEntry::make('country')->badge(),
-                            ]),
+                    // 3. CONTACT & LOCATION
+                    Infolists\Components\Section::make('Contact')
+                        ->icon('heroicon-o-at-symbol')
+                        ->schema([
+                            Infolists\Components\TextEntry::make('curr_email')->label('Email')->default(fn($record) => $record->email)->icon('heroicon-m-envelope')->url(fn($state) => 'mailto:' . $state),
+                            Infolists\Components\TextEntry::make('curr_phone')->label('Phone')->default(fn($record) => $record->phone)->icon('heroicon-m-phone'),
+                            Infolists\Components\TextEntry::make('linkedin_url')->label('LinkedIn')->icon('heroicon-m-link')->url(fn($state) => $state)->openUrlInNewTab()->limit(30),
+                            Infolists\Components\TextEntry::make('address')->icon('heroicon-m-map-pin')->size('xs')->color('gray'),
+                            Infolists\Components\TextEntry::make('country')->badge(),
+                        ]),
 
-                    ])->columnSpan(4),
+                ])->columnSpan(4),
 
-                ]),
-            ]);
+            ]),
+        ];
     }
 
     public static function getRelations(): array

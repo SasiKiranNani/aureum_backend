@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --font-family: 'Outfit', sans-serif;
+    --primary-color: #fbbf24;
+    /* Amber 400 */
+}
+
+body {
+    font-family: var(--font-family) !important;
+}
+
+/* Sidebar - Solid Professional Dark */
+.fi-sidebar {
+    background-color: #0f172a !important;
+    /* Slate 900 */
+    border-right: 1px solid #1e293b;
+}
+
+.fi-sidebar-header {
+    background-color: #0f172a !important;
+    border-bottom: 1px solid #1e293b;
+}
+
+/* Sidebar Branding */
+.fi-logo {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #f8fafc !important;
+    letter-spacing: -0.025em;
+}
+
+/* Navigation Items */
+.fi-sidebar-item-button {
+    margin-bottom: 4px;
+    border-radius: 6px !important;
+    padding: 10px 12px;
+    color: #94a3b8 !important;
+    /* Slate 400 */
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.fi-sidebar-item-button:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: #f1f5f9 !important;
+    /* Slate 100 */
+}
+
+/* Active State - Subtle Gold Accent */
+.fi-sidebar-item-button[aria-current="page"] {
+    background-color: rgba(251, 191, 36, 0.1) !important;
+    /* Amber with opacity */
+    color: #fbbf24 !important;
+    /* Amber 400 */
+    font-weight: 600;
+}
+
+.fi-sidebar-item-icon {
+    color: inherit !important;
+    opacity: 0.8;
+}
+
+.fi-sidebar-item-button[aria-current="page"] .fi-sidebar-item-icon {
+    opacity: 1;
+}
+
+/* Header/Topbar */
+.fi-topbar {
+    background-color: #ffffff !important;
+    /* border-bottom: 1px solid #e2e8f0; */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Main Content */
+.fi-main-ctn {
+    /* background-color: #f8fafc !important; */
+    /* Slate 50 */
+}
+
+.fi-header-heading {
+    color: #0f172a;
+    /* Slate 900 */
+    font-weight: 700;
+}

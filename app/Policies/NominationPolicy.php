@@ -15,7 +15,7 @@ class NominationPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_nomination');
+        return $user->can('view_any_nomination') || $user->hasRole('judge');
     }
 
     /**
@@ -23,7 +23,7 @@ class NominationPolicy
      */
     public function view(User $user, Nomination $nomination): bool
     {
-        return $user->can('view_nomination');
+        return $user->can('view_nomination') || $user->hasRole('judge');
     }
 
     /**
