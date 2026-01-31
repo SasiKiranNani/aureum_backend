@@ -502,26 +502,42 @@ document.addEventListener('DOMContentLoaded', function() {
         // Ensure numbers
         if (isNaN(basePrice)) basePrice = 0;
         
-        let total = basePrice + adminFees;
+        let subtotal = basePrice + adminFees;
+        let couponDiscountAmount = 0;
         
         if (isDiscountApplied) {
-            total -= currentDiscountValue;
-            if (total < 0) total = 0;
-            
+            couponDiscountAmount = currentDiscountValue;
             // UI Updates for Applied State
             discountRow.classList.remove('d-none');
-            // Keeping dropdown visible so user can change selection
             discountInputContainer.classList.remove('d-none');
-            // Hiding remove button as per user request
             if(btnRemoveDiscount) btnRemoveDiscount.classList.add('d-none');
         } else {
             // UI Updates for Default State
             discountRow.classList.add('d-none');
             discountInputContainer.classList.remove('d-none');
-            btnRemoveDiscount.classList.add('d-none');
-            // Reset select
-            if(discountSelect) discountSelect.selectedIndex = 0;
+            if(btnRemoveDiscount) btnRemoveDiscount.classList.add('d-none');
         }
+
+        const remainingTotal = subtotal - couponDiscountAmount;
+        
+        // Gateway Discount
+        const selectedGateway = document.querySelector('input[name="payment_method"]:checked');
+        let gatewayDiscountAmount = 0;
+        const gatewayDiscountRow = document.getElementById('gateway-discount-row');
+        const gatewayDiscountValueEl = document.getElementById('gateway-discount-amount');
+
+        if (selectedGateway) {
+            const gatewayPct = parseFloat(selectedGateway.getAttribute('data-discount') || 0);
+            if (gatewayPct > 0) {
+                gatewayDiscountAmount = (remainingTotal * gatewayPct) / 100;
+                if (gatewayDiscountRow) gatewayDiscountRow.classList.remove('d-none');
+                if (gatewayDiscountValueEl) gatewayDiscountValueEl.textContent = '-$' + gatewayDiscountAmount.toFixed(2);
+            } else {
+                if (gatewayDiscountRow) gatewayDiscountRow.classList.add('d-none');
+            }
+        }
+
+        const finalTotal = remainingTotal - gatewayDiscountAmount;
 
         // Update Summary Table Base Price
         const baseAmountElement = document.getElementById('pay-base-amount');
@@ -529,7 +545,7 @@ document.addEventListener('DOMContentLoaded', function() {
             baseAmountElement.textContent = '$' + basePrice.toFixed(2);
         }
         
-        document.getElementById('pay-total-amount').textContent = '$' + total.toFixed(2);
+        document.getElementById('pay-total-amount').textContent = '$' + (finalTotal < 0 ? 0 : finalTotal).toFixed(2);
     }
 
     function applySelectedDiscount() {
@@ -621,6 +637,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 conversionInfo.classList.add('d-none');
             }
             updateRadioStates();
+            calculatePaymentTotal();
         });
     });
 

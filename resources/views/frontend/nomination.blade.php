@@ -669,6 +669,10 @@
                                                                 <div class="mb-1 text-gold d-none" id="discount-row">
                                                                     <span id="discount-amount"></span>
                                                                 </div>
+                                                                <div class="mb-1 text-gold d-none"
+                                                                    id="gateway-discount-row">
+                                                                    <span id="gateway-discount-amount"></span>
+                                                                </div>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -713,6 +717,7 @@
                                                     <label class="custom-radio-card h-100">
                                                         <input type="radio" name="payment_method"
                                                             value="{{ strtolower($gateway->name) }}"
+                                                            data-discount="{{ $gateway->discount ?? 0 }}"
                                                             {{ $index === 0 ? 'checked' : '' }}>
                                                         <div
                                                             class="radio-card-content justify-content-center flex-column text-center p-4">
@@ -728,6 +733,12 @@
                                                                 @endif
                                                             </div>
                                                             <span class="radio-text">{{ $gateway->name }}</span>
+                                                            @if ($gateway->discount > 0)
+                                                                <span class="discount-badge-gateway mt-1"
+                                                                    style="background: rgba(40, 167, 69, 0.2); color: #28a745; font-size: 11px; padding: 2px 8px; border-radius: 12px; font-weight: bold;">
+                                                                    {{ number_format($gateway->discount, 0) }}% OFF
+                                                                </span>
+                                                            @endif
                                                             @if (strtolower($gateway->name) === 'payu')
                                                                 <span class="discount-badge mt-2"
                                                                     style="background: rgba(255, 215, 0, 0.1); color: #FFD700; font-size: 10px;">Pay

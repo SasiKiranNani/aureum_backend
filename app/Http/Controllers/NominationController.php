@@ -6,11 +6,11 @@ use App\Models\Nomination;
 use App\Models\NominationAnswer;
 use App\Models\NominationEvidence;
 use App\Models\Season;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class NominationController extends Controller
 {
@@ -52,7 +52,7 @@ class NominationController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'errors' => $validator->errors()
+                'errors' => $validator->errors(),
             ], 422);
         }
 
@@ -65,10 +65,10 @@ class NominationController extends Controller
                 ->where('application_deadline_date', '>=', $now)
                 ->first();
 
-            if (!$activeSeason) {
+            if (! $activeSeason) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'No active season found for the current date. Please check opening and deadline dates.'
+                    'message' => 'No active season found for the current date. Please check opening and deadline dates.',
                 ], 400);
             }
 
@@ -105,13 +105,13 @@ class NominationController extends Controller
                     $headshotPath = $nomination->headshot;
                 }
             }
-            
+
             // Handle evidence removal
             if ($nomination && $request->has('remove_evidence')) {
                 $evidencesToRemove = NominationEvidence::whereIn('id', $request->remove_evidence)
                     ->where('nomination_id', $nomination->id)
                     ->get();
-                
+
                 foreach ($evidencesToRemove as $ev) {
                     if ($ev->type === 'file' && $ev->file_path) {
                         Storage::disk('public')->delete($ev->file_path);
@@ -142,7 +142,6 @@ class NominationController extends Controller
                     'sensitive_data' => $request->sensitive_data,
                     'controversies' => $request->controversies,
                     'industry_influence' => $request->industry_influence,
-                    'amount_paid' => $award->amount,
                     'admin_fee' => $adminFeeAmount,
                 ]);
                 $applicationId = $nomination->application_id;
@@ -177,7 +176,6 @@ class NominationController extends Controller
                     'declaration_accurate' => true,
                     'declaration_privacy' => true,
                     'payment_status' => 'pending',
-                    'amount_paid' => $award->amount,
                     'admin_fee' => $adminFeeAmount,
                     'discount_applied' => 0.00,
                 ]);
@@ -196,10 +194,10 @@ class NominationController extends Controller
                     } elseif ($discount->type === 'percentage') {
                         $discountApplied = ($award->amount + $adminFeeAmount) * ($discount->value / 100);
                     }
-                    
+
                     $nomination->update([
                         'discount_applied' => $discountApplied,
-                        'discount_id' => $discount->id
+                        'discount_id' => $discount->id,
                     ]);
                 }
             }
@@ -240,7 +238,7 @@ class NominationController extends Controller
                     $nomination->evidence()->where('type', 'link')->delete();
                 }
                 foreach ($request->references as $url) {
-                    if (!empty($url)) {
+                    if (! empty($url)) {
                         NominationEvidence::create([
                             'nomination_id' => $nomination->id,
                             'type' => 'link',
@@ -264,16 +262,16 @@ class NominationController extends Controller
                     'admin_fee' => $adminFeeAmount,
                     'discount_applied' => $discountApplied,
                     'total_amount' => ($award->amount + $adminFeeAmount) - $discountApplied,
-                ]
+                ],
             ]);
 
         } catch (\Exception $e) {
             DB::rollBack();
-            
+
             return response()->json([
                 'success' => false,
                 'message' => 'An error occurred while submitting your nomination.',
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
@@ -283,25 +281,25 @@ class NominationController extends Controller
         $nomination = Nomination::with(['answers.nomineeQuestion', 'evidence', 'category', 'award', 'user'])
             ->where('application_id', $application_id)
             ->firstOrFail();
-            
+
         // Check if user is authorized
         $user = auth()->user() ?? auth('admin')->user();
 
-        if (!$user) {
+        if (! $user) {
             abort(403, 'Unauthorized');
         }
 
         // Allow if owner OR if user has admin/super_admin roles
         // We use a loose check for 'admin' role or just existence of the admin user to allow access
         $isAdmin = $user->hasAnyRole(['admin', 'super_admin']);
-        
-        if ($user->id !== $nomination->user_id && !$isAdmin) {
+
+        if ($user->id !== $nomination->user_id && ! $isAdmin) {
             abort(403);
         }
 
         $pdf = Pdf::loadView('pdf.nomination-pdf', compact('nomination'));
-        
-        return $pdf->download('nomination-' . $nomination->application_id . '.pdf');
+
+        return $pdf->download('nomination-'.$nomination->application_id.'.pdf');
     }
 
     public function previewPdf(Request $request)
@@ -309,13 +307,15 @@ class NominationController extends Controller
         // This method generates a preview PDF from form data
         // For now, we'll return a simple response
         // In production, you might want to create a temporary nomination record
-        
+
         return response()->json([
             'success' => true,
-            'message' => 'PDF preview functionality will be implemented after form submission.'
+            'message' => 'PDF preview functionality will be implemented after form submission.',
         ]);
     }
-    public function checkDiscount(Request $request) {
+
+    public function checkDiscount(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'code' => 'required|string|exists:discounts,code',
         ]);
@@ -323,7 +323,7 @@ class NominationController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Invalid discount code.'
+                'message' => 'Invalid discount code.',
             ], 422);
         }
 
@@ -331,19 +331,19 @@ class NominationController extends Controller
             ->where('is_active', true)
             ->first();
 
-        if (!$discount) {
-             return response()->json([
+        if (! $discount) {
+            return response()->json([
                 'success' => false,
-                'message' => 'Discount code is invalid or expired.'
+                'message' => 'Discount code is invalid or expired.',
             ], 422);
         }
 
         // Check if discount is user-specific and matches current user (optional strict check)
         // If user_id is set, it must match auth user. If null, it's generic.
         if ($discount->user_id && $discount->user_id !== auth()->id()) {
-             return response()->json([
+            return response()->json([
                 'success' => false,
-                'message' => 'This discount code is not applicable to your account.'
+                'message' => 'This discount code is not applicable to your account.',
             ], 403);
         }
 
@@ -352,20 +352,20 @@ class NominationController extends Controller
             'data' => [
                 'type' => $discount->type,
                 'value' => $discount->value,
-                'code' => $discount->code
-            ]
+                'code' => $discount->code,
+            ],
         ]);
     }
 
     public function downloadEvidence($id)
     {
         $evidence = NominationEvidence::findOrFail($id);
-        
-        if ($evidence->type !== 'file' || !$evidence->file_path) {
+
+        if ($evidence->type !== 'file' || ! $evidence->file_path) {
             abort(404, 'File not found or not a valid file evidence.');
         }
 
-        if (!Storage::disk('public')->exists($evidence->file_path)) {
+        if (! Storage::disk('public')->exists($evidence->file_path)) {
             abort(404, 'The requested file does not exist on the server.');
         }
 
@@ -375,17 +375,17 @@ class NominationController extends Controller
     public function downloadHeadshot($application_id)
     {
         $nomination = Nomination::where('application_id', $application_id)->firstOrFail();
-        
-        if (!$nomination->headshot) {
+
+        if (! $nomination->headshot) {
             abort(404, 'Headshot not found.');
         }
 
-        if (!Storage::disk('public')->exists($nomination->headshot)) {
+        if (! Storage::disk('public')->exists($nomination->headshot)) {
             abort(404, 'The requested headshot file does not exist on the server.');
         }
 
         $extension = pathinfo($nomination->headshot, PATHINFO_EXTENSION);
-        $fileName = 'headshot_' . $application_id . '.' . $extension;
+        $fileName = 'headshot_'.$application_id.'.'.$extension;
 
         return Storage::disk('public')->download($nomination->headshot, $fileName);
     }

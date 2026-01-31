@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\SeasonResource\Pages;
-use App\Filament\Resources\SeasonResource\RelationManagers;
 use App\Models\Season;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SeasonResource extends Resource
 {
@@ -36,7 +33,7 @@ class SeasonResource extends Resource
                             ->maxLength(255)
                             ->columnSpanFull()
                             ->placeholder('e.g., Summer 2026'),
-                        
+
                         Forms\Components\Group::make()
                             ->schema([
                                 Forms\Components\DatePicker::make('opening_date')
@@ -62,7 +59,7 @@ class SeasonResource extends Resource
                                                     })->exists();
 
                                                 if ($exists) {
-                                                    $fail("The selected date range overlaps with another existing season.");
+                                                    $fail('The selected date range overlaps with another existing season.');
                                                 }
                                             }
                                         };
@@ -78,23 +75,24 @@ class SeasonResource extends Resource
                             ->columnSpanFull(),
                     ])
                     ->columns(2),
-                
+
                 Forms\Components\Section::make('Invoice Configuration')
                     ->description('Set application and invoice number formats for this season.')
                     ->icon('heroicon-o-document-text')
                     ->schema([
                         Forms\Components\TextInput::make('application_id')
-                            ->label('Application ID Prefix')
-                            ->placeholder('e.g., AUREUM-2026-')
-                            ->helperText('This prefix will be used for application IDs in this season.'),
+                            ->label('Application Starting ID')
+                            ->placeholder('e.g., AUR-2026-00001')
+                            ->helperText('This will be used for application IDs in this season.')
+                            ->required(),
                         Forms\Components\TextInput::make('invoice_no')
-                            ->label('Invoice Number Prefix')
-                            ->placeholder('e.g., INV-2026-')
-                            ->helperText('This prefix will be used for standard invoices.'),
+                            ->label('Invoice Starting ID')
+                            ->placeholder('e.g., INV-2026-00001')
+                            ->helperText('This will be used for standard invoices.'),
                         Forms\Components\TextInput::make('itr_invoice_no')
-                            ->label('ITR Invoice Number Prefix')
-                            ->placeholder('e.g., ITR-2026-')
-                            ->helperText('This prefix will be used for ITR-specific invoices.'),
+                            ->label('ITR Invoice Starting ID')
+                            ->placeholder('e.g., ITR-INV-2026-00001')
+                            ->helperText('This will be used for ITR-specific invoices.'),
                     ])
                     ->columns(3),
             ]);
@@ -110,7 +108,7 @@ class SeasonResource extends Resource
                 Tables\Columns\ToggleColumn::make('is_active')
                     ->label('Active')
                     ->sortable()
-                    ->disabled(fn (Season $record) => !now()->between($record->opening_date, $record->closing_date)),
+                    ->disabled(fn (Season $record) => ! now()->between($record->opening_date, $record->closing_date)),
                 Tables\Columns\TextColumn::make('opening_date')
                     ->date()
                     ->sortable(),
@@ -126,11 +124,11 @@ class SeasonResource extends Resource
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('invoice_no')
-                    ->label('Invoice Prefix')
+                    ->label('Invoice Starting ID')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('itr_invoice_no')
-                    ->label('ITR Prefix')
+                    ->label('ITR Starting ID')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')

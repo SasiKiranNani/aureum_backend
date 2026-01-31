@@ -47,6 +47,11 @@ class Nomination extends Model
         'status',
         'final_score',
         'final_grade',
+        'invoice_no',
+        'itr_invoice_no',
+        'invoice_path',
+        'itr_invoice_path',
+        'paid_at',
     ];
 
     public function judge(): BelongsTo
@@ -69,12 +74,18 @@ class Nomination extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function discount(): BelongsTo
+    {
+        return $this->belongsTo(Discount::class);
+    }
+
     protected $casts = [
         'declaration_accurate' => 'boolean',
         'declaration_privacy' => 'boolean',
         'amount_paid' => 'decimal:2',
         'admin_fee' => 'decimal:2',
         'discount_applied' => 'decimal:2',
+        'paid_at' => 'datetime',
     ];
 
     // Relationships
@@ -111,64 +122,82 @@ class Nomination extends Model
     // Generate unique application ID
     public static function generateApplicationId(?Season $season = null): string
     {
+        return self::generateIdFromSeason($season, 'application_id');
+    }
+
+    public static function generateInvoiceId(?Season $season = null): string
+    {
+        return self::generateIdFromSeason($season, 'invoice_no');
+    }
+
+    public static function generateItrInvoiceId(?Season $season = null): string
+    {
+        return self::generateIdFromSeason($season, 'itr_invoice_no');
+    }
+
+    private static function generateIdFromSeason(?Season $season, string $type): string
+    {
         $now = now();
-        
+
         // Find season if not provided
-        if (!$season) {
+        if (! $season) {
             $season = Season::where('opening_date', '<=', $now)
                 ->where('application_deadline_date', '>=', $now)
                 ->first();
         }
 
-        if (!$season) {
-            // Fallback to legacy format if no season is found or active
+        if (! $season) {
+            // Fallback to legacy format
             $year = date('Y');
-            $prefix = 'AUR-' . $year . '-';
-            
+            $prefix = match ($type) {
+                'invoice_no' => 'INV-',
+                'itr_invoice_no' => 'ITR-',
+                default => 'AUR-',
+            }.$year.'-';
+
             $lastNomination = self::whereYear('created_at', $year)
                 ->whereNull('season_id')
+                ->whereNotNull($type)
                 ->orderBy('id', 'desc')
                 ->first();
-                
-            if ($lastNomination && strpos($lastNomination->application_id, $prefix) === 0) {
-                // Extract numeric part and increment
-                preg_match('/(\d+)$/', $lastNomination->application_id, $matches);
-                $lastNumber = isset($matches[1]) ? (int)$matches[1] : 0;
+
+            if ($lastNomination && strpos($lastNomination->$type, $prefix) === 0) {
+                preg_match('/(\d+)$/', $lastNomination->$type, $matches);
+                $lastNumber = isset($matches[1]) ? (int) $matches[1] : 0;
                 $newNumber = $lastNumber + 1;
-                $prefix = substr($lastNomination->application_id, 0, -strlen($matches[1]));
+                $prefix = substr($lastNomination->$type, 0, -strlen($matches[1]));
             } else {
                 $newNumber = 1;
-                $prefix = 'AUR-' . $year . '-';
             }
-            return $prefix . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
+
+            return $prefix.str_pad($newNumber, 5, '0', STR_PAD_LEFT);
         }
 
         // Season exists
-        $startId = $season->application_id; // e.g., AUR-2026-00001
-        
-        // Get the last nomination for this season to see where we are
+        $startId = $season->$type; // e.g., AUR-2026-00001
+
         $lastNomination = self::where('season_id', $season->id)
+            ->whereNotNull($type)
             ->orderBy('id', 'desc')
             ->first();
 
-        if (!$lastNomination) {
-            // No nominations yet, use the start ID from season settings
-            return $startId ?: 'AUR-' . date('Y', strtotime($season->opening_date)) . '-00001';
+        if (! $lastNomination) {
+            return $startId ?: match ($type) {
+                'invoice_no' => 'INV-',
+                'itr_invoice_no' => 'ITR-',
+                default => 'AUR-',
+            }.date('Y', strtotime($season->opening_date)).'-00001';
         }
 
-        // Increment from the last nomination's application_id
-        // We look for the numeric part at the end
-        if (preg_match('/(\d+)$/', $lastNomination->application_id, $matches)) {
+        if (preg_match('/(\d+)$/', $lastNomination->$type, $matches)) {
             $numberStr = $matches[1];
             $length = strlen($numberStr);
-            $nextNumber = (int)$numberStr + 1;
-            
-            // Reconstruct the ID (prefix + padded next number)
-            $prefix = substr($lastNomination->application_id, 0, -$length);
-            return $prefix . str_pad($nextNumber, $length, '0', STR_PAD_LEFT);
+            $nextNumber = (int) $numberStr + 1;
+            $prefix = substr($lastNomination->$type, 0, -$length);
+
+            return $prefix.str_pad($nextNumber, $length, '0', STR_PAD_LEFT);
         }
 
-        // Fallback: just append count if regex fails
-        return $lastNomination->application_id . '-' . (self::where('season_id', $season->id)->count() + 1);
+        return $lastNomination->$type.'-'.(self::where('season_id', $season->id)->count() + 1);
     }
 }

@@ -15,97 +15,119 @@ class PaymentController extends Controller
     public function initiate(Request $request)
     {
         \Log::info('Payment Initiation Request', $request->all());
-        
+
         try {
             $request->validate([
-            'nomination_id' => 'required|exists:nominations,id',
-            'payment_method' => 'required|string',
-            'discount_id' => 'nullable|integer|exists:discounts,id',
-            'discount_code' => 'nullable|string|exists:discounts,code',
-        ]);
+                'nomination_id' => 'required|exists:nominations,id',
+                'payment_method' => 'required|string',
+                'discount_id' => 'nullable|integer|exists:discounts,id',
+                'discount_code' => 'nullable|string|exists:discounts,code',
+            ]);
 
-        $nomination = Nomination::findOrFail($request->nomination_id);
+            $nomination = Nomination::with(['award', 'category', 'discount'])->findOrFail($request->nomination_id);
 
-        if ($nomination->payment_status === 'completed') {
-            return response()->json([
-                'success' => false,
-                'message' => 'This nomination has already been paid.'
-            ], 400);
-        }
-
-        // Update nomination with discount if provided now
-        if ($request->discount_id || $request->discount_code) {
-            $query = \App\Models\Discount::where('is_active', true);
-            
-            if ($request->discount_id) {
-                $query->where('id', $request->discount_id);
-            } else {
-                $query->where('code', $request->discount_code);
+            if ($nomination->payment_status === 'completed') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'This nomination has already been paid.',
+                ], 400);
             }
 
-            $discount = $query->first();
+            // Update nomination with discount if provided now
+            if ($request->discount_id || $request->discount_code) {
+                $query = \App\Models\Discount::where('is_active', true);
 
-            if ($discount) {
-                $discountApplied = 0.00;
-                $award = $nomination->award;
-                $adminFeeAmount = $nomination->admin_fee ?? 35.00;
-
-                if ($discount->type === 'fixed') {
-                    $discountApplied = $discount->value;
-                } elseif ($discount->type === 'percentage') {
-                    $discountApplied = ($award->amount + $adminFeeAmount) * ($discount->value / 100);
+                if ($request->discount_id) {
+                    $query->where('id', $request->discount_id);
+                } else {
+                    $query->where('code', $request->discount_code);
                 }
-                
-                $nomination->update([
-                    'discount_applied' => $discountApplied,
-                    'discount_id' => $discount->id
-                ]);
-                $nomination->refresh(); // Refresh to get updated values
-                \Log::info('Discount Applied at Initiation', ['nomination_id' => $nomination->id, 'discount_id' => $discount->id, 'amount' => $discountApplied]);
+
+                $discount = $query->first();
+
+                if ($discount) {
+                    $awardPrice = $nomination->award ? $nomination->award->amount : 0;
+                    $adminFeeAmount = $nomination->admin_fee ?? 35.00;
+                    $discountApplied = 0.00;
+
+                    if ($discount->type === 'fixed') {
+                        $discountApplied = $discount->value;
+                    } elseif ($discount->type === 'percentage') {
+                        $discountApplied = ($awardPrice + $adminFeeAmount) * ($discount->value / 100);
+                    }
+
+                    $nomination->update([
+                        'discount_applied' => $discountApplied,
+                        'discount_id' => $discount->id,
+                    ]);
+                    $nomination->refresh(); // Refresh to get updated values
+                    \Log::info('Discount Applied at Initiation', ['nomination_id' => $nomination->id, 'discount_id' => $discount->id, 'amount' => $discountApplied]);
+                }
             }
-        }
 
-        $gatewayName = strtolower($request->payment_method);
-        
-        $gateway = PaymentGateway::whereRaw('LOWER(name) = ?', [$gatewayName])
-            ->where('is_active', true)
-            ->firstOrFail();
+            $gatewayName = strtolower($request->payment_method);
 
-        $service = $this->getService($gateway);
+            $gateway = PaymentGateway::whereRaw('LOWER(name) = ?', [$gatewayName])
+                ->where('is_active', true)
+                ->firstOrFail();
 
-        $amount = round(($nomination->amount_paid ?? 0) + ($nomination->admin_fee ?? 0) - ($nomination->discount_applied ?? 0), 2);
-        if ($amount < 0) $amount = 0;
+            $service = $this->getService($gateway);
 
-        \Log::info('Payment Calculation Details', [
-            'nomination_id' => $nomination->id,
-            'application_id' => $nomination->application_id,
-            'calculated_total' => $amount,
-            'discount_applied' => $nomination->discount_applied,
-            'discount_id' => $nomination->discount_id
-        ]);
+            // Strictly use award amount from relationship as source of truth
+            $awardPrice = $nomination->award ? $nomination->award->amount : 0;
+            $adminFee = $nomination->admin_fee ?? 0;
+            $couponDiscount = $nomination->discount_applied ?? 0;
 
-        $paymentData = $service->createPayment([
-            'nomination_id' => $nomination->id,
-            'amount' => $amount,
-            'payer_name' => $nomination->full_name,
-            'payer_email' => $nomination->email,
-            'payer_phone' => $nomination->phone,
-            'productinfo' => 'Nomination_Fee', // Added for PayU
-        ]);
+            // Base Total after coupon
+            $subtotal = ($awardPrice + $adminFee) - $couponDiscount;
+            if ($subtotal < 0) {
+                $subtotal = 0;
+            }
+
+            // Apply Gateway Discount if any (it's a percentage)
+            $gatewayDiscountValue = 0;
+            if ($gateway->discount > 0) {
+                $gatewayDiscountValue = $subtotal * ($gateway->discount / 100);
+            }
+
+            $amount = round($subtotal - $gatewayDiscountValue, 2);
+            if ($amount < 0) {
+                $amount = 0;
+            }
+
+            \Log::info('Payment Calculation Details', [
+                'nomination_id' => $nomination->id,
+                'application_id' => $nomination->application_id,
+                'award_price' => $awardPrice,
+                'admin_fee' => $adminFee,
+                'coupon_discount' => $couponDiscount,
+                'gateway_discount_pct' => $gateway->discount,
+                'gateway_discount_applied' => $gatewayDiscountValue,
+                'calculated_total' => $amount,
+            ]);
+
+            $paymentData = $service->createPayment([
+                'nomination_id' => $nomination->id,
+                'amount' => $amount,
+                'payer_name' => $nomination->full_name,
+                'payer_email' => $nomination->email,
+                'payer_phone' => $nomination->phone,
+                'productinfo' => 'Nomination_Fee', // Added for PayU
+            ]);
 
             return response()->json([
                 'success' => true,
-                'payment_data' => $paymentData
+                'payment_data' => $paymentData,
             ]);
         } catch (\Exception $e) {
             \Log::error('Payment Initiation Failed', [
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
-            
+
             return response()->json([
                 'success' => false,
-                'message' => 'Payment initiation failed: ' . $e->getMessage()
+                'message' => 'Payment initiation failed: '.$e->getMessage(),
             ], 500);
         }
     }
@@ -119,7 +141,7 @@ class PaymentController extends Controller
             return $this->handleStripeSuccess($request->session_id);
         }
 
-        if ($request->has('token') && !$request->has('razorpay_payment_id')) {
+        if ($request->has('token') && ! $request->has('razorpay_payment_id')) {
             // PayPal success
             return $this->handlePayPalSuccess($request->token);
         }
@@ -146,13 +168,15 @@ class PaymentController extends Controller
         if ($service->verifyPayment($request->all())) {
             $nominationId = $request->udf1;
             $nomination = Nomination::findOrFail($nominationId);
-            
+
             // PayU sends back INR amount. We need the USD equivalent we expected.
             $amountUsd = ($nomination->amount_paid ?? 0) + ($nomination->admin_fee ?? 0) - ($nomination->discount_applied ?? 0);
-            if ($amountUsd < 0) $amountUsd = 0;
+            if ($amountUsd < 0) {
+                $amountUsd = 0;
+            }
 
             $service->recordSuccessfulPayment($request->mihpayid, $amountUsd, $nomination, $request->all());
-            
+
             return view('frontend.payment-success');
         }
 
@@ -169,7 +193,7 @@ class PaymentController extends Controller
             $nomination = Nomination::findOrFail($session->metadata->nomination_id);
             $service = new StripeService($gateway);
             $service->recordSuccessfulPayment($session->payment_intent, $session->amount_total / 100, $nomination, $session->toArray());
-            
+
             return view('frontend.payment-success');
         }
 
@@ -188,34 +212,34 @@ class PaymentController extends Controller
                 ->withBasicAuth($gateway->key, $gateway->secret)
                 ->post("{$baseUrl}/v1/oauth2/token", ['grant_type' => 'client_credentials']);
 
-            if (!$authResponse->successful()) {
-                throw new \Exception('PayPal Auth failed: ' . $authResponse->body());
+            if (! $authResponse->successful()) {
+                throw new \Exception('PayPal Auth failed: '.$authResponse->body());
             }
 
             $accessToken = $authResponse->json()['access_token'];
 
             // 2. Capture Order
             $captureResponse = \Illuminate\Support\Facades\Http::withToken($accessToken)
-                ->post("{$baseUrl}/v2/checkout/orders/{$token}/capture", (object)[]);
+                ->post("{$baseUrl}/v2/checkout/orders/{$token}/capture", (object) []);
 
             \Log::info('PayPal Capture Response', ['status' => $captureResponse->status(), 'body' => $captureResponse->json()]);
 
             if ($captureResponse->successful()) {
                 $captureData = $captureResponse->json();
-                
+
                 // Extract nomination ID from custom_id (can be in multiple places)
                 $purchaseUnit = $captureData['purchase_units'][0] ?? [];
                 $capture = $purchaseUnit['payments']['captures'][0] ?? [];
-                
+
                 $nominationId = $capture['custom_id'] ?? $purchaseUnit['custom_id'] ?? null;
-                
-                if (!$nominationId) {
+
+                if (! $nominationId) {
                     throw new \Exception('Nomination ID (custom_id) not found in PayPal response');
                 }
 
                 $nomination = Nomination::findOrFail($nominationId);
                 $amount = $capture['amount']['value'] ?? $purchaseUnit['amount']['value'] ?? 0;
-                
+
                 $service = new PayPalService($gateway);
                 $service->recordSuccessfulPayment($capture['id'] ?? $captureData['id'], $amount, $nomination, $captureData);
 
@@ -224,7 +248,7 @@ class PaymentController extends Controller
         } catch (\Exception $e) {
             \Log::error('PayPal Success Handling Failed', [
                 'error' => $e->getMessage(),
-                'token' => $token
+                'token' => $token,
             ]);
         }
 
@@ -235,22 +259,22 @@ class PaymentController extends Controller
     {
         $gateway = PaymentGateway::whereRaw('LOWER(name) = ?', ['razorpay'])->first();
         $service = new RazorpayService($gateway);
-        
+
         try {
             if ($service->verifyPayment($request->all())) {
                 $api = new \Razorpay\Api\Api($gateway->key, $gateway->secret);
                 $payment = $api->payment->fetch($request->razorpay_payment_id);
                 \Log::info('Razorpay Payment Details', ['id' => $payment->id, 'status' => $payment->status]);
-                
+
                 $order = $api->order->fetch($payment->order_id);
                 \Log::info('Razorpay Order Details', ['id' => $order->id, 'notes' => $order->notes]);
-                
+
                 // Notes can be an object or array depending on SDK version/response
                 $notes = $order->notes;
                 $nominationId = is_array($notes) ? ($notes['nomination_id'] ?? null) : ($notes->nomination_id ?? (is_object($notes) ? ($notes->nomination_id ?? null) : null));
 
                 // Fallback: Check receipt which is 'nom_{id}'
-                if (!$nominationId && isset($order->receipt) && str_starts_with($order->receipt, 'nom_')) {
+                if (! $nominationId && isset($order->receipt) && str_starts_with($order->receipt, 'nom_')) {
                     $nominationId = str_replace('nom_', '', $order->receipt);
                     \Log::info('Razorpay nomination_id recovered from receipt', ['nomination_id' => $nominationId]);
                 }
@@ -258,7 +282,7 @@ class PaymentController extends Controller
                 \Log::info('Razorpay Extraction Result', [
                     'extracted_nomination_id' => $nominationId,
                     'notes_raw' => json_encode($notes),
-                    'receipt' => $order->receipt ?? 'n/a'
+                    'receipt' => $order->receipt ?? 'n/a',
                 ]);
 
                 if ($payment->status === 'captured' && $nominationId) {
@@ -267,14 +291,14 @@ class PaymentController extends Controller
                 } else {
                     \Log::warning('Razorpay Record Not Created', [
                         'status' => $payment->status,
-                        'nomination_id' => $nominationId
+                        'nomination_id' => $nominationId,
                     ]);
                 }
             }
         } catch (\Exception $e) {
-            \Log::error('Razorpay Success Processing Failed: ' . $e->getMessage());
+            \Log::error('Razorpay Success Processing Failed: '.$e->getMessage());
         }
-        
+
         return view('frontend.payment-success');
     }
 
@@ -304,7 +328,7 @@ class PaymentController extends Controller
             'payu' => new PayUService($gateway),
             'stripe' => new StripeService($gateway),
             'razorpay' => new RazorpayService($gateway),
-            default => throw new \Exception("Gateway not supported"),
+            default => throw new \Exception('Gateway not supported'),
         };
     }
 }
