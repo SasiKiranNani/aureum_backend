@@ -78,6 +78,25 @@ class SeasonResource extends Resource
                             ->columnSpanFull(),
                     ])
                     ->columns(2),
+                
+                Forms\Components\Section::make('Invoice Configuration')
+                    ->description('Set application and invoice number formats for this season.')
+                    ->icon('heroicon-o-document-text')
+                    ->schema([
+                        Forms\Components\TextInput::make('application_id')
+                            ->label('Application ID Prefix')
+                            ->placeholder('e.g., AUREUM-2026-')
+                            ->helperText('This prefix will be used for application IDs in this season.'),
+                        Forms\Components\TextInput::make('invoice_no')
+                            ->label('Invoice Number Prefix')
+                            ->placeholder('e.g., INV-2026-')
+                            ->helperText('This prefix will be used for standard invoices.'),
+                        Forms\Components\TextInput::make('itr_invoice_no')
+                            ->label('ITR Invoice Number Prefix')
+                            ->placeholder('e.g., ITR-2026-')
+                            ->helperText('This prefix will be used for ITR-specific invoices.'),
+                    ])
+                    ->columns(3),
             ]);
     }
 
@@ -102,6 +121,18 @@ class SeasonResource extends Resource
                     ->label('Deadline')
                     ->date()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('application_id')
+                    ->label('App ID')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('invoice_no')
+                    ->label('Invoice Prefix')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('itr_invoice_no')
+                    ->label('ITR Prefix')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

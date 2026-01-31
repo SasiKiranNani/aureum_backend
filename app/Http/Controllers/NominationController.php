@@ -59,12 +59,16 @@ class NominationController extends Controller
         try {
             DB::beginTransaction();
 
-            // Get active season
-            $activeSeason = Season::where('is_active', true)->first();
+            // Get active season based on today's date
+            $now = now();
+            $activeSeason = Season::where('opening_date', '<=', $now)
+                ->where('application_deadline_date', '>=', $now)
+                ->first();
+
             if (!$activeSeason) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'No active season found.'
+                    'message' => 'No active season found for the current date. Please check opening and deadline dates.'
                 ], 400);
             }
 
@@ -143,8 +147,8 @@ class NominationController extends Controller
                 ]);
                 $applicationId = $nomination->application_id;
             } else {
-                // Generate application ID for new nomination
-                $applicationId = Nomination::generateApplicationId();
+                // Generate application ID for new nomination using the season
+                $applicationId = Nomination::generateApplicationId($activeSeason);
 
                 // Create new nomination
                 $nomination = Nomination::create([

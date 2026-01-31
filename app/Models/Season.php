@@ -17,6 +17,9 @@ class Season extends Model
         'closing_date',
         'application_deadline_date',
         'is_active',
+        'application_id',
+        'invoice_no',
+        'itr_invoice_no',
     ];
 
     /**
