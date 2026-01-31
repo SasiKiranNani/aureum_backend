@@ -24,14 +24,14 @@
                             </div>
 
                             <!-- <div class="d-flex justify-content-center align-items-center mx-4">
-                                                                                                                                                                                                                                                                        <i class="fa fa-calendar id-color me-3"></i>
-                                                                                                                                                                                                                                                                        <h4 class="mb-0">October 1–5, 2025</h4>
-                                                                                                                                                                                                                                                                    </div> -->
+                                                                                                                                                                                                                                                                            <i class="fa fa-calendar id-color me-3"></i>
+                                                                                                                                                                                                                                                                            <h4 class="mb-0">October 1–5, 2025</h4>
+                                                                                                                                                                                                                                                                        </div> -->
 
                             <!-- <div class="d-flex justify-content-center align-items-center mx-4">
-                                                                                                                                                                                                                                                                        <i class="fa fa-location-pin id-color me-3"></i>
-                                                                                                                                                                                                                                                                        <h4 class="mb-0">San Francisco, CA</h4>
-                                                                                                                                                                                                                                                                    </div> -->
+                                                                                                                                                                                                                                                                            <i class="fa fa-location-pin id-color me-3"></i>
+                                                                                                                                                                                                                                                                            <h4 class="mb-0">San Francisco, CA</h4>
+                                                                                                                                                                                                                                                                        </div> -->
                         </div>
 
                         <div class="spacer-single"></div>
@@ -373,7 +373,7 @@
                             navText: ['<span>‹</span>', '<span>›</span>'],
                             dots: true,
                             items: 1,
-                            autoplay: false,
+                            autoplay: true,
                             autoplayTimeout: 4000,
                             autoplayHoverPause: true,
                             smartSpeed: 800,
