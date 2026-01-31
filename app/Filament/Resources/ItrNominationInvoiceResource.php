@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Exports\NominationExport;
 use App\Filament\Resources\ItrNominationInvoiceResource\Pages;
 use App\Models\Nomination;
 use Filament\Forms;
@@ -12,6 +13,7 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ItrNominationInvoiceResource extends Resource
 {
@@ -85,12 +87,84 @@ class ItrNominationInvoiceResource extends Resource
                                     ->label('Paid From')
                                     ->native(false)
                                     ->displayFormat('d M Y')
+                                    ->placeholder('Select Date')
                                     ->prefixIcon('heroicon-m-calendar'),
                                 DatePicker::make('paid_until')
                                     ->label('Paid Until')
                                     ->native(false)
                                     ->displayFormat('d M Y')
+                                    ->placeholder('Select Date')
                                     ->prefixIcon('heroicon-m-calendar'),
+                                Forms\Components\Actions::make([
+                                    Forms\Components\Actions\Action::make('export')
+                                        ->label('Export to Excel')
+                                        ->icon('heroicon-o-arrow-up-tray')
+                                        ->color('success')
+                                        ->form([
+                                            Forms\Components\Section::make('Nomination Fields')
+                                                ->schema([
+                                                    Forms\Components\CheckboxList::make('nomination_fields')
+                                                        ->label('Select Fields')
+                                                        ->options([
+                                                            'application_id' => 'Application ID',
+                                                            'full_name' => 'Full Name',
+                                                            'organization' => 'Organization',
+                                                            'email' => 'Email',
+                                                            'phone' => 'Phone',
+                                                            'country' => 'Country',
+                                                            'address' => 'Address',
+                                                            'industry' => 'Industry',
+                                                            'nominee_type' => 'Nominee Type',
+                                                            'contribution_title' => 'Contribution Title',
+                                                            'itr_invoice_no' => 'ITR Invoice No',
+                                                            'amount_paid' => 'Amount Paid',
+                                                            'admin_fee' => 'Admin Fee',
+                                                            'discount_applied' => 'Discount Applied',
+                                                            'paid_at' => 'Paid At',
+                                                            'status' => 'Status',
+                                                            'payment_status' => 'Payment Status',
+                                                            'payment_method' => 'Payment Method',
+                                                        ])
+                                                        ->columns(3)
+                                                        ->required()
+                                                        ->default(['itr_invoice_no', 'full_name', 'amount_paid', 'paid_at']),
+                                                ]),
+                                            Forms\Components\Section::make('Payment Fields')
+                                                ->schema([
+                                                    Forms\Components\CheckboxList::make('payment_fields')
+                                                        ->label('Select Fields')
+                                                        ->options([
+                                                            'transaction_id' => 'Transaction ID',
+                                                            'amount_usd' => 'Amount USD',
+                                                            'amount_inr' => 'Amount INR',
+                                                            'status' => 'Status',
+                                                        ])
+                                                        ->columns(2),
+                                                ]),
+                                        ])
+                                        ->action(function ($livewire, array $data) {
+                                            $query = $livewire->getFilteredTableQuery();
+
+                                            $nominations = $query->with(['payments', 'season'])->get();
+
+                                            $paidFrom = $data['paid_from'] ?? 'Total ITR Invoices';
+                                            $paidUntil = $data['paid_until'] ?? '';
+                                            $seasonName = $nominations->first()?->season?->name ?? 'N/A';
+
+                                            $period = $paidFrom.($paidUntil ? " to {$paidUntil}" : '');
+                                            $title = "Aureum Awards : {$seasonName} | Period: {$period}";
+
+                                            return Excel::download(
+                                                new NominationExport(
+                                                    $nominations,
+                                                    $data['nomination_fields'],
+                                                    $data['payment_fields'] ?? [],
+                                                    $title
+                                                ),
+                                                'ITR_Invoices_'.now()->format('Y-m-d_H-i-s').'.xlsx'
+                                            );
+                                        }),
+                                ])->alignEnd()->extraAttributes(['class' => 'pt-6']),
                             ]),
                         Forms\Components\Placeholder::make('styles')
                             ->hiddenLabel()
