@@ -1,96 +1,315 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
 :root {
     --font-family: 'Outfit', sans-serif;
     --primary-color: #fbbf24;
-    /* Amber 400 */
+    --color-primary-500: #f59e0b;
+    --color-primary-400: #fbbf24;
 }
 
 body {
     font-family: var(--font-family) !important;
+    overflow-x: hidden;
 }
 
-/* Sidebar - Solid Professional Dark */
+/* =========================================
+   SIDEBAR & NAVIGATION (Modern Pill)
+   ========================================= */
+
+/* LIGHT MODE */
 .fi-sidebar {
-    background-color: #0f172a !important;
-    /* Slate 900 */
-    border-right: 1px solid #1e293b;
+    background-color: #ffffff !important;
+    border-right: 1px solid #f1f5f9;
 }
 
 .fi-sidebar-header {
-    background-color: #0f172a !important;
-    border-bottom: 1px solid #1e293b;
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #f1f5f9;
 }
 
-/* Sidebar Branding */
 .fi-logo {
-    font-weight: 700;
-    font-size: 1.25rem;
-    color: #f8fafc !important;
-    letter-spacing: -0.025em;
+    color: #0f172a !important;
+    font-weight: 800;
+    font-size: 1.35rem;
+    letter-spacing: -0.03em;
 }
 
-/* Navigation Items */
 .fi-sidebar-item-button {
-    margin-bottom: 4px;
-    border-radius: 6px !important;
-    padding: 10px 12px;
-    color: #94a3b8 !important;
-    /* Slate 400 */
-    font-weight: 500;
-    transition: all 0.2s;
+    color: #64748b !important;
+    background: transparent;
+    border-radius: 99px !important;
+    /* Pill Shape */
+    margin-bottom: 6px;
+    padding: 12px 20px;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
 }
 
 .fi-sidebar-item-button:hover {
-    background-color: rgba(255, 255, 255, 0.05) !important;
-    color: #f1f5f9 !important;
-    /* Slate 100 */
+    background-color: #f1f5f9 !important;
+    color: #334155 !important;
+    transform: translateX(4px);
 }
 
-/* Active State - Subtle Gold Accent */
+/* Active State: Gradient Pill */
 .fi-sidebar-item-button[aria-current="page"] {
-    background-color: rgba(251, 191, 36, 0.1) !important;
-    /* Amber with opacity */
-    color: #fbbf24 !important;
-    /* Amber 400 */
-    font-weight: 600;
-}
-
-.fi-sidebar-item-icon {
-    color: inherit !important;
-    opacity: 0.8;
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%) !important;
+    color: #ffffff !important;
+    /* White text on Gold */
+    font-weight: 700 !important;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
 }
 
 .fi-sidebar-item-button[aria-current="page"] .fi-sidebar-item-icon {
     opacity: 1;
+    color: white !important;
 }
 
-/* Tabs Highlighting */
-.fi-tabs-item-active {
-    border: 1px dotted #fbbf24 !important;
-    /* Amber 400 */
-    color: #fbbf24 !important;
+/* DARK MODE overrides */
+.dark .fi-sidebar {
+    background-color: #0b0f19 !important;
+    border-right: 1px solid #1e293b;
 }
 
-.fi-tabs-item-active span {
-    color: #fbbf24 !important;
+.dark .fi-sidebar-header {
+    background-color: #0b0f19 !important;
+    border-bottom: 1px solid #1e293b;
 }
 
-/* Header/Topbar */
-.fi-topbar {
-    background-color: #ffffff !important;
-    /* border-bottom: 1px solid #e2e8f0; */
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+.dark .fi-logo {
+    color: #ffffff !important;
 }
 
-/* Main Content */
-.fi-main-ctn {
-    /* background-color: #f8fafc !important; */
-    /* Slate 50 */
+.dark .fi-sidebar-item-button {
+    color: #94a3b8 !important;
 }
 
-.fi-header-heading {
-    color: #0f172a;
-    /* Slate 900 */
+.dark .fi-sidebar-item-button:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: white !important;
+}
+
+.dark .fi-sidebar-item-button[aria-current="page"] {
+    background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+}
+
+
+/* =========================================
+   ULTRA-PREMIUM STAT WIDGETS
+   ========================================= */
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+@keyframes gradientBorder {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes popIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.fi-wi-stats-overview-stat {
+    /* Glassmorphism Base */
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    padding: 24px !important;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    min-height: 260px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.05),
+        0 2px 4px -1px rgba(0, 0, 0, 0.03),
+        inset 0 0 20px rgba(255, 255, 255, 0.5);
+    /* Inner light */
+
+    animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    /* Dark Mode Glass */
+    .dark & {
+        background: rgba(30, 41, 59, 0.7);
+        border-color: rgba(255, 255, 255, 0.05);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Staggered Delay */
+.fi-wi-stats-overview-stat:nth-child(1) {
+    animation-delay: 0.1s;
+    border-top: 4px solid #3b82f6;
+}
+
+/* Blue */
+.fi-wi-stats-overview-stat:nth-child(2) {
+    animation-delay: 0.2s;
+    border-top: 4px solid #22c55e;
+}
+
+/* Green */
+.fi-wi-stats-overview-stat:nth-child(3) {
+    animation-delay: 0.3s;
+    border-top: 4px solid #eab308;
+}
+
+/* Yellow */
+.fi-wi-stats-overview-stat:nth-child(4) {
+    animation-delay: 0.4s;
+    border-top: 4px solid #f59e0b;
+}
+
+/* Amber */
+.fi-wi-stats-overview-stat:nth-child(5) {
+    animation-delay: 0.5s;
+    border-top: 4px solid #ef4444;
+}
+
+/* Red */
+
+/* Interactive Hover: 3D Lift & Glow */
+.fi-wi-stats-overview-stat:hover {
+    transform: translateY(-12px) scale(1.03);
+    box-shadow:
+        0 20px 40px -12px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(251, 191, 36, 0.5);
+    /* Gold outline */
+    z-index: 10;
+}
+
+/* 1. ICON (Floating & Glowing) */
+.fi-wi-stats-overview-stat-description-icon {
+    order: -2;
+    width: 72px !important;
+    height: 72px !important;
+    padding: 16px;
+    border-radius: 50%;
+
+    /* Gradient Background */
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(251, 191, 36, 0.05) 100%);
+    color: #d97706;
+
+    margin-bottom: 8px !important;
+    animation: float 4s ease-in-out infinite;
+    /* Always Floating */
+
+    box-shadow: 0 8px 16px rgba(251, 191, 36, 0.1);
+    backdrop-filter: blur(4px);
+}
+
+.fi-wi-stats-overview-stat-description-icon svg {
+    width: 40px !important;
+    height: 40px !important;
+}
+
+/* 2. VALUE (Gradient Text) */
+.fi-wi-stats-overview-stat-value {
+    order: -1;
+    font-size: 4rem !important;
+    /* Massive */
+    font-weight: 800;
+    line-height: 1;
+    margin: 12px 0;
+    letter-spacing: -0.05em;
+
+    /* Gradient Text */
+    background: linear-gradient(135deg, #0f172a 30%, #475569 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    .dark & {
+        background: linear-gradient(135deg, #ffffff 30%, #cbd5e1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}
+
+/* 3. LABEL (Modern Spacing) */
+.fi-wi-stats-overview-stat-label {
+    order: 0;
+    font-size: 0.85rem;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #94a3b8;
+    margin-bottom: auto;
+}
+
+/* 4. BACKGROUND DECORATION (Subtle Blobs) */
+.fi-wi-stats-overview-stat::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.1) 0%, transparent 70%);
+    transform: scale(0);
+    transition: transform 0.6s ease;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.fi-wi-stats-overview-stat:hover::before {
+    transform: scale(2.5);
+    /* Expand subtle light on hover */
+}
+
+/* Chart tweak */
+.fi-wi-stats-overview-stat-chart {
+    display: block !important;
+    order: 10;
+    width: 160%;
+    margin-left: -30%;
+    margin-bottom: -20px;
+    height: 80px !important;
+    opacity: 0.4;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.fi-wi-stats-overview-stat .flex {
+    align-items: center;
+    justify-content: center;
 }

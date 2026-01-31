@@ -12,12 +12,14 @@ use App\Models\Season;
 use Illuminate\Http\Request;
 
 use App\Models\Newsroom;
+use App\Models\Update;
 
 class FrontendController extends Controller
 {
     public function index()
     {
-        return view('frontend.index');
+        $updates = Update::where('is_active', true)->get();
+        return view('frontend.index', compact('updates'));
     }
 
     public function aboutUs()

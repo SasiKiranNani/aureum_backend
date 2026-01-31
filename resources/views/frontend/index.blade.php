@@ -24,14 +24,14 @@
                             </div>
 
                             <!-- <div class="d-flex justify-content-center align-items-center mx-4">
-                                                                                            <i class="fa fa-calendar id-color me-3"></i>
-                                                                                            <h4 class="mb-0">October 1–5, 2025</h4>
-                                                                                        </div> -->
+                                                                                                                                                                                                                                                                        <i class="fa fa-calendar id-color me-3"></i>
+                                                                                                                                                                                                                                                                        <h4 class="mb-0">October 1–5, 2025</h4>
+                                                                                                                                                                                                                                                                    </div> -->
 
                             <!-- <div class="d-flex justify-content-center align-items-center mx-4">
-                                                                                            <i class="fa fa-location-pin id-color me-3"></i>
-                                                                                            <h4 class="mb-0">San Francisco, CA</h4>
-                                                                                        </div> -->
+                                                                                                                                                                                                                                                                        <i class="fa fa-location-pin id-color me-3"></i>
+                                                                                                                                                                                                                                                                        <h4 class="mb-0">San Francisco, CA</h4>
+                                                                                                                                                                                                                                                                    </div> -->
                         </div>
 
                         <div class="spacer-single"></div>
@@ -263,6 +263,87 @@
         </div>
     </section>
 
+    <!-- Updates Modal -->
+    @if (isset($updates) && $updates->count() > 0)
+        <div class="modal fade" id="updatesModal" tabindex="-1" aria-hidden="true" style="z-index: 99999;">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content position-relative text-light"
+                    style="background: linear-gradient(135deg, rgba(10, 10, 10, 0.98) 0%, rgba(20, 20, 20, 0.95) 100%); 
+                           backdrop-filter: blur(20px); 
+                           border: 2px solid;
+                           border-image: linear-gradient(135deg, rgba(255, 215, 0, 0.5), rgba(255, 165, 0, 0.3)) 1;
+                           box-shadow: 0 0 60px rgba(255, 215, 0, 0.2), inset 0 0 40px rgba(255, 215, 0, 0.05);
+                           border-radius: 20px; 
+                           overflow: hidden;">
+
+                    <!-- Decorative Corner Borders -->
+                    <div class="corner-decoration top-left"></div>
+                    <div class="corner-decoration top-right"></div>
+                    <div class="corner-decoration bottom-left"></div>
+                    <div class="corner-decoration bottom-right"></div>
+
+                    <!-- Close Icon -->
+                    <button type="button"
+                        class="position-absolute top-0 end-0 m-4 p-0 border-0 bg-transparent updates-close-btn"
+                        data-bs-dismiss="modal" aria-label="Close"
+                        style="z-index: 1060; cursor: pointer; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;">
+                        <i class="icofont-close-line"
+                            style="font-size: 32px; color: #FFD700; transition: all 0.3s ease;"></i>
+                    </button>
+
+                    <div class="modal-body p-0 position-relative"
+                        style="max-height: 85vh; overflow-y: auto; scrollbar-width: none;">
+                        <div class="p-4 p-md-5">
+                            @if ($updates->count() > 1)
+                                <div class="owl-carousel owl-theme position-relative" id="updates-carousel">
+                            @endif
+
+                            @foreach ($updates as $update)
+                                <div class="item">
+                                    @if ($update->image_path && $update->content)
+                                        <!-- Both Image and Text -->
+                                        <div class="row align-items-center g-4">
+                                            <div class="col-md-6">
+                                                <div class="update-image-wrapper">
+                                                    <img src="{{ Storage::url($update->image_path) }}" class="w-100"
+                                                        alt="{{ $update->title }}"
+                                                        style="height: 400px; object-fit: cover; border-radius: 12px;">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 text-center text-md-start">
+                                                <h2 class="update-title mb-4">{{ $update->title }}</h2>
+                                                <div class="update-content">{!! $update->content !!}</div>
+                                            </div>
+                                        </div>
+                                    @elseif($update->image_path)
+                                        <!-- Image Only -->
+                                        <div class="text-center">
+                                            <div class="update-image-wrapper d-inline-block">
+                                                <img src="{{ Storage::url($update->image_path) }}" class="w-100"
+                                                    alt="{{ $update->title }}"
+                                                    style="height: 400px; object-fit: cover; border-radius: 12px;">
+                                            </div>
+                                            <h2 class="update-title mt-4">{{ $update->title }}</h2>
+                                        </div>
+                                    @else
+                                        <!-- Text Only -->
+                                        <div class="text-center py-4 px-md-5">
+                                            <h2 class="update-title mb-4">{{ $update->title }}</h2>
+                                            <div class="update-content lead">{!! $update->content !!}</div>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endforeach
+
+                            @if ($updates->count() > 1)
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <!-- AOS Library for Scroll Animations -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
@@ -275,6 +356,34 @@
                 once: true,
                 offset: 100
             });
+
+            // Updates Modal
+            @if (isset($updates) && $updates->count() > 0)
+                var updatesModal = new bootstrap.Modal(document.getElementById('updatesModal'));
+                updatesModal.show();
+
+                @if ($updates->count() > 1)
+                    var updateCarousel = $('#updates-carousel');
+                    // Ensure the modal is fully shown before initializing carousel to calculate dimensions correctly
+                    $('#updatesModal').on('shown.bs.modal', function() {
+                        updateCarousel.owlCarousel({
+                            loop: true,
+                            margin: 0,
+                            nav: true,
+                            navText: ['<span>‹</span>', '<span>›</span>'],
+                            dots: true,
+                            items: 1,
+                            autoplay: false,
+                            autoplayTimeout: 4000,
+                            autoplayHoverPause: true,
+                            smartSpeed: 800,
+                            animateOut: 'fadeOut',
+                            animateIn: 'fadeIn',
+                            autoHeight: true
+                        });
+                    });
+                @endif
+            @endif
 
             // Season closed modal trigger
             const seasonClosedModalBtn = document.querySelector('.open-season-closed-modal');
@@ -364,6 +473,226 @@
 
             #defaultCountdown .fs-30 {
                 font-size: 22px;
+            }
+        }
+
+        /* Modal Styling */
+        #updatesModal .modal-xl {
+            max-width: 1100px;
+        }
+
+        /* Corner Decorations */
+        .corner-decoration {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border: 2px solid #FFD700;
+            z-index: 1;
+        }
+
+        .corner-decoration.top-left {
+            top: 15px;
+            left: 15px;
+            border-right: none;
+            border-bottom: none;
+            border-top-left-radius: 8px;
+        }
+
+        .corner-decoration.top-right {
+            top: 15px;
+            right: 15px;
+            border-left: none;
+            border-bottom: none;
+            border-top-right-radius: 8px;
+        }
+
+        .corner-decoration.bottom-left {
+            bottom: 15px;
+            left: 15px;
+            border-right: none;
+            border-top: none;
+            border-bottom-left-radius: 8px;
+        }
+
+        .corner-decoration.bottom-right {
+            bottom: 15px;
+            right: 15px;
+            border-left: none;
+            border-top: none;
+            border-bottom-right-radius: 8px;
+        }
+
+        /* Close Button Hover */
+        .updates-close-btn:hover i {
+            transform: rotate(90deg) scale(1.2);
+            color: #FFF !important;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+
+        /* Update Title */
+        .update-title {
+            color: #FFD700;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 3px;
+            font-size: 28px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Update Content */
+        .update-content {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        .update-content p {
+            margin-bottom: 1.2rem;
+        }
+
+        .update-content ul {
+            text-align: left;
+            display: inline-block;
+        }
+
+        /* Image Wrapper */
+        .update-image-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            height: 400px;
+        }
+
+        .update-image-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* Custom Navigation Arrows */
+        #updates-carousel .owl-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            pointer-events: none;
+        }
+
+        #updates-carousel .owl-nav button {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            background: rgba(255, 215, 0, 0.15) !important;
+            border: 2px solid rgba(255, 215, 0, 0.5) !important;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            pointer-events: all;
+            backdrop-filter: blur(10px);
+        }
+
+        #updates-carousel .owl-nav button:hover {
+            background: rgba(255, 215, 0, 0.3) !important;
+            border-color: #FFD700 !important;
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+        }
+
+        #updates-carousel .owl-nav button.owl-prev {
+            /* left: 20px; */
+        }
+
+        #updates-carousel .owl-nav button.owl-next {
+            /* right: 20px; */
+        }
+
+        #updates-carousel .owl-nav button span {
+            font-size: 32px;
+            color: #FFD700;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        /* Custom Dots */
+        #updates-carousel .owl-dots {
+            margin-top: 30px !important;
+            text-align: center;
+        }
+
+        #updates-carousel .owl-dot {
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 215, 0, 0.3) !important;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            border-radius: 50%;
+            margin: 0 6px;
+            transition: all 0.3s ease;
+        }
+
+        #updates-carousel .owl-dot.active {
+            background: #FFD700 !important;
+            border-color: #FFD700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+            transform: scale(1.3);
+        }
+
+        #updates-carousel .owl-dot:hover {
+            background: rgba(255, 215, 0, 0.6) !important;
+            transform: scale(1.2);
+        }
+
+        /* Custom Scrollbar */
+        #updatesModal .modal-body::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        #updatesModal .modal-body::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        #updatesModal .modal-body::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, rgba(255, 215, 0, 0.5), rgba(255, 165, 0, 0.5));
+            border-radius: 10px;
+            border: 2px solid rgba(0, 0, 0, 0.2);
+        }
+
+        #updatesModal .modal-body::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, rgba(255, 215, 0, 0.7), rgba(255, 165, 0, 0.7));
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .update-title {
+                font-size: 22px;
+                letter-spacing: 2px;
+            }
+
+            .corner-decoration {
+                width: 40px;
+                height: 40px;
+            }
+
+            #updates-carousel .owl-nav button {
+                width: 45px;
+                height: 45px;
+            }
+
+            #updates-carousel .owl-nav button.owl-prev {
+                left: 10px;
+            }
+
+            #updates-carousel .owl-nav button.owl-next {
+                right: 10px;
             }
         }
     </style>

@@ -40,7 +40,8 @@ class JudgePanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Judge/Widgets'), for: 'App\\Filament\\Judge\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
+                \App\Filament\Judge\Widgets\StatsOverview::class,
+                \App\Filament\Judge\Widgets\DashboardNominations::class,
             ])
             ->middleware([
                 EncryptCookies::class,
