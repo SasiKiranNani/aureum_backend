@@ -24,7 +24,7 @@
         <div class="container">
             <div class="row">
                 <!-- Sidebar -->
-                <div class="col-lg-4">
+                <div class="col-lg-4 sticky-top" style="height: fit-content; top: 100px; z-index: 10;">
                     <div class="dashboard-card profile-sidebar">
                         <div class="profile-header text-center">
                             <div class="profile-avatar mb-4">
@@ -51,6 +51,10 @@
                                     <a href="{{ route('dashboard.nominations') }}"><i class="fa fa-trophy"></i> My
                                         Nominations</a>
                                 </li>
+                                <li class="{{ request()->routeIs('dashboard.bookings*') ? 'active' : '' }}">
+                                    <a href="{{ route('dashboard.bookings') }}"><i class="fa fa-ticket"></i> My
+                                        Tickets</a>
+                                </li>
                                 <li>
                                     <a href="javascript:void(0)"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
@@ -74,6 +78,11 @@
     </section>
 
     <style>
+        html,
+        body {
+            overflow: visible !important;
+        }
+
         .dashboard-card {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 215, 0, 0.1);
@@ -82,6 +91,11 @@
             height: 100%;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
+        }
+
+        .profile-sidebar {
+            position: sticky;
+            top: 100px;
         }
 
         .dashboard-card:hover {

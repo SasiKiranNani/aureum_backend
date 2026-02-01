@@ -2360,7 +2360,8 @@ body.modal-open .scrollbar-v {
   background-position: right center;
   transform: translateY(-3px) scale(1.02);
   box-shadow: 0 10px 30px rgba(255, 215, 0, 0.6), 0 0 20px rgba(253, 185, 49, 0.4);
-  color: #000;
+  /* color: #000; */
+  color: #fff;
 }
 
 /* Shine Sweep Effect */

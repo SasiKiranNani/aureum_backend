@@ -42,12 +42,33 @@
                                     <span class="date text-muted">{{ $nomination->created_at->format('d M Y') }}</span>
                                 </td>
                                 <td class="text-end">
-                                    <div class="d-flex gap-2">
+                                    <div class="d-flex gap-2 justify-content-end align-items-center">
                                         @if ($nomination->payment_status === 'pending')
-                                            <a href="{{ route('nomination', ['app_id' => $nomination->application_id]) }}"
-                                                class="btn-action edit" title="Edit & Pay">
-                                                <i class="fa fa-credit-card"></i> Pay
-                                            </a>
+                                            @php
+                                                $isSeasonClosed = false;
+                                                if ($nomination->season) {
+                                                    $isSeasonClosed = now()->gt(
+                                                        $nomination->season->application_deadline_date->endOfDay(),
+                                                    );
+                                                }
+                                            @endphp
+
+                                            @if ($isSeasonClosed)
+                                                <span class="text-danger fs-12 fw-bold bg-danger-soft p-2 rounded">
+                                                    <i class="fa fa-clock me-1"></i> Season Closed
+                                                </span>
+                                            @else
+                                                <a href="{{ route('nomination', ['app_id' => $nomination->application_id]) }}"
+                                                    class="btn-action edit" title="Edit & Pay">
+                                                    <i class="fa fa-credit-card"></i> Pay
+                                                </a>
+                                            @endif
+
+                                            <button class="btn-action-delete text-danger btn-main"
+                                                onclick="deleteNomination('{{ $nomination->application_id }}')"
+                                                title="Delete Nomination">
+                                                <i class="fa fa-trash-alt text-white"></i>
+                                            </button>
                                         @else
                                             <a href="{{ route('dashboard.nominations.view', $nomination->application_id) }}"
                                                 class="btn-action view" title="View Details">
@@ -177,14 +198,83 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
-        .btn-action.edit:hover {
-            filter: brightness(1.1);
-        }
-
         .btn-action.view:hover {
             background: rgba(255, 255, 255, 0.2);
             border-color: #FFD700;
             color: #FFD700;
         }
+
+        .btn-action-delete {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            border: 1px solid rgba(220, 53, 69, 0.2);
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-action-delete:hover {
+            background: #dc3545;
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        .bg-danger-soft {
+            background: rgba(220, 53, 69, 0.1);
+        }
     </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function deleteNomination(appId) {
+            Swal.fire({
+                title: 'Delete Nomination?',
+                text: "Are you sure you want to delete this nomination? This action cannot be undone.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#FFD700',
+                cancelButtonColor: '#333',
+                confirmButtonText: 'Yes, Delete it!',
+                cancelButtonText: 'Cancel',
+                background: '#1a1a1a',
+                color: '#fff',
+                customClass: {
+                    confirmButton: 'btn-main py-2 px-4 border-0 text-black',
+                    cancelButton: 'btn-secondary py-2 px-4'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/nomination/${appId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        }
+                    }).then(response => response.json()).then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Deleted!',
+                                text: data.message,
+                                icon: 'success',
+                                background: '#1a1a1a',
+                                color: '#fff',
+                                confirmButtonColor: '#FFD700'
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: data.message,
+                                icon: 'error',
+                                background: '#1a1a1a',
+                                color: '#fff'
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    </script>
 @endsection

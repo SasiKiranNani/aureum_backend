@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EventBooking;
 use App\Models\Nomination;
 use App\Models\PaymentGateway;
 use App\Services\PayPalService;
@@ -18,107 +19,26 @@ class PaymentController extends Controller
 
         try {
             $request->validate([
-                'nomination_id' => 'required|exists:nominations,id',
+                'nomination_id' => 'required_without:event_booking_id|exists:nominations,id',
+                'event_booking_id' => 'required_without:nomination_id|exists:event_bookings,id',
                 'payment_method' => 'required|string',
                 'discount_id' => 'nullable|integer|exists:discounts,id',
                 'discount_code' => 'nullable|string|exists:discounts,code',
             ]);
 
-            $nomination = Nomination::with(['award', 'category', 'discount'])->findOrFail($request->nomination_id);
-
-            if ($nomination->payment_status === 'completed') {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'This nomination has already been paid.',
-                ], 400);
-            }
-
-            // Update nomination with discount if provided now
-            if ($request->discount_id || $request->discount_code) {
-                $query = \App\Models\Discount::where('is_active', true);
-
-                if ($request->discount_id) {
-                    $query->where('id', $request->discount_id);
-                } else {
-                    $query->where('code', $request->discount_code);
-                }
-
-                $discount = $query->first();
-
-                if ($discount) {
-                    $awardPrice = $nomination->award ? $nomination->award->amount : 0;
-                    $adminFeeAmount = $nomination->admin_fee ?? 35.00;
-                    $discountApplied = 0.00;
-
-                    if ($discount->type === 'fixed') {
-                        $discountApplied = $discount->value;
-                    } elseif ($discount->type === 'percentage') {
-                        $discountApplied = ($awardPrice + $adminFeeAmount) * ($discount->value / 100);
-                    }
-
-                    $nomination->update([
-                        'discount_applied' => $discountApplied,
-                        'discount_id' => $discount->id,
-                    ]);
-                    $nomination->refresh(); // Refresh to get updated values
-                    \Log::info('Discount Applied at Initiation', ['nomination_id' => $nomination->id, 'discount_id' => $discount->id, 'amount' => $discountApplied]);
-                }
-            }
-
             $gatewayName = strtolower($request->payment_method);
-
             $gateway = PaymentGateway::whereRaw('LOWER(name) = ?', [$gatewayName])
                 ->where('is_active', true)
                 ->firstOrFail();
 
             $service = $this->getService($gateway);
 
-            // Strictly use award amount from relationship as source of truth
-            $awardPrice = $nomination->award ? $nomination->award->amount : 0;
-            $adminFee = $nomination->admin_fee ?? 0;
-            $couponDiscount = $nomination->discount_applied ?? 0;
-
-            // Base Total after coupon
-            $subtotal = ($awardPrice + $adminFee) - $couponDiscount;
-            if ($subtotal < 0) {
-                $subtotal = 0;
+            if ($request->has('nomination_id')) {
+                return $this->initiateNominationPayment($request, $gateway, $service);
+            } else {
+                return $this->initiateEventPayment($request, $gateway, $service);
             }
 
-            // Apply Gateway Discount if any (it's a percentage)
-            $gatewayDiscountValue = 0;
-            if ($gateway->discount > 0) {
-                $gatewayDiscountValue = $subtotal * ($gateway->discount / 100);
-            }
-
-            $amount = round($subtotal - $gatewayDiscountValue, 2);
-            if ($amount < 0) {
-                $amount = 0;
-            }
-
-            \Log::info('Payment Calculation Details', [
-                'nomination_id' => $nomination->id,
-                'application_id' => $nomination->application_id,
-                'award_price' => $awardPrice,
-                'admin_fee' => $adminFee,
-                'coupon_discount' => $couponDiscount,
-                'gateway_discount_pct' => $gateway->discount,
-                'gateway_discount_applied' => $gatewayDiscountValue,
-                'calculated_total' => $amount,
-            ]);
-
-            $paymentData = $service->createPayment([
-                'nomination_id' => $nomination->id,
-                'amount' => $amount,
-                'payer_name' => $nomination->full_name,
-                'payer_email' => $nomination->email,
-                'payer_phone' => $nomination->phone,
-                'productinfo' => 'Nomination_Fee', // Added for PayU
-            ]);
-
-            return response()->json([
-                'success' => true,
-                'payment_data' => $paymentData,
-            ]);
         } catch (\Exception $e) {
             \Log::error('Payment Initiation Failed', [
                 'error' => $e->getMessage(),
@@ -130,6 +50,133 @@ class PaymentController extends Controller
                 'message' => 'Payment initiation failed: '.$e->getMessage(),
             ], 500);
         }
+    }
+
+    protected function initiateNominationPayment(Request $request, $gateway, $service)
+    {
+        $nomination = Nomination::with(['award', 'category', 'discount'])->findOrFail($request->nomination_id);
+
+        if ($nomination->payment_status === 'completed') {
+            return response()->json([
+                'success' => false,
+                'message' => 'This nomination has already been paid.',
+            ], 400);
+        }
+
+        // Backend date validation for season
+        if ($nomination->season) {
+            $now = now();
+            if ($now->lt($nomination->season->opening_date) || $now->gt($nomination->season->application_deadline_date->endOfDay())) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'The season for this nomination is currently closed for payments.',
+                ], 400);
+            }
+        }
+
+        // Update nomination with discount if provided now
+        if ($request->discount_id || $request->discount_code) {
+            $query = \App\Models\Discount::where('is_active', true);
+
+            if ($request->discount_id) {
+                $query->where('id', $request->discount_id);
+            } else {
+                $query->where('code', $request->discount_code);
+            }
+
+            $discount = $query->first();
+
+            if ($discount) {
+                $awardPrice = $nomination->award ? $nomination->award->amount : 0;
+                $adminFeeAmount = $nomination->admin_fee ?? 35.00;
+                $discountApplied = 0.00;
+
+                if ($discount->type === 'fixed') {
+                    $discountApplied = $discount->value;
+                } elseif ($discount->type === 'percentage') {
+                    $discountApplied = ($awardPrice + $adminFeeAmount) * ($discount->value / 100);
+                }
+
+                $nomination->update([
+                    'discount_applied' => $discountApplied,
+                    'discount_id' => $discount->id,
+                ]);
+                $nomination->refresh(); // Refresh to get updated values
+            }
+        }
+
+        $awardPrice = $nomination->award ? $nomination->award->amount : 0;
+        $adminFee = $nomination->admin_fee ?? 0;
+        $couponDiscount = $nomination->discount_applied ?? 0;
+
+        $subtotal = ($awardPrice + $adminFee) - $couponDiscount;
+        if ($subtotal < 0) {
+            $subtotal = 0;
+        }
+
+        $gatewayDiscountValue = 0;
+        if ($gateway->discount > 0) {
+            $gatewayDiscountValue = $subtotal * ($gateway->discount / 100);
+        }
+
+        $amount = round($subtotal - $gatewayDiscountValue, 2);
+        if ($amount < 0) {
+            $amount = 0;
+        }
+
+        $paymentData = $service->createPayment([
+            'nomination_id' => $nomination->id,
+            'amount' => $amount,
+            'payer_name' => $nomination->full_name,
+            'payer_email' => $nomination->email,
+            'payer_phone' => $nomination->phone,
+            'productinfo' => 'Nomination_Fee',
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'payment_data' => $paymentData,
+        ]);
+    }
+
+    protected function initiateEventPayment(Request $request, $gateway, $service)
+    {
+        $booking = EventBooking::with(['event', 'user'])->findOrFail($request->event_booking_id);
+
+        if ($booking->payment_status === 'completed') {
+            return response()->json([
+                'success' => false,
+                'message' => 'This booking has already been paid.',
+            ], 400);
+        }
+
+        // Backend date validation for event
+        if ($booking->event) {
+            $now = now();
+            if ($now->lt($booking->event->booking_start_date) || $now->gt($booking->event->booking_deadline_date->endOfDay())) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'The booking window for this event is currently closed.',
+                ], 400);
+            }
+        }
+
+        // NO DISCOUNTS for event bookings as per request
+        $amount = $booking->amount;
+
+        $paymentData = $service->createPayment([
+            'event_booking_id' => $booking->id,
+            'amount' => $amount,
+            'payer_name' => $booking->user->name,
+            'payer_email' => $booking->user->email,
+            'payer_phone' => $booking->user->phone ?? '0000000000',
+            'productinfo' => 'Event_Ticket',
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'payment_data' => $paymentData,
+        ]);
     }
 
     public function success(Request $request)
@@ -166,16 +213,17 @@ class PaymentController extends Controller
         $service = new PayUService($gateway);
 
         if ($service->verifyPayment($request->all())) {
-            $nominationId = $request->udf1;
-            $nomination = Nomination::findOrFail($nominationId);
-
-            // PayU sends back INR amount. We need the USD equivalent we expected.
-            $amountUsd = ($nomination->amount_paid ?? 0) + ($nomination->admin_fee ?? 0) - ($nomination->discount_applied ?? 0);
-            if ($amountUsd < 0) {
-                $amountUsd = 0;
+            if ($request->udf2 === 'event_booking') {
+                $booking = EventBooking::findOrFail($request->udf1);
+                $service->recordSuccessfulEventBooking($request->mihpayid, $booking->amount, $booking, $request->all());
+            } else {
+                $nomination = Nomination::findOrFail($request->udf1);
+                $amountUsd = ($nomination->amount_paid ?? 0) + ($nomination->admin_fee ?? 0) - ($nomination->discount_applied ?? 0);
+                if ($amountUsd < 0) {
+                    $amountUsd = 0;
+                }
+                $service->recordSuccessfulPayment($request->mihpayid, $amountUsd, $nomination, $request->all());
             }
-
-            $service->recordSuccessfulPayment($request->mihpayid, $amountUsd, $nomination, $request->all());
 
             return view('frontend.payment-success');
         }
@@ -190,9 +238,14 @@ class PaymentController extends Controller
         $session = \Stripe\Checkout\Session::retrieve($sessionId);
 
         if ($session->payment_status === 'paid') {
-            $nomination = Nomination::findOrFail($session->metadata->nomination_id);
             $service = new StripeService($gateway);
-            $service->recordSuccessfulPayment($session->payment_intent, $session->amount_total / 100, $nomination, $session->toArray());
+            if (isset($session->metadata->event_booking_id) && $session->metadata->event_booking_id) {
+                $booking = EventBooking::findOrFail($session->metadata->event_booking_id);
+                $service->recordSuccessfulEventBooking($session->payment_intent, $session->amount_total / 100, $booking, $session->toArray());
+            } else {
+                $nomination = Nomination::findOrFail($session->metadata->nomination_id);
+                $service->recordSuccessfulPayment($session->payment_intent, $session->amount_total / 100, $nomination, $session->toArray());
+            }
 
             return view('frontend.payment-success');
         }
@@ -231,17 +284,24 @@ class PaymentController extends Controller
                 $purchaseUnit = $captureData['purchase_units'][0] ?? [];
                 $capture = $purchaseUnit['payments']['captures'][0] ?? [];
 
-                $nominationId = $capture['custom_id'] ?? $purchaseUnit['custom_id'] ?? null;
+                $prefixedId = $capture['custom_id'] ?? $purchaseUnit['custom_id'] ?? null;
 
-                if (! $nominationId) {
-                    throw new \Exception('Nomination ID (custom_id) not found in PayPal response');
+                if (! $prefixedId) {
+                    throw new \Exception('ID (custom_id) not found in PayPal response');
                 }
 
-                $nomination = Nomination::findOrFail($nominationId);
                 $amount = $capture['amount']['value'] ?? $purchaseUnit['amount']['value'] ?? 0;
-
                 $service = new PayPalService($gateway);
-                $service->recordSuccessfulPayment($capture['id'] ?? $captureData['id'], $amount, $nomination, $captureData);
+
+                if (str_starts_with($prefixedId, 'EVT-')) {
+                    $bookingId = substr($prefixedId, 4);
+                    $booking = EventBooking::findOrFail($bookingId);
+                    $service->recordSuccessfulEventBooking($capture['id'] ?? $captureData['id'], $amount, $booking, $captureData);
+                } else {
+                    $nominationId = str_starts_with($prefixedId, 'NOM-') ? substr($prefixedId, 4) : $prefixedId;
+                    $nomination = Nomination::findOrFail($nominationId);
+                    $service->recordSuccessfulPayment($capture['id'] ?? $captureData['id'], $amount, $nomination, $captureData);
+                }
 
                 return view('frontend.payment-success');
             }
@@ -272,26 +332,37 @@ class PaymentController extends Controller
                 // Notes can be an object or array depending on SDK version/response
                 $notes = $order->notes;
                 $nominationId = is_array($notes) ? ($notes['nomination_id'] ?? null) : ($notes->nomination_id ?? (is_object($notes) ? ($notes->nomination_id ?? null) : null));
+                $eventBookingId = is_array($notes) ? ($notes['event_booking_id'] ?? null) : ($notes->event_booking_id ?? (is_object($notes) ? ($notes->event_booking_id ?? null) : null));
 
-                // Fallback: Check receipt which is 'nom_{id}'
-                if (! $nominationId && isset($order->receipt) && str_starts_with($order->receipt, 'nom_')) {
-                    $nominationId = str_replace('nom_', '', $order->receipt);
-                    \Log::info('Razorpay nomination_id recovered from receipt', ['nomination_id' => $nominationId]);
+                // Fallback: Check receipt which is 'nom_{id}' or 'evt_{id}'
+                if (! $nominationId && ! $eventBookingId && isset($order->receipt)) {
+                    if (str_starts_with($order->receipt, 'nom_')) {
+                        $nominationId = str_replace('nom_', '', $order->receipt);
+                    } elseif (str_starts_with($order->receipt, 'evt_')) {
+                        $eventBookingId = str_replace('evt_', '', $order->receipt);
+                    }
                 }
 
                 \Log::info('Razorpay Extraction Result', [
                     'extracted_nomination_id' => $nominationId,
+                    'extracted_event_booking_id' => $eventBookingId,
                     'notes_raw' => json_encode($notes),
                     'receipt' => $order->receipt ?? 'n/a',
                 ]);
 
-                if ($payment->status === 'captured' && $nominationId) {
-                    $nomination = Nomination::findOrFail($nominationId);
-                    $service->recordSuccessfulPayment($payment->id, $payment->amount / 100, $nomination, $payment->toArray());
+                if ($payment->status === 'captured') {
+                    if ($eventBookingId) {
+                        $booking = EventBooking::findOrFail($eventBookingId);
+                        $service->recordSuccessfulEventBooking($payment->id, $payment->amount / 100, $booking, $payment->toArray());
+                    } elseif ($nominationId) {
+                        $nomination = Nomination::findOrFail($nominationId);
+                        $service->recordSuccessfulPayment($payment->id, $payment->amount / 100, $nomination, $payment->toArray());
+                    }
                 } else {
                     \Log::warning('Razorpay Record Not Created', [
                         'status' => $payment->status,
                         'nomination_id' => $nominationId,
+                        'event_booking_id' => $eventBookingId,
                     ]);
                 }
             }

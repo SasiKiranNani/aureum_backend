@@ -40,6 +40,7 @@
                         <li><a href="{{ route('why-enter') }}">Why Enter</a></li>
                         <li><a href="{{ route('blog') }}">Blogs</a></li>
                         <li><a href="{{ route('news-room') }}">NewsRoom</a></li>
+                        <li><a href="{{ route('events') }}">Events</a></li>
                         {{-- <li><a href="{{ route('contact-us') }}">Contact</a></li> --}}
                         <li><a href="{{ route('privacy-policy') }}">Privacy Policy</a></li>
                         <li><a href="{{ route('terms-and-conditions') }}">Terms & Conditions</a></li>

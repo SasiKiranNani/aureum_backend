@@ -43,8 +43,8 @@ class PayPalService extends PaymentService
                         'currency_code' => 'USD',
                         'value' => number_format($data['amount'], 2, '.', ''),
                     ],
-                    'description' => 'Award Nomination Fee',
-                    'custom_id' => $data['nomination_id'],
+                    'description' => $data['productinfo'] ?? 'Award Nomination Fee',
+                    'custom_id' => isset($data['nomination_id']) ? 'NOM-' . $data['nomination_id'] : 'EVT-' . $data['event_booking_id'],
                 ]],
                 'application_context' => [
                     'return_url' => route('payment.success'),

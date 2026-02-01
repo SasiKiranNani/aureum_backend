@@ -173,4 +173,31 @@ abstract class PaymentService
 
         return $payment;
     }
+
+    public function recordSuccessfulEventBooking(string $transactionId, float $amountUsd, \App\Models\EventBooking $booking, array $payerDetails = [])
+    {
+        $booking->refresh();
+        $gateway = $this->gateway;
+
+        $booking->update([
+            'payment_status' => 'completed',
+            'payment_gateway' => $gateway->name,
+            'transaction_id' => $transactionId,
+            'payment_details' => $payerDetails,
+            'ticket_number' => \App\Models\EventBooking::generateTicketNumber(),
+            'paid_at' => now(),
+        ]);
+
+        try {
+            // Trigger Ticket Email
+            \Illuminate\Support\Facades\Mail::to($booking->user->email)->send(new \App\Mail\EventTicket($booking));
+        } catch (\Exception $e) {
+            Log::error('Event ticket email failed', [
+                'error' => $e->getMessage(),
+                'booking_id' => $booking->id,
+            ]);
+        }
+
+        return $booking;
+    }
 }

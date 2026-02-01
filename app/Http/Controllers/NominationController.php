@@ -389,4 +389,47 @@ class NominationController extends Controller
 
         return Storage::disk('public')->download($nomination->headshot, $fileName);
     }
+
+    public function destroy($application_id)
+    {
+        try {
+            $nomination = Nomination::where('user_id', auth()->id())
+                ->where('application_id', $application_id)
+                ->where('payment_status', 'pending')
+                ->firstOrFail();
+
+            DB::beginTransaction();
+
+            // Delete headshot
+            if ($nomination->headshot) {
+                Storage::disk('public')->delete($nomination->headshot);
+            }
+
+            // Delete evidence files
+            foreach ($nomination->evidence as $evidence) {
+                if ($evidence->type === 'file' && $evidence->file_path) {
+                    Storage::disk('public')->delete($evidence->file_path);
+                }
+            }
+
+            // Delete related records
+            $nomination->answers()->delete();
+            $nomination->evidence()->delete();
+            $nomination->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Nomination deleted successfully.',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete nomination: '.$e->getMessage(),
+            ], 500);
+        }
+    }
 }

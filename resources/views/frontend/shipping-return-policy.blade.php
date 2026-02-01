@@ -22,38 +22,7 @@
             <div class="row">
                 <!-- Sidebar -->
                 <div class="col-lg-3 mb-4">
-                    <div class="policy-sidebar wow fadeInUp" data-wow-delay=".2s">
-                        <div class="policy-nav-card">
-                            <div class="policy-nav-title">Quick Navigation</div>
-                            <nav class="policy-nav">
-                                <a href="{{ route('privacy-policy') }}" class="policy-nav-link">
-                                    <i class="fa fa-shield"></i> Privacy Policy
-                                </a>
-                                <a href="{{ route('terms-and-conditions') }}" class="policy-nav-link">
-                                    <i class="fa fa-gavel"></i> Terms & Conditions
-                                </a>
-                                <a href="{{ route('cookie-policy') }}" class="policy-nav-link">
-                                    <i class="fa fa-cookie"></i> Cookie Policy
-                                </a>
-                                <a href="{{ route('cancellation-refund-policy') }}" class="policy-nav-link">
-                                    <i class="fa fa-ban"></i> Cancellation Policy
-                                </a>
-                                <a href="{{ route('shipping-return-policy') }}" class="policy-nav-link active">
-                                    <i class="fa fa-truck"></i> Shipping Policy
-                                </a>
-                            </nav>
-                        </div>
-
-                        <div class="policy-contact-box">
-                            <div class="policy-contact-title">Have Questions?</div>
-                            <div class="policy-contact-info">
-                                <i class="fa fa-envelope"></i> Connect@aureumawards.com
-                            </div>
-                            <div class="policy-contact-info">
-                                <i class="fa fa-whatsapp"></i> +1 (445) 249-7785
-                            </div>
-                        </div>
-                    </div>
+                    <x-policy-sidebar active="shipping-return-policy" />
                 </div>
 
                 <!-- Content -->
@@ -105,4 +74,11 @@
             </div>
         </div>
     </section>
+
+    <style>
+        html,
+        body {
+            overflow: visible !important;
+        }
+    </style>
 @endsection

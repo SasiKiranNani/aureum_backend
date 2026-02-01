@@ -20,11 +20,12 @@ class RazorpayService extends PaymentService
         $api = new \Razorpay\Api\Api($this->gateway->key, $this->gateway->secret);
 
         $order = $api->order->create([
-            'receipt' => 'nom_' . $data['nomination_id'],
+            'receipt' => ($data['nomination_id'] ?? false) ? 'nom_' . $data['nomination_id'] : 'evt_' . $data['event_booking_id'],
             'amount' => $data['amount'] * 100, // in paise
             'currency' => 'USD',
             'notes' => [
-                'nomination_id' => (string)$data['nomination_id'],
+                'nomination_id' => (string)($data['nomination_id'] ?? ''),
+                'event_booking_id' => (string)($data['event_booking_id'] ?? ''),
             ],
         ]);
 
@@ -33,7 +34,7 @@ class RazorpayService extends PaymentService
             'amount' => $order['amount'],
             'currency' => 'USD',
             'name' => 'Aureum Awards',
-            'description' => 'Nomination Fee',
+            'description' => $data['productinfo'] ?? 'Nomination Fee',
             'order_id' => $order['id'],
             'prefill' => [
                 'name' => $data['payer_name'],
@@ -41,7 +42,8 @@ class RazorpayService extends PaymentService
                 'contact' => $data['payer_phone'],
             ],
             'notes' => [
-                'nomination_id' => (string)$data['nomination_id'],
+                'nomination_id' => (string)($data['nomination_id'] ?? ''),
+                'event_booking_id' => (string)($data['event_booking_id'] ?? ''),
             ],
             'theme' => [
                 'color' => '#FFD700',

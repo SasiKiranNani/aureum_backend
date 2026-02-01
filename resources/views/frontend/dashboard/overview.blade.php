@@ -29,6 +29,16 @@
                 </div>
             </div>
 
+            <div class="col-md-6">
+                <div class="dashboard-card stat-card">
+                    <div class="stat-icon"><i class="fa fa-ticket"></i></div>
+                    <div class="stat-info">
+                        <span class="label">My Tickets</span>
+                        <span class="value">{{ $bookingCount }}</span>
+                    </div>
+                </div>
+            </div>
+
             <!-- Profile Info -->
             <div class="col-12">
                 <div class="dashboard-card">

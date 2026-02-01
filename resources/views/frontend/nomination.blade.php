@@ -710,53 +710,63 @@
 
                                     <!-- Payment Methods -->
                                     <h4 class="mb-4 text-white">Select Payment Method</h4>
-                                    <div class="payment-methods-grid mb-5">
-                                        <div class="row g-4">
-                                            @foreach ($paymentGateways as $index => $gateway)
-                                                <div class="col-md-6 col-lg-3">
-                                                    <label class="custom-radio-card h-100">
-                                                        <input type="radio" name="payment_method"
-                                                            value="{{ strtolower($gateway->name) }}"
-                                                            data-discount="{{ $gateway->discount ?? 0 }}"
-                                                            {{ $index === 0 ? 'checked' : '' }}>
-                                                        <div
-                                                            class="radio-card-content justify-content-center flex-column text-center p-4">
-                                                            <div class="payment-icon mb-3">
-                                                                @if (strtolower($gateway->name) === 'paypal')
-                                                                    <i class="icofont-brand-paypal"></i>
-                                                                @elseif(strtolower($gateway->name) === 'stripe' ||
-                                                                        strtolower($gateway->name) === 'razorpay' ||
-                                                                        strtolower($gateway->name) === 'payu')
-                                                                    <i class="icofont-credit-card"></i>
-                                                                @else
-                                                                    <i class="icofont-money"></i>
+                                    @if ($isSeasonOpen)
+                                        <div class="payment-methods-grid mb-5">
+                                            <div class="row g-4">
+                                                @foreach ($paymentGateways as $index => $gateway)
+                                                    <div class="col-md-6 col-lg-3">
+                                                        <label class="custom-radio-card h-100">
+                                                            <input type="radio" name="payment_method"
+                                                                value="{{ strtolower($gateway->name) }}"
+                                                                data-discount="{{ $gateway->discount ?? 0 }}"
+                                                                {{ $index === 0 ? 'checked' : '' }}>
+                                                            <div
+                                                                class="radio-card-content justify-content-center flex-column text-center p-4">
+                                                                <div class="payment-icon mb-3">
+                                                                    @if (strtolower($gateway->name) === 'paypal')
+                                                                        <i class="icofont-brand-paypal"></i>
+                                                                    @elseif(strtolower($gateway->name) === 'stripe' ||
+                                                                            strtolower($gateway->name) === 'razorpay' ||
+                                                                            strtolower($gateway->name) === 'payu')
+                                                                        <i class="icofont-credit-card"></i>
+                                                                    @else
+                                                                        <i class="icofont-money"></i>
+                                                                    @endif
+                                                                </div>
+                                                                <span class="radio-text">{{ $gateway->name }}</span>
+                                                                @if ($gateway->discount > 0)
+                                                                    <span class="discount-badge-gateway mt-1"
+                                                                        style="background: rgba(40, 167, 69, 0.2); color: #28a745; font-size: 11px; padding: 2px 8px; border-radius: 12px; font-weight: bold;">
+                                                                        {{ number_format($gateway->discount, 0) }}% OFF
+                                                                    </span>
+                                                                @endif
+                                                                @if (strtolower($gateway->name) === 'payu')
+                                                                    <span class="discount-badge mt-2"
+                                                                        style="background: rgba(255, 215, 0, 0.1); color: #FFD700; font-size: 10px;">Pay
+                                                                        in INR</span>
                                                                 @endif
                                                             </div>
-                                                            <span class="radio-text">{{ $gateway->name }}</span>
-                                                            @if ($gateway->discount > 0)
-                                                                <span class="discount-badge-gateway mt-1"
-                                                                    style="background: rgba(40, 167, 69, 0.2); color: #28a745; font-size: 11px; padding: 2px 8px; border-radius: 12px; font-weight: bold;">
-                                                                    {{ number_format($gateway->discount, 0) }}% OFF
-                                                                </span>
-                                                            @endif
-                                                            @if (strtolower($gateway->name) === 'payu')
-                                                                <span class="discount-badge mt-2"
-                                                                    style="background: rgba(255, 215, 0, 0.1); color: #FFD700; font-size: 10px;">Pay
-                                                                    in INR</span>
-                                                            @endif
-                                                        </div>
-                                                    </label>
-                                                </div>
-                                            @endforeach
+                                                        </label>
+                                                    </div>
+                                                @endforeach
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div id="payment-conversion-info" class="mb-4 text-center d-none">
-                                        <p class="text-gold fs-14">
-                                            <i class="icofont-info-circle"></i> Payments via PayU are processed in **INR**.
-                                            The amount will be converted from USD using live exchange rates.
-                                        </p>
-                                    </div>
+                                        <div id="payment-conversion-info" class="mb-4 text-center d-none">
+                                            <p class="text-gold fs-14">
+                                                <i class="icofont-info-circle"></i> Payments via PayU are processed in
+                                                **INR**.
+                                                The amount will be converted from USD using live exchange rates.
+                                            </p>
+                                        </div>
+                                    @else
+                                        <div class="alert alert-warning bg-dark-glass border-gold text-center py-5 mb-5">
+                                            <i class="icofont-warning fs-1 text-gold mb-3 d-block"></i>
+                                            <h4 class="text-white">Season Closed</h4>
+                                            <p class="text-white-50 mb-0">The application season for this nomination
+                                                has closed. Payments are no longer being accepted.</p>
+                                        </div>
+                                    @endif
 
                                     <!-- Actions -->
                                     <div class="d-flex justify-content-center gap-3">
@@ -764,8 +774,10 @@
                                             data-prev="nomination">
                                             <i class="icofont-arrow-left"></i> Previous Step
                                         </button>
-                                        <button type="submit" class="btn-main btn-glow px-5 next-btns">Pay &
-                                            Submit</button>
+                                        @if ($isSeasonOpen)
+                                            <button type="submit" class="btn-main btn-glow px-5 next-btns">Pay &
+                                                Submit</button>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

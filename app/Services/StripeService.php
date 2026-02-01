@@ -20,7 +20,7 @@ class StripeService extends PaymentService
                 'price_data' => [
                     'currency' => 'usd',
                     'product_data' => [
-                        'name' => 'Award Nomination Fee',
+                        'name' => $data['productinfo'] ?? 'Award Nomination Fee',
                     ],
                     'unit_amount' => $data['amount'] * 100,
                 ],
@@ -30,7 +30,8 @@ class StripeService extends PaymentService
             'success_url' => route('payment.success') . '?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('payment.failure'),
             'metadata' => [
-                'nomination_id' => $data['nomination_id'],
+                'nomination_id' => $data['nomination_id'] ?? null,
+                'event_booking_id' => $data['event_booking_id'] ?? null,
             ],
         ]);
 

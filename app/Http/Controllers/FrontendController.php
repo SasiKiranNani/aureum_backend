@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\Award;
-use App\Models\Nomination;
 use App\Models\AdminFee;
+use App\Models\Category;
 use App\Models\Discount;
-use App\Models\PaymentGateway;
-use App\Models\Season;
-use Illuminate\Http\Request;
-
+use App\Models\Event;
+use App\Models\EventBooking;
 use App\Models\Newsroom;
+use App\Models\Nomination;
+use App\Models\PaymentGateway;
 use App\Models\Update;
+use Illuminate\Http\Request;
 
 class FrontendController extends Controller
 {
     public function index()
     {
         $updates = Update::where('is_active', true)->get();
+
         return view('frontend.index', compact('updates'));
     }
 
@@ -35,24 +35,43 @@ class FrontendController extends Controller
     public function newsRoom()
     {
         $newsrooms = Newsroom::where('is_active', true)->orderBy('date', 'desc')->paginate(9);
+
         return view('frontend.news-room', compact('newsrooms'));
     }
 
     public function newsRoomDetails($id)
     {
         $newsroom = Newsroom::findOrFail($id);
+
         return view('frontend.news-room-details', compact('newsroom'));
+    }
+
+    public function events()
+    {
+        $events = Event::where('is_active', true)->orderBy('event_date', 'asc')->paginate(9);
+
+        return view('frontend.events', compact('events'));
+    }
+
+    public function eventDetails($id)
+    {
+        $event = Event::findOrFail($id);
+        $paymentGateways = PaymentGateway::where('is_active', true)->get();
+
+        return view('frontend.event-details', compact('event', 'paymentGateways'));
     }
 
     public function blog()
     {
         $blogs = \App\Models\Blog::where('is_active', true)->orderBy('date', 'desc')->paginate(9);
+
         return view('frontend.blog', compact('blogs'));
     }
 
     public function blogDetails($id)
     {
         $blog = \App\Models\Blog::findOrFail($id);
+
         return view('frontend.blog-details', compact('blog'));
     }
 
@@ -97,26 +116,45 @@ class FrontendController extends Controller
         $paymentGateways = PaymentGateway::where('is_active', true)->get();
 
         $nomination = null;
+        $activeSeason = \App\Models\Season::where('opening_date', '<=', now())
+            ->where('application_deadline_date', '>=', now())
+            ->first();
+
+        $isSeasonOpen = false;
+
         if ($request->has('app_id')) {
-            $nomination = Nomination::with(['answers', 'evidence', 'award'])
+            $nomination = Nomination::with(['answers', 'evidence', 'award', 'season'])
                 ->where('user_id', auth()->id())
                 ->where('application_id', $request->app_id)
                 ->where('payment_status', 'pending')
                 ->first();
 
-            if (!$nomination) {
+            if (! $nomination) {
                 return redirect()->route('dashboard.nominations')->with('error', 'Nomination not found or already paid.');
+            }
+
+            // Check if the stored nomination's season is open
+            if ($nomination->season) {
+                $isSeasonOpen = now()->between(
+                    $nomination->season->opening_date,
+                    $nomination->season->application_deadline_date->endOfDay()
+                );
+            }
+        } else {
+            // Check if there's any active season for new nominations
+            if ($activeSeason) {
+                $isSeasonOpen = true;
             }
         }
 
-        return view('frontend.nomination', compact('categories', 'adminFee', 'discounts', 'paymentGateways', 'nomination'));
+        return view('frontend.nomination', compact('categories', 'adminFee', 'discounts', 'paymentGateways', 'nomination', 'isSeasonOpen'));
     }
 
     public function getCategoryDetails(Request $request)
     {
         $categoryId = $request->query('category_id');
 
-        if (!$categoryId) {
+        if (! $categoryId) {
             return response()->json(['error' => 'Category ID required'], 400);
         }
 
@@ -130,7 +168,7 @@ class FrontendController extends Controller
 
         return response()->json([
             'awards' => $awards,
-            'questions' => $questions
+            'questions' => $questions,
         ]);
     }
 
@@ -172,7 +210,9 @@ class FrontendController extends Controller
     public function dashboardOverview()
     {
         $nominationCount = \App\Models\Nomination::where('user_id', auth()->id())->count();
-        return view('frontend.dashboard.overview', compact('nominationCount'));
+        $bookingCount = \App\Models\EventBooking::where('user_id', auth()->id())->count();
+
+        return view('frontend.dashboard.overview', compact('nominationCount', 'bookingCount'));
     }
 
     public function dashboardProfile()
@@ -187,7 +227,7 @@ class FrontendController extends Controller
 
     public function dashboardNominations()
     {
-        $nominations = \App\Models\Nomination::with(['category', 'award'])
+        $nominations = \App\Models\Nomination::with(['category', 'award', 'season'])
             ->where('user_id', auth()->id())
             ->orderBy('id', 'desc')
             ->get();
@@ -203,6 +243,41 @@ class FrontendController extends Controller
             ->firstOrFail();
 
         return view('frontend.dashboard.nomination-view', compact('nomination'));
+    }
+
+    public function dashboardBookings()
+    {
+        $bookings = EventBooking::with(['event'])
+            ->where('user_id', auth()->id())
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return view('frontend.dashboard.bookings', compact('bookings'));
+    }
+
+    public function viewBooking($id)
+    {
+        $user_id = auth()->id();
+        
+        if (!$user_id) {
+            return redirect()->route('login')->with('error', 'Please login to view details.');
+        }
+
+        $booking = EventBooking::with(['event'])
+            ->where('user_id', $user_id)
+            ->where('id', $id)
+            ->first();
+
+        if (!$booking) {
+            // Check if it exists at all to give a better error
+            $exists = EventBooking::where('id', $id)->exists();
+            if ($exists) {
+                return redirect()->route('dashboard.bookings')->with('error', 'Access denied to this booking.');
+            }
+            abort(404, 'Booking not found');
+        }
+
+        return view('frontend.dashboard.booking-view', compact('booking'));
     }
 
     public function whyEnter()

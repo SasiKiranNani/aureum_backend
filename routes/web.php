@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EventBookingController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\NominationController;
 use App\Http\Controllers\PaymentController;
@@ -40,6 +41,9 @@ Route::get('/about-us', [FrontendController::class, 'aboutUs'])->name('about-us'
 Route::get('/categories', [FrontendController::class, 'categories'])->name('categories');
 Route::get('/news-room', [FrontendController::class, 'newsRoom'])->name('news-room');
 Route::get('/news-room/{id}', [FrontendController::class, 'newsRoomDetails'])->name('news-room-details');
+Route::get('/events', [FrontendController::class, 'events'])->name('events');
+Route::get('/event/{id}', [FrontendController::class, 'eventDetails'])->name('event-details');
+Route::post('/event/book', [EventBookingController::class, 'store'])->name('event.book')->middleware('auth');
 Route::get('/blog', [FrontendController::class, 'blog'])->name('blog');
 Route::get('/blog/{id}', [FrontendController::class, 'blogDetails'])->name('blog-details');
 Route::get('/contact-us', [FrontendController::class, 'contactUs'])->name('contact-us');
@@ -68,6 +72,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/password', [FrontendController::class, 'dashboardPassword'])->name('dashboard.password');
     Route::get('/dashboard/nominations', [FrontendController::class, 'dashboardNominations'])->name('dashboard.nominations');
     Route::get('/dashboard/nominations/{application_id}', [FrontendController::class, 'viewNomination'])->name('dashboard.nominations.view');
+    Route::delete('/nomination/{application_id}', [NominationController::class, 'destroy'])->name('nomination.delete');
+    Route::get('/dashboard/bookings', [FrontendController::class, 'dashboardBookings'])->name('dashboard.bookings');
+    Route::get('/dashboard/ticket/view/{id}', [FrontendController::class, 'viewBooking'])->name('dashboard.bookings.view');
 
     Route::post('/profile/update', [AuthController::class, 'updateProfile'])->name('profile.update');
     Route::post('/password/update', [AuthController::class, 'updatePassword'])->name('password.update');
