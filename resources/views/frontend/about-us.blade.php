@@ -5,17 +5,17 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-12 text-center">
-                    <div class="subtitle wow fadeInUp mb-3">About Aureum</div>
-                    <h2 class="wow fadeInUp" data-wow-delay=".4s">Welcome to Aureum International Awards</h2>
+                    <div class="subtitle wow fadeInUp mb-3">About ORIONSM</div>
+                    <h2 class="wow fadeInUp" data-wow-delay=".4s">Welcome to ORIONSM International Tech Awards</h2>
                 </div>
             </div>
             <div class="row gx-5 align-items-center justify-content-between">
                 <div class="col-lg-6">
                     <div class="">
                         <!-- me-lg-5 pe-lg-5 py-5 my-5 -->
-                        <!-- <div class="subtitle wow fadeInUp" data-wow-delay=".2s">About Aureum</div>
-                                                                    <h2 class="wow fadeInUp" data-wow-delay=".4s">Welcome to Aureum International Awards</h2> -->
-                        <p class="wow fadeInUp" data-wow-delay=".6s">Aureum International Awards transcend the
+                        <!-- <div class="subtitle wow fadeInUp" data-wow-delay=".2s">About ORIONSM</div>
+                                                                            <h2 class="wow fadeInUp" data-wow-delay=".4s">Welcome to ORIONSM International Tech Awards</h2> -->
+                        <p class="wow fadeInUp" data-wow-delay=".6s">ORIONSM International Tech Awards transcend the
                             confines of a traditional ceremony, rising as a monumental global
                             beacon that unites nations in celebration of extraordinary visionaries—those intrepid
                             souls who boldly reimagine
@@ -175,7 +175,8 @@
                                         <span class="step-year">2019</span>
                                     </div>
                                     <div class="step-title">FOUNDATION & VISION</div>
-                                    <p>Established the Aureum Awards framework to recognize exceptional achievements in
+                                    <p>Established the ORIONSM International Tech Awards framework to recognize exceptional
+                                        achievements in
                                         technology.
                                     </p>
                                 </div>

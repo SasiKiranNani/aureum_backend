@@ -21,7 +21,7 @@
                     <div>
                         <h3 class="fs-20">Contact Us</h3>
                         T. +1 123 456 789<br>
-                        M. contact@aivent.com
+                        M. excellence@orionsm.com
                     </div>
                 </div>
                 <div class="QuickLinks mb-sm-30 mt-5 d-lg-flex align-items-center justify-content-center text-center">
@@ -56,7 +56,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    Copyright 2025 - AIvent by Designesia
+                    Copyright 2025 - ORIONSM International Tech Awards
                 </div>
             </div>
         </div>

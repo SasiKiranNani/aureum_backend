@@ -41,7 +41,7 @@
                         <h3 class="card-title-modern">Be Discovered</h3>
                         <p class="card-text-modern">
                             Past winners have attracted the attention of investors, recruiters, and media outlets
-                            seeking the next big thinker or creator. Aureum provides a platform for your story —
+                            seeking the next big thinker or creator. ORIONSM provides a platform for your story —
                             and the right audience is watching.
                         </p>
                     </div>
@@ -58,7 +58,7 @@
                         </div>
                         <h3 class="card-title-modern">Credibility & Trust</h3>
                         <p class="card-text-modern">
-                            An Aureum nomination signifies <strong>excellence</strong>, <strong>innovation</strong>,
+                            An ORIONSM nomination signifies <strong>excellence</strong>, <strong>innovation</strong>,
                             and <strong>integrity</strong>. It's more than a badge — it's a benchmark.
                         </p>
                     </div>
@@ -111,7 +111,7 @@
                         </div>
                         <h3 class="card-title-modern">Celebrate the Work Behind the Work</h3>
                         <p class="card-text-modern">
-                            We understand the effort behind every breakthrough. At Aureum, we celebrate the long
+                            We understand the effort behind every breakthrough. At ORIONSM, we celebrate the long
                             nights,
                             the quiet pivots, the first lines of code, and the bold ideas — because
                             <strong>that's</strong> where true innovation lives.
@@ -130,7 +130,7 @@
                         Your work matters. Your vision matters. And it deserves to be seen.
                     </p>
                     <p class="cta-subdescription">
-                        Apply to the Aureum Awards and take your place among the leaders, dreamers,
+                        Apply to the ORIONSM International Tech Awards and take your place among the leaders, dreamers,
                         and doers who are shaping tomorrow.
                     </p>
                     <a href="#" class="cta-btn-modern">

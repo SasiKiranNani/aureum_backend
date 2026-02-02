@@ -100,13 +100,14 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1 style="color: #c59d5f; margin: 0;">AUREUM AWARDS</h1>
+            <h1 style="color: #c59d5f; margin: 0;">ORIONSM AWARDS</h1>
         </div>
         <div class="content">
-            <h1 class="welcome-text">Welcome to Aureum Awards</h1>
+            <h1 class="welcome-text">Welcome to ORIONSM International Tech Awards</h1>
             <p class="message">
                 Hello <span class="user-name">{{ $user->name }}</span>,<br><br>
-                Congratulations! You have successfully registered with <strong>Aureum Awards</strong>. We are thrilled
+                Congratulations! You have successfully registered with <strong>ORIONSM International Tech
+                    Awards</strong>. We are thrilled
                 to have you as part of our prestigious community.
             </p>
 
@@ -119,7 +120,7 @@
             <a href="{{ url('/') }}" class="action-button">Go to Dashboard</a>
         </div>
         <div class="footer">
-            <p>&copy; {{ date('Y') }} Aureum Awards. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} ORIONSM International Tech Awards. All rights reserved.</p>
             <p>If you did not create an account, no further action is required.</p>
         </div>
     </div>

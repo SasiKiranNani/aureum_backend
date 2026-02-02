@@ -33,7 +33,7 @@ class RazorpayService extends PaymentService
             'key' => $this->gateway->key,
             'amount' => $order['amount'],
             'currency' => 'USD',
-            'name' => 'Aureum Awards',
+            'name' => 'ORIONSM International Tech Awards',
             'description' => $data['productinfo'] ?? 'Nomination Fee',
             'order_id' => $order['id'],
             'prefill' => [

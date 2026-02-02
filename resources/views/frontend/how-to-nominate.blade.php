@@ -31,7 +31,7 @@
             <div class="nom-intro-card">
                 <div class="nom-intro-glow"></div>
                 <p class="nom-intro-text">
-                    The <strong class="gold-text">Aureum International Awards</strong> celebrate individuals and
+                    The <strong class="gold-text">ORIONSM International Tech Awards</strong> celebrate individuals and
                     organizations that are shaping the future of technology through creativity, leadership, and
                     impact.
                     If you or someone you know has made a meaningful contribution in the tech space, we welcome your
@@ -167,7 +167,8 @@
                             <li><i class="fas fa-star"></i> Innovation & originality</li>
                             <li><i class="fas fa-star"></i> Measurable impact</li>
                             <li><i class="fas fa-star"></i> Quality and scalability of the work</li>
-                            <li><i class="fas fa-star"></i> Alignment with the values of the Aureum Awards</li>
+                            <li><i class="fas fa-star"></i> Alignment with the values of the ORIONSM International Tech
+                                Awards</li>
                         </ul>
                     </div>
                 </div>
@@ -191,9 +192,9 @@
                         </p>
                         <ul class="nom-step-checklist">
                             <li><i class="fas fa-certificate"></i> Digital certificate of recognition</li>
-                            <li><i class="fas fa-star"></i> Featured listing on the Aureum International Awards
+                            <li><i class="fas fa-star"></i> Featured listing on the ORIONSM International Tech Awards
                                 platform</li>
-                            <li><i class="fas fa-trophy"></i> Eligibility to purchase the official Aureum Trophy
+                            <li><i class="fas fa-trophy"></i> Eligibility to purchase the official ORIONSM Trophy
                                 (optional)</li>
                         </ul>
                     </div>
@@ -209,7 +210,7 @@
                     </div>
                     <h3 class="nom-trophy-cta-title">Trophy Purchase</h3>
                     <p class="nom-trophy-cta-text">
-                        Winners may opt to order the <strong>official Aureum Trophy</strong>, a premium handcrafted
+                        Winners may opt to order the <strong>official ORIONSM Trophy</strong>, a premium handcrafted
                         symbol
                         of their recognition. This step is completely optional and is offered to commemorate your
                         achievement

@@ -19,7 +19,8 @@
                         </div>
                     </div>
                     <div class="col-lg-4 wow fadeInRight" data-wow-delay=".3s">
-                        <p class="mb-0">Submit your nomination for the Aureum Awards. Recognize excellence and innovation
+                        <p class="mb-0">Submit your nomination for the ORIONSM International Tech Awards. Recognize
+                            excellence and innovation
                             in your field.</p>
                     </div>
                 </div>
@@ -691,9 +692,9 @@
                                         <div class="d-flex gap-3">
                                             <i class="icofont-warning text-dark fs-4 mt-1"></i>
                                             <div>
-                                                <p class="mb-3 text-dark fw-bold">Disclaimer: Aureum International
-                                                    Awards restricts payments from certain countries and regions due to
-                                                    international compliance laws.</p>
+                                                <p class="mb-3 text-dark fw-bold">Disclaimer: ORIONSM International Tech
+                                                     Awards restricts payments from certain countries and regions due to
+                                                     international compliance laws.</p>
                                                 <p class="mb-0 text-dark fs-14">Payments cannot be received from:
                                                     Afghanistan, Belarus, Burundi, Central African Republic, Chad,
                                                     Republic of the Congo, Democratic Republic of the Congo, Crimea,

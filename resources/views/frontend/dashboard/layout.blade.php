@@ -11,7 +11,7 @@
                     <div class="col-lg-6">
                         <div class="relative wow mask-right">
                             <div class="text-start">
-                                <h1 class="fs-96 text-uppercase fs-sm-10vw mb-0 lh-1">Dashboard</h1>
+                                <h1 class="fs-96 text-uppercase fs-sm-10vw mb-0 lh-1">ORIONSM</h1>
                             </div>
                         </div>
                     </div>

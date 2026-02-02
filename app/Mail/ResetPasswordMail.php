@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -14,6 +13,7 @@ class ResetPasswordMail extends Mailable
     use Queueable, SerializesModels;
 
     public $user;
+
     public $resetUrl;
 
     /**
@@ -31,7 +31,7 @@ class ResetPasswordMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reset Your Password - Aureum Awards',
+            subject: 'Reset Your Password - ORIONSM International Tech Awards',
         );
     }
 

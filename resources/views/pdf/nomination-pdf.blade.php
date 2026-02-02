@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AUREUM INSTITUTIONAL RECORD - {{ $nomination->application_id }}</title>
+    <title>ORIONSM INSTITUTIONAL RECORD - {{ $nomination->application_id }}</title>
     <style>
         /* PDF Engine Configuration */
         /*
@@ -346,7 +346,7 @@
     <div class="header-frame">
         <div class="header-branding">
             <div class="header-title-cell">
-                <h1>AUREUM</h1>
+                <h1>ORIONSM</h1>
                 <p>Excellence Recognized Worldwide</p>
             </div>
             <div class="header-id-cell">
@@ -359,7 +359,7 @@
     <div class="footer-minimal">
         <table class="footer-table">
             <tr>
-                <td class="footer-left">Aureum Awards &copy; {{ date('Y') }}</td>
+                <td class="footer-left">ORIONSM International Tech Awards &copy; {{ date('Y') }}</td>
                 <td class="footer-center">• AUTHENTICATED DOCUMENT •</td>
                 <td class="footer-right">PAGE <span class="pagenum"></span></td>
             </tr>

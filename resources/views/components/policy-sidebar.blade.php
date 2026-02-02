@@ -30,7 +30,7 @@
     <div class="policy-contact-box">
         <div class="policy-contact-title">Have Questions?</div>
         <div class="policy-contact-info">
-            <i class="fa fa-envelope"></i> Connect@aureumawards.com
+            <i class="fa fa-envelope"></i> excellence@orionsm.com
         </div>
         <div class="policy-contact-info">
             <i class="fa fa-whatsapp"></i> +1 (445) 249-7785

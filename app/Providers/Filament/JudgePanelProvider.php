@@ -32,7 +32,7 @@ class JudgePanelProvider extends PanelProvider
                 'gray' => Color::Slate,
             ])
             ->font('Outfit')
-            ->brandName('Aureum Judge Portal')
+            ->brandName('ORIONSM Judge Portal')
             ->discoverResources(in: app_path('Filament/Judge/Resources'), for: 'App\\Filament\\Judge\\Resources')
             ->discoverPages(in: app_path('Filament/Judge/Pages'), for: 'App\\Filament\\Judge\\Pages')
             ->pages([

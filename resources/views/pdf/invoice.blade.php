@@ -291,7 +291,7 @@
         <div class="header-content">
             <div class="header-left">
                 <div class="brand">
-                    <h1>AUR<span>EUM</span></h1>
+                    <h1>ORION<span>SM</span></h1>
                     <p>Excellence Recognized</p>
                 </div>
             </div>
@@ -395,8 +395,8 @@
     </div>
 
     <div class="footer">
-        <p>This is a computer-generated document issued by Aureum Awards Secretariat.</p>
-        <p>Aureum Awards &copy; {{ date('Y') }} | excellence@aureumawards.com | www.aureumawards.com</p>
+        <p>This is a computer-generated document issued by ORIONSM International Tech Awards Secretariat.</p>
+        <p>ORIONSM International Tech Awards &copy; {{ date('Y') }} | excellence@orionsm.com | www.orionsm.com</p>
         <p>Security Hash: {{ substr(md5($invoice_no . $payment->transaction_id), 0, 16) }}</p>
     </div>
 </body>

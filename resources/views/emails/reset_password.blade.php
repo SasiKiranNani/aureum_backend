@@ -96,13 +96,14 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1 style="color: #c59d5f; margin: 0;">AUREUM AWARDS</h1>
+            <h1 style="color: #c59d5f; margin: 0;">ORIONSM AWARDS</h1>
         </div>
         <div class="content">
             <h1 class="welcome-text">Password Reset Request</h1>
             <p class="message">
                 Hello <span class="user-name">{{ $user->name }}</span>,<br><br>
-                We received a request to reset your password for your <strong>Aureum Awards</strong> account.
+                We received a request to reset your password for your <strong>ORIONSM International Tech Awards</strong>
+                account.
             </p>
 
             <div class="divider"></div>
@@ -121,7 +122,7 @@
             </p>
         </div>
         <div class="footer">
-            <p>&copy; {{ date('Y') }} Aureum Awards. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} ORIONSM International Tech Awards. All rights reserved.</p>
         </div>
     </div>
 </body>

@@ -83,7 +83,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>AUREUM AWARDS</h1>
+            <h1>ORIONSM AWARDS</h1>
             <p>Your Event Registration is Confirmed!</p>
         </div>
         <div class="content">
@@ -106,7 +106,7 @@
             </center>
         </div>
         <div class="ticket-footer">
-            <p>&copy; {{ date('Y') }} Aureum Awards. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} ORIONSM International Tech Awards. All rights reserved.</p>
         </div>
     </div>
 </body>

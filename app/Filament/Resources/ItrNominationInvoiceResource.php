@@ -152,7 +152,7 @@ class ItrNominationInvoiceResource extends Resource
                                             $seasonName = $nominations->first()?->season?->name ?? 'N/A';
 
                                             $period = $paidFrom.($paidUntil ? " to {$paidUntil}" : '');
-                                            $title = "Aureum Awards : {$seasonName} | Period: {$period}";
+                                            $title = "ORIONSM International Tech Awards : {$seasonName} | Period: {$period}";
 
                                             return Excel::download(
                                                 new NominationExport(

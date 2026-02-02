@@ -31,7 +31,8 @@
                         <div class="policy-content">
                             <h3>Shipping Policy</h3>
                             <div class="policy-highlight">
-                                <p>At Aureum International Awards, Operating by ParalogiQ Services Ltd, we strive to ensure
+                                <p>At ORIONSM International Tech Awards, Operating by ParalogiQ Services Ltd, we strive to
+                                    ensure
                                     timely
                                     and secure delivery of all merchandise, including customized awards and trophies.</p>
                             </div>
@@ -62,7 +63,7 @@
                             <p>Request must be initiated within 15 days of delivery.</p>
 
                             <h4>Return Process</h4>
-                            <p>Email <a href="mailto:connect@aureumawards.com">connect@aureumawards.com</a> with order
+                            <p>Email <a href="mailto:excellence@orionsm.com">excellence@orionsm.com</a> with order
                                 details.
                             </p>
 

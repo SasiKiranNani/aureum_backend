@@ -55,7 +55,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>AUREUM</h1>
+            <h1>ORIONSM</h1>
             <p>Excellence Recognized Worldwide</p>
         </div>
 
@@ -76,11 +76,11 @@
         </p>
 
         <p>Best regards,<br>
-            <strong>The Aureum Awards Team</strong>
+            <strong>The ORIONSM International Tech Awards Team</strong>
         </p>
 
         <div class="footer">
-            <p>&copy; {{ date('Y') }} Aureum Awards. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} ORIONSM International Tech Awards. All rights reserved.</p>
         </div>
     </div>
 </body>

@@ -23,7 +23,7 @@
                         <span class="hero-line"></span>
                     </div>
                     <h1 class="trophy-main-title">
-                        The <span class="title-highlight">Aureum</span> Trophy
+                        The <span class="title-highlight">ORIONSM</span> Trophy
                     </h1>
                     <p class="trophy-main-subtitle">More Than a Trophy — A Legacy of Excellence</p>
                 </div>
@@ -37,7 +37,7 @@
                     <div class="story-glow"></div>
                     <div class="story-content">
                         <p class="story-lead">
-                            The <strong class="gold-text">Aureum Trophy</strong> is not just a symbol of victory. It
+                            The <strong class="gold-text">ORIONSM Trophy</strong> is not just a symbol of victory. It
                             is a celebration of
                             courage, creativity, and relentless innovation. Crafted to reflect the golden standard
                             of achievement,
@@ -71,7 +71,7 @@
                         <div class="trophy-image-wrapper">
                             <div class="image-glow-effect"></div>
                             <div class="trophy-image-container">
-                                <img src="{{ asset('frontend/images/about.jpg') }}" alt="Prestigious Aureum Award Trophy"
+                                <img src="{{ asset('frontend/images/about.jpg') }}" alt="Prestigious ORIONSM Award Trophy"
                                     class="trophy-img">
                                 <div class="image-shine"></div>
                             </div>
@@ -85,7 +85,7 @@
                     <!-- Trophy Details Column -->
                     <div class="col-lg-6">
                         <div class="trophy-details-wrapper">
-                            <h2 class="details-title">The Aureum Trophy</h2>
+                            <h2 class="details-title">The ORIONSM Trophy</h2>
 
                             <!-- Detail Card 1 -->
                             <div class="detail-card">
@@ -95,7 +95,7 @@
                                 <div class="detail-content">
                                     <h3 class="detail-heading">A Symbol of Timeless Innovation</h3>
                                     <p class="detail-text">
-                                        The Aureum Trophy is the physical embodiment of excellence in technology and
+                                        The ORIONSM Trophy is the physical embodiment of excellence in technology and
                                         design.
                                         It stands as a tribute to visionaries who push boundaries, shape the future,
                                         and define what's next.
@@ -111,7 +111,7 @@
                                 <div class="detail-content">
                                     <h3 class="detail-heading">How to Get Yours</h3>
                                     <p class="detail-text">
-                                        As a verified Aureum Award recipient, you are eligible to <strong>purchase
+                                        As a verified ORIONSM Award recipient, you are eligible to <strong>purchase
                                             the official trophy</strong>.
                                         This helps us maintain the highest standards of design, production, and
                                         global delivery.

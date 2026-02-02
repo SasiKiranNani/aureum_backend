@@ -17,8 +17,8 @@
                     </div>
 
                     <div class="col-lg-4 wow fadeInRight" data-wow-delay=".3s">
-                        <p class="mb-0">Join thought leaders, developers, researchers, and founders as we explore
-                            how artificial intelligence is reshaping industries, creativity.</p>
+                        <p class="mb-0">Join thought leaders, developers, researchers, and founders as we celebrate
+                            innovation and excellence in the tech industry.</p>
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                                 <i class="abs fs-28 p-3 bg-color text-light rounded-1 icofont-envelope"></i>
                                 <div class="ms-80px">
                                     <h4 class="mb-0">Send a Message</h4>
-                                    contact@aivent-support.com
+                                    excellence@orionsm.com
                                 </div>
                             </div>
 
@@ -153,7 +153,7 @@
                                 </div>
                                 <div class="detail-item">
                                     <i class="icofont-envelope"></i>
-                                    <span>sf@aivent-support.com</span>
+                                    <span>excellence@orionsm.com</span>
                                 </div>
                             </div>
                             <a href="#" class="branch-btn">
@@ -185,7 +185,7 @@
                                 </div>
                                 <div class="detail-item">
                                     <i class="icofont-envelope"></i>
-                                    <span>ny@aivent-support.com</span>
+                                    <span>excellence@orionsm.com</span>
                                 </div>
                             </div>
                             <a href="#" class="branch-btn">
@@ -217,7 +217,7 @@
                                 </div>
                                 <div class="detail-item">
                                     <i class="icofont-envelope"></i>
-                                    <span>london@aivent-support.com</span>
+                                    <span>excellence@orionsm.com</span>
                                 </div>
                             </div>
                             <a href="#" class="branch-btn">
@@ -249,7 +249,7 @@
                                 </div>
                                 <div class="detail-item">
                                     <i class="icofont-envelope"></i>
-                                    <span>tokyo@aivent-support.com</span>
+                                    <span>excellence@orionsm.com</span>
                                 </div>
                             </div>
                             <a href="#" class="branch-btn">
@@ -281,7 +281,7 @@
                                 </div>
                                 <div class="detail-item">
                                     <i class="icofont-envelope"></i>
-                                    <span>singapore@aivent-support.com</span>
+                                    <span>excellence@orionsm.com</span>
                                 </div>
                             </div>
                             <a href="#" class="branch-btn">
@@ -313,7 +313,7 @@
                                 </div>
                                 <div class="detail-item">
                                     <i class="icofont-envelope"></i>
-                                    <span>sydney@aivent-support.com</span>
+                                    <span>excellence@orionsm.com</span>
                                 </div>
                             </div>
                             <a href="#" class="branch-btn">

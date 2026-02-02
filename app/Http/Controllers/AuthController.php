@@ -56,7 +56,7 @@ class AuthController extends Controller
             \Log::error('Registration Email Error: ' . $e->getMessage());
         }
 
-        session()->flash('success', 'Registration successful! Welcome to Aureum.');
+        session()->flash('success', 'Registration successful! Welcome to ORIONSM.');
 
         return response()->json([
             'success' => true,

@@ -2,11 +2,11 @@
 <html lang="en">
 
 <head>
-    <title>Aureum Clone</title>
+    <title>ORIONSM International Tech Awards</title>
     <link rel="icon" href="{{ asset('frontend/images/icon.webp') }}" type="image/gif" sizes="16x16">
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="AIvent" name="description">
+    <meta content="ORIONSM International Tech Awards" name="description">
     <meta content="" name="keywords">
     <meta content="" name="author">
     <meta name="csrf-token" content="{{ csrf_token() }}">

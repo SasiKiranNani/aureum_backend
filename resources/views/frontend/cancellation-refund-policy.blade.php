@@ -29,89 +29,59 @@
                 <div class="col-lg-9">
                     <div class="policy-card wow fadeInUp" data-wow-delay=".3s">
                         <div class="policy-content">
-                            <h3>Payments</h3>
+                            <h3>Refund Policy</h3>
                             <div class="policy-highlight">
-                                <p>All payments made on <a href="https://aureumawards.com/"
-                                        target="_blank">aureumawards.com</a>
-                                    (the "Website") Operating by ParalogiQ Services Ltd, including but not limited to entry
-                                    fees,
-                                    event ticket purchases, and merchandise orders, are considered final and non-refundable
-                                    except
-                                    as stated in this policy.</p>
+                                <p>This Refund Policy governs all financial transactions made with ORIONSM International
+                                    Tech Awards.</p>
                             </div>
 
                             <div class="policy-section-divider"></div>
 
-                            <h3>Refund Policy</h3>
+                            <h3>1. General Policy</h3>
+                            <p>All nomination, application, registration, and participation fees are non-refundable once
+                                payment has been successfully completed.</p>
 
-                            <h4>Award Entry Fees</h4>
-                            <ul>
-                                <li>All entry fees are non-refundable</li>
-                                <li>No refunds for disqualified or non-winning submissions</li>
-                                <li>Accidental payments not eligible for refunds</li>
-                                <li>No refunds post-result announcements</li>
-                            </ul>
+                            <div class="policy-section-divider"></div>
 
-                            <h4>Event Tickets</h4>
-                            <ul>
-                                <li>Non-refundable once confirmed</li>
-                                <li>All sales final upon confirmation</li>
-                                <li>No refunds for non-attendance</li>
-                                <li>No refunds for travel disruptions</li>
-                            </ul>
+                            <h3>2. Purpose of Fees</h3>
+                            <p>Fees contribute to administrative processing, evaluation, technology infrastructure,
+                                verification, and operational costs.</p>
 
-                            <h4>Merchandise</h4>
+                            <div class="policy-section-divider"></div>
+
+                            <h3>3. Non-Refundable Situations</h3>
+                            <p>Refunds will not be issued in cases of:</p>
                             <ul>
-                                <li>Custom items non-refundable unless defective</li>
-                                <li>Must match order specifications</li>
-                                <li>Returns within 15 days of delivery</li>
-                                <li>Email <a href="mailto:connect@aureumawards.com">connect@aureumawards.com</a></li>
-                                <li>Refunds processed in 45 business days</li>
+                                <li>Non-selection or rejection</li>
+                                <li>Withdrawal after submission</li>
+                                <li>Incomplete or inaccurate submissions</li>
+                                <li>Disqualification due to policy violations</li>
+                                <li>Missed deadlines</li>
+                                <li>Incorrect category selection</li>
                             </ul>
 
                             <div class="policy-section-divider"></div>
 
-                            <h3>Chargebacks and Fraud</h3>
-                            <ul>
-                                <li>Chargebacks without contact violate our policy</li>
-                                <li>Fraudulent chargebacks lead to account suspension</li>
-                                <li>$75 minimum fee per chargeback case</li>
-                                <li>Permanent ban for abusive behavior</li>
-                            </ul>
-
-                            <h3>Pricing Errors</h3>
-                            <p>Aureum International Awards reserves the right to cancel or revise any order made under
-                                erroneous
-                                pricing. A full refund will be issued to the original payment method if cancellation occurs.
+                            <h3>4. Exceptional Circumstances</h3>
+                            <p>Refunds may be considered solely in cases of duplicate payments or verified technical errors.
                             </p>
 
                             <div class="policy-section-divider"></div>
 
-                            <h3>Delivery Policy</h3>
-
-                            <h4>Event Tickets</h4>
-                            <ul>
-                                <li>Confirmed via email upon payment</li>
-                                <li>Digital delivery unless stated otherwise</li>
-                            </ul>
-
-                            <h4>Merchandise</h4>
-                            <ul>
-                                <li>8-9 weeks delivery for custom items</li>
-                                <li>Shipping charges vary by region</li>
-                                <li>Not liable after "delivered" status</li>
-                            </ul>
+                            <h3>5. Request Procedure</h3>
+                            <p>Requests must be submitted in writing within seven (7) calendar days with supporting
+                                evidence.</p>
 
                             <div class="policy-section-divider"></div>
 
-                            <h3>Return & Replacement Policy</h3>
-                            <ul>
-                                <li>Notify within 15 days of delivery at <a
-                                        href="mailto:Connect@aureumawards.com">Connect@aureumawards.com</a></li>
-                                <li>Valid claims processed within 45 business days</li>
-                                <li>Items must be unused in original packaging</li>
-                                <li>Only for defective, damaged, or incorrect items</li>
-                            </ul>
+                            <h3>6. Processing Time</h3>
+                            <p>Approved refunds will be processed within 10–15 business days, subject to banking timelines.
+                            </p>
+
+                            <div class="policy-section-divider"></div>
+
+                            <h3>7. Discretion</h3>
+                            <p>ORIONSM reserves full discretion in determining refund eligibility.</p>
                         </div>
                     </div>
                 </div>

@@ -10,7 +10,7 @@
             <div class="container wow scaleIn" data-wow-duration="3s">
                 <div class="row">
                     <div class="col-lg-12 text-center">
-                        <div class="subtitle">Aureum Awards</div>
+                        <div class="subtitle">ORIONSM International Tech Awards</div>
                         <h1 class="fs-60 text-uppercase fs-sm-12vw mb-4 lh-1">Global Standard for Celebrating Technological
                             Excellence</h1>
 
@@ -24,14 +24,14 @@
                             </div>
 
                             <!-- <div class="d-flex justify-content-center align-items-center mx-4">
-                                                                                                                                                                                                                                                                                            <i class="fa fa-calendar id-color me-3"></i>
-                                                                                                                                                                                                                                                                                            <h4 class="mb-0">October 1–5, 2025</h4>
-                                                                                                                                                                                                                                                                                        </div> -->
+                                                                                                                                                                                                                                                                                                    <i class="fa fa-calendar id-color me-3"></i>
+                                                                                                                                                                                                                                                                                                    <h4 class="mb-0">October 1–5, 2025</h4>
+                                                                                                                                                                                                                                                                                                </div> -->
 
                             <!-- <div class="d-flex justify-content-center align-items-center mx-4">
-                                                                                                                                                                                                                                                                                            <i class="fa fa-location-pin id-color me-3"></i>
-                                                                                                                                                                                                                                                                                            <h4 class="mb-0">San Francisco, CA</h4>
-                                                                                                                                                                                                                                                                                        </div> -->
+                                                                                                                                                                                                                                                                                                    <i class="fa fa-location-pin id-color me-3"></i>
+                                                                                                                                                                                                                                                                                                    <h4 class="mb-0">San Francisco, CA</h4>
+                                                                                                                                                                                                                                                                                                </div> -->
                         </div>
 
                         <div class="spacer-single"></div>
@@ -212,7 +212,7 @@
                         <i class="fs-60 id-color icofont-envelope"></i>
                         <div class="ms-3">
                             <h4 class="mb-0">Email</h4>
-                            <p>contact@aivent.com</p>
+                            <p>excellence@orionsm.com</p>
                         </div>
                     </div>
                 </div>
