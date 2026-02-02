@@ -24,14 +24,14 @@
                             </div>
 
                             <!-- <div class="d-flex justify-content-center align-items-center mx-4">
-                                                                                                                                                                                                                                                                            <i class="fa fa-calendar id-color me-3"></i>
-                                                                                                                                                                                                                                                                            <h4 class="mb-0">October 1–5, 2025</h4>
-                                                                                                                                                                                                                                                                        </div> -->
+                                                                                                                                                                                                                                                                                            <i class="fa fa-calendar id-color me-3"></i>
+                                                                                                                                                                                                                                                                                            <h4 class="mb-0">October 1–5, 2025</h4>
+                                                                                                                                                                                                                                                                                        </div> -->
 
                             <!-- <div class="d-flex justify-content-center align-items-center mx-4">
-                                                                                                                                                                                                                                                                            <i class="fa fa-location-pin id-color me-3"></i>
-                                                                                                                                                                                                                                                                            <h4 class="mb-0">San Francisco, CA</h4>
-                                                                                                                                                                                                                                                                        </div> -->
+                                                                                                                                                                                                                                                                                            <i class="fa fa-location-pin id-color me-3"></i>
+                                                                                                                                                                                                                                                                                            <h4 class="mb-0">San Francisco, CA</h4>
+                                                                                                                                                                                                                                                                                        </div> -->
                         </div>
 
                         <div class="spacer-single"></div>
@@ -136,26 +136,27 @@
         </div>
     </section>
 
-    <section class="bg-dark section-dark pt-80 relative jarallax" aria-label="section">
+    <section class="bg-dark section-dark pt-80 relative jarallax collaborators" aria-label="section">
         <img src="{{ asset('frontend/images/background/1.webp') }}" class="jarallax-img" alt="">
         <div class="gradient-edge-top"></div>
         <div class="gradient-edge-bottom"></div>
         <div class="sw-overlay op-8"></div>
         <div class="container">
+            <div class="row g-4 justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <div class="subtitle wow fadeInUp" data-wow-delay=".0s">Our Network</div>
+                    <h2 class="wow fadeInUp" data-wow-delay=".2s">Our Sponsors & Collaborators</h2>
+                </div>
+            </div>
+
             <div class="row g-4">
 
                 <div class="col-md-12 wow fadeInUp">
                     <div class="owl-6 no-alpha owl-carousel owl-theme wow mask-right">
-                        <img src="{{ asset('frontend/images/logo-light/1.webp') }}" class="w-100 px-4" alt="">
-                        <img src="{{ asset('frontend/images/logo-light/2.webp') }}" class="w-100 px-4" alt="">
-                        <img src="{{ asset('frontend/images/logo-light/3.webp') }}" class="w-100 px-4" alt="">
-                        <img src="{{ asset('frontend/images/logo-light/4.webp') }}" class="w-100 px-4" alt="">
-                        <img src="{{ asset('frontend/images/logo-light/5.webp') }}" class="w-100 px-4" alt="">
-                        <img src="{{ asset('frontend/images/logo-light/6.webp') }}" class="w-100 px-4" alt="">
-                        <img src="{{ asset('frontend/images/logo-light/7.webp') }}" class="w-100 px-4" alt="">
-                        <img src="{{ asset('frontend/images/logo-light/8.webp') }}" class="w-100 px-4" alt="">
-                        <img src="{{ asset('frontend/images/logo-light/9.webp') }}" class="w-100 px-4" alt="">
-                        <img src="{{ asset('frontend/images/logo-light/10.webp') }}" class="w-100 px-4" alt="">
+                        @foreach ($collaborators as $collaborator)
+                            <img src="{{ Storage::url($collaborator->image) }}" class="w-100 px-4"
+                                alt="{{ $collaborator->title }}">
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -243,7 +244,7 @@
                         placeholder="Enter Your Email Address" required>
                 </div>
                 <div class="col-auto mb-3 wow fadeInUp" data-wow-delay=".6s">
-                    <button type="submit" class="btn bg-color text-light btn-lg px-4">SIGN UP</button>
+                    <button type="submit" class="btn bg-color text-light btn-lg px-4">SUBSCRIBE NOW</button>
                 </div>
 
                 <div class="col-12 text-center wow fadeInUp" data-wow-delay=".8s">

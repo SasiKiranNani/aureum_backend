@@ -32,4 +32,14 @@ class Category extends Model
     {
         return $this->hasMany(NomineeQuestion::class);
     }
+
+    public function judgeQuestions(): HasMany
+    {
+        return $this->hasMany(CategoryJudgeQuestion::class);
+    }
+
+    public function judgeApplications(): HasMany
+    {
+        return $this->hasMany(JudgeApplication::class);
+    }
 }

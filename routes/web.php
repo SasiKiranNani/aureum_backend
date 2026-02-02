@@ -58,6 +58,11 @@ Route::get('/past-winners', [FrontendController::class, 'pastWinners'])->name('p
 Route::get('/past-winner-details', [FrontendController::class, 'pastWinnerDetails'])->name('past-winner-details');
 Route::get('/why-enter', [FrontendController::class, 'whyEnter'])->name('why-enter');
 
+// Judge Application Routes
+Route::get('/judge-application', [\App\Http\Controllers\JudgeApplicationController::class, 'index'])->name('judge.application');
+Route::post('/judge-application', [\App\Http\Controllers\JudgeApplicationController::class, 'store'])->name('judge.application.submit');
+Route::get('/judge-application/questions/{category_id}', [\App\Http\Controllers\JudgeApplicationController::class, 'getQuestions'])->name('judge.application.questions');
+
 // Policy Pages
 Route::get('/privacy-policy', [FrontendController::class, 'privacyPolicy'])->name('privacy-policy');
 Route::get('/terms-and-conditions', [FrontendController::class, 'termsAndConditions'])->name('terms-and-conditions');

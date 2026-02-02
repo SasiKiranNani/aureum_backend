@@ -11,6 +11,7 @@ use App\Models\Newsroom;
 use App\Models\Nomination;
 use App\Models\PaymentGateway;
 use App\Models\Update;
+use App\Models\Collaborator;
 use Illuminate\Http\Request;
 
 class FrontendController extends Controller
@@ -18,8 +19,9 @@ class FrontendController extends Controller
     public function index()
     {
         $updates = Update::where('is_active', true)->get();
+        $collaborators = Collaborator::where('is_active', true)->get();
 
-        return view('frontend.index', compact('updates'));
+        return view('frontend.index', compact('updates', 'collaborators'));
     }
 
     public function aboutUs()
