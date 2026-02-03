@@ -14,18 +14,15 @@
                     <div class="">
                         <!-- me-lg-5 pe-lg-5 py-5 my-5 -->
                         <!-- <div class="subtitle wow fadeInUp" data-wow-delay=".2s">About ORIONSM</div>
-                                                                            <h2 class="wow fadeInUp" data-wow-delay=".4s">Welcome to ORIONSM International Tech Awards</h2> -->
-                        <p class="wow fadeInUp" data-wow-delay=".6s">ORIONSM International Tech Awards transcend the
-                            confines of a traditional ceremony, rising as a monumental global
-                            beacon that unites nations in celebration of extraordinary visionaries—those intrepid
-                            souls who boldly reimagine
-                            the fabric of our world and wield unyielding resolve to sculpt its destiny, honoring not
-                            merely tangible
-                            achievements but the profound, fearless courage that propels individuals to shatter
-                            entrenched conventions,
-                            redefine the very boundaries of possibility, and spearhead transformative innovation
-                            that echoes across
-                            international landscapes and inspires collective evolution.</p>
+                                                                                                                                    <h2 class="wow fadeInUp" data-wow-delay=".4s">Welcome to ORIONSM International Tech Awards</h2> -->
+                        <p class="wow fadeInUp" data-wow-delay=".6s">The Orionsm Global Awards represent a leading
+                            international platform dedicated to recognizing outstanding contributions to AI governance,
+                            ethical AI development, regulatory frameworks, and responsible innovation. Established in 2016
+                            by the International AI Governance Consortium (IAGC), the program brings together global
+                            experts, institutions, and stakeholders to honor those who advance transparent, equitable,
+                            accountable, and human-centered AI systems. It serves as a benchmark for excellence in AI
+                            governance, emphasizing verifiable impact on policy, standards, risk mitigation, and societal
+                            trust in artificial intelligence technologies worldwide.</p>
                     </div>
                 </div>
 
@@ -91,20 +88,22 @@
                                     <div class="timeline-track">
                                         <div class="timeline-node active">
                                             <div class="node-circle">
-                                                <span>2010</span>
+                                                <span>2016</span>
                                             </div>
                                             <div class="node-content">
-                                                <h5>Genesis</h5>
-                                                <p>Founded to spotlight tech talent</p>
+                                                <h5>Foundation</h5>
+                                                <p>Launched to establish rigorous recognition for advancements in AI
+                                                    governance and ethics.</p>
                                             </div>
                                         </div>
                                         <div class="timeline-node">
                                             <div class="node-circle">
-                                                <span>2024</span>
+                                                <span>2026</span>
                                             </div>
                                             <div class="node-content">
-                                                <h5>Global Impact</h5>
-                                                <p>Celebrating worldwide excellence</p>
+                                                <h5>Global Leadership</h5>
+                                                <p>Celebrating a decade of international influence in responsible AI
+                                                    standards.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -118,29 +117,28 @@
                                     <div class="stat-grid">
                                         <div class="stat-cube">
                                             <div class="cube-content">
-                                                <div class="stat-number">14+</div>
-                                                <div class="stat-label">Years</div>
+                                                <div class="stat-number">10+</div>
+                                                <div class="stat-label">Years of Operation</div>
                                             </div>
                                         </div>
                                         <div class="stat-cube">
                                             <div class="cube-content">
-                                                <div class="stat-number">50K+</div>
-                                                <div class="stat-label">Innovators</div>
+                                                <div class="stat-number">25,000+ </div>
+                                                <div class="stat-label">Participants & Nominees</div>
                                             </div>
                                         </div>
                                         <div class="stat-cube">
                                             <div class="cube-content">
-                                                <div class="stat-number">100+</div>
-                                                <div class="stat-label">Countries</div>
+                                                <div class="stat-number">80+ </div>
+                                                <div class="stat-label">Countries Represented</div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="history-description">
-                                        <p>From a grassroots initiative to a globally recognized platform
-                                            celebrating
-                                            excellence across AI, cybersecurity, and emerging
-                                            technologies—transforming
-                                            the way we honor innovation.</p>
+                                        <p>Evolving from an initiative focused on early AI ethical frameworks to a
+                                            prestigious international program, the Orionsm Global Awards now set high
+                                            standards for AI governance, policy impact, ethical innovation, and regulatory
+                                            excellence continuously redefining global expectations for trustworthy AI..</p>
                                     </div>
                                 </div>
                             </div>
@@ -157,9 +155,8 @@
                         <div class="col-lg-8 offset-lg-2 text-center">
                             <div class="subtitle wow fadeInUp mb-3">7 MILESTONES</div>
                             <h2 class="wow fadeInUp" data-wow-delay=".2s">Our Journey to Excellence</h2>
-                            <p class="lead mb-0 wow fadeInUp" data-wow-delay=".4s">From 2019 to 2025 - Celebrating
-                                technological
-                                innovation</p>
+                            <p class="lead mb-0 wow fadeInUp" data-wow-delay=".4s">From 2016 to 2026 - Elevating Global AI
+                                Governance Standards</p>
                         </div>
                     </div>
 
@@ -172,13 +169,11 @@
                                 <div class="step-card">
                                     <div class="step-circle">
                                         <span class="step-number">1</span>
-                                        <span class="step-year">2019</span>
+                                        <span class="step-year">2016</span>
                                     </div>
-                                    <div class="step-title">FOUNDATION & VISION</div>
-                                    <p>Established the ORIONSM International Tech Awards framework to recognize exceptional
-                                        achievements in
-                                        technology.
-                                    </p>
+                                    <div class="step-title">FOUNDATION & VISION </div>
+                                    <p>Established the Orionsm Global Awards to recognize foundational
+                                        work in AI ethics, governance structures, and responsible deployment frameworks.</p>
                                 </div>
                                 <!-- Connector to Step 2 via CSS -->
                             </div>
@@ -188,12 +183,11 @@
                                 <div class="step-card">
                                     <div class="step-circle">
                                         <span class="step-number">2</span>
-                                        <span class="step-year">2020</span>
+                                        <span class="step-year">2017</span>
                                     </div>
-                                    <div class="step-title">FIRST LAUNCH</div>
-                                    <p>Successfully hosted inaugural ceremony, honoring 50+ outstanding achievers from
-                                        diverse
-                                        sectors.</p>
+                                    <div class="step-title">INAUGURAL EDITION </div>
+                                    <p>Hosted the first awards ceremony, honoring 50+ leaders in AI policy
+                                        and ethical practices from multiple continents.</p>
                                 </div>
                                 <!-- Connector to Step 3 via CSS -->
                             </div>
@@ -203,11 +197,11 @@
                                 <div class="step-card">
                                     <div class="step-circle">
                                         <span class="step-number">3</span>
-                                        <span class="step-year">2021</span>
+                                        <span class="step-year">2018</span>
                                     </div>
-                                    <div class="step-title">DIGITAL TRANSFORMATION</div>
-                                    <p>Launched online nomination platform, enabling transparent submissions and digital
-                                        excellence.
+                                    <div class="step-title">DIGITAL & TRANSPARENT PROCESSES </div>
+                                    <p>Introduced a secure, open nomination platform with verifiable submission tracking to
+                                        enhance accessibility and integrity in AI governance evaluations.
                                     </p>
                                 </div>
                                 <!-- CSS Connector will be added via class -->
@@ -221,11 +215,12 @@
                                 <div class="step-card">
                                     <div class="step-circle">
                                         <span class="step-number">6</span>
-                                        <span class="step-year">2024</span>
+                                        <span class="step-year">2021</span>
                                     </div>
-                                    <div class="step-title">RECORD PARTICIPATION</div>
-                                    <p>Reached milestone with 500+ nominations and 100+ winners, solidifying premier
-                                        position.</p>
+                                    <div class="step-title">PEAK ENGAGEMENT & IMPACT </div>
+                                    <p>Recorded over 400 nominations and 100+ honorees, with
+                                        awardees influencing major policy developments including contributions to
+                                        international AI guidelines.</p>
                                 </div>
                                 <!-- CSS Connector will be added via class -->
                             </div>
@@ -235,12 +230,12 @@
                                 <div class="step-card">
                                     <div class="step-circle">
                                         <span class="step-number">5</span>
-                                        <span class="step-year">2023</span>
+                                        <span class="step-year">2020</span>
                                     </div>
-                                    <div class="step-title">INNOVATION CATEGORIES</div>
-                                    <p>Introduced cutting-edge categories including AI, Machine Learning, and Blockchain
-                                        technology.
-                                    </p>
+                                    <div class="step-title">SPECIALIZED GOVERNANCE CATEGORIES </div>
+                                    <p>Launched dedicated categories for AI fairness,
+                                        algorithmic accountability, regulatory innovation, and international AI standards
+                                        alignment.</p>
                                 </div>
                             </div>
 
@@ -249,12 +244,12 @@
                                 <div class="step-card">
                                     <div class="step-circle">
                                         <span class="step-number">4</span>
-                                        <span class="step-year">2022</span>
+                                        <span class="step-year">2019</span>
                                     </div>
-                                    <div class="step-title">GLOBAL EXPANSION</div>
-                                    <p>Achieved international recognition with participants from 25+ countries establishing
-                                        global
-                                        presence.</p>
+                                    <div class="step-title">INTERNATIONAL GROWTH </div>
+                                    <p>Expanded to include participants from 30+ countries, gaining
+                                        recognition in global AI regulatory dialogues and partnerships with international
+                                        bodies.</p>
                                 </div>
                             </div>
                         </div>
@@ -265,11 +260,12 @@
                                 <div class="step-card step-card-current">
                                     <div class="step-circle step-circle-current">
                                         <span class="step-number">7</span>
-                                        <span class="step-year">2025</span>
+                                        <span class="step-year">2026</span>
                                     </div>
-                                    <div class="step-title">EXCELLENCE REDEFINED</div>
-                                    <p>Setting new benchmarks with enhanced evaluation criteria and expanded global reach
-                                        for 2025.
+                                    <div class="step-title">STANDARDS REDEFINED </div>
+                                    <p>Implementing enhanced, evidence-based evaluation protocols
+                                        aligned with global best practices, extending influence to 80+ countries for the
+                                        2026 cycle.
                                     </p>
                                 </div>
                             </div>
@@ -292,8 +288,7 @@
                                         <path d="M40 5L47 30L72 37L53 57L58 82L40 69L22 82L27 57L8 37L33 30L40 5Z"
                                             fill="url(#missionFlipGrad)" stroke="#FFD700" stroke-width="2" />
                                         <defs>
-                                            <linearGradient id="missionFlipGrad" x1="8" y1="5"
-                                                x2="72" y2="82">
+                                            <linearGradient id="missionFlipGrad" x1="8" y1="5" x2="72" y2="82">
                                                 <stop stop-color="#FFD700" />
                                                 <stop offset="1" stop-color="#FF6B00" />
                                             </linearGradient>
@@ -309,10 +304,14 @@
                                 <div class="back-decoration"></div>
                                 <div class="back-content">
                                     <h4>Our Mission</h4>
-                                    <p>To celebrate and honor groundbreaking achievements in technology by
-                                        recognizing
-                                        individuals and organizations driving innovation and excellence in the IT
-                                        sector.</p>
+                                    <p>To identify, evaluate, and celebrate pioneering achievements in AI governance that
+                                        strengthen ethical standards, promote inclusive regulatory practices, and ensure AI
+                                        technologies serve humanity responsibly.</p>
+                                    <p>Our Mission To rigorously assess and honor individuals, organizations, and
+                                        initiatives that demonstrate measurable progress in AI ethics, policy formulation,
+                                        bias mitigation, transparency mechanisms, and global AI governance frameworks,
+                                        thereby elevating international benchmarks and encouraging widespread adoption of
+                                        responsible AI principles.</p>
                                     <div class="back-accent-line"></div>
                                 </div>
                             </div>
@@ -329,10 +328,10 @@
                                 <div class="card-mesh-bg"></div>
                                 <div class="floating-icon">
                                     <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-                                        <circle cx="40" cy="40" r="35" stroke="url(#visionFlipGrad1)"
-                                            stroke-width="3" fill="none" />
-                                        <circle cx="40" cy="40" r="25" stroke="url(#visionFlipGrad2)"
-                                            stroke-width="2" fill="none" />
+                                        <circle cx="40" cy="40" r="35" stroke="url(#visionFlipGrad1)" stroke-width="3"
+                                            fill="none" />
+                                        <circle cx="40" cy="40" r="25" stroke="url(#visionFlipGrad2)" stroke-width="2"
+                                            fill="none" />
                                         <circle cx="40" cy="40" r="15" fill="url(#visionFlipGrad3)" />
                                         <defs>
                                             <linearGradient id="visionFlipGrad1">
@@ -359,10 +358,14 @@
                                 <div class="back-decoration"></div>
                                 <div class="back-content">
                                     <h4>Our Vision</h4>
-                                    <p>To build a global platform that connects, inspires, and celebrates tech
-                                        leaders—fostering
-                                        creativity, collaboration, and meaningful impact through awards and
-                                        recognition.</p>
+                                    <p>To foster a unified global ecosystem where AI governance leaders collaborate,
+                                        innovate, and set enduring standards that guarantee trustworthy AI deployment across
+                                        all sectors and societies.</p>
+                                    <p>Our Vision To establish the Orionsm Global Awards as the definitive global authority
+                                        on AI governance excellence, creating lasting networks of collaboration among
+                                        policymakers, researchers, industry leaders, and civil society to proactively
+                                        address emerging AI challenges and drive sustainable, equitable progress in
+                                        artificial intelligence.</p>
                                     <div class="back-accent-line"></div>
                                 </div>
                             </div>
