@@ -20,10 +20,6 @@
                 class="policy-nav-link {{ $active === 'cancellation-refund-policy' ? 'active' : '' }}">
                 <i class="fa fa-ban"></i> Cancellation Policy
             </a>
-            <a href="{{ route('shipping-return-policy') }}"
-                class="policy-nav-link {{ $active === 'shipping-return-policy' ? 'active' : '' }}">
-                <i class="fa fa-truck"></i> Shipping Policy
-            </a>
         </nav>
     </div>
 
