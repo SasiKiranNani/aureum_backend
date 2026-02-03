@@ -46,7 +46,6 @@
                         <li><a href="{{ route('terms-and-conditions') }}">Terms & Conditions</a></li>
                         <li><a href="{{ route('cookie-policy') }}">Cookie Policy</a></li>
                         <li><a href="{{ route('cancellation-refund-policy') }}">Refund Policy</a></li>
-                        <li><a href="{{ route('shipping-return-policy') }}">Shipping Policy</a></li>
                     </ul>
                 </div>
             </div>

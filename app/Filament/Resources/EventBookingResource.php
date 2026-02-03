@@ -79,9 +79,80 @@ class EventBookingResource extends Resource
                         'completed' => 'Completed',
                         'failed' => 'Failed',
                     ]),
+                Tables\Filters\SelectFilter::make('payment_gateway')
+                    ->options(fn () => EventBooking::distinct()->pluck('payment_gateway', 'payment_gateway')->filter()->toArray()),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\Action::make('view_invoice')
+                    ->label('View Invoice/Proof')
+                    ->icon('heroicon-o-document-text')
+                    ->color('info')
+                    ->url(fn (EventBooking $record) => $record->manual_payment_invoice ? asset('storage/'.$record->manual_payment_invoice) : null, true)
+                    ->visible(fn (EventBooking $record) => $record->payment_gateway === 'wiretransfer/ach' && $record->manual_payment_invoice),
+                Tables\Actions\Action::make('update_payment')
+                    ->label('Update Payment')
+                    ->icon('heroicon-o-currency-dollar')
+                    ->color('success')
+                    ->form([
+                        \Filament\Forms\Components\Select::make('payment_status')
+                            ->options([
+                                'pending' => 'Pending',
+                                'completed' => 'Completed',
+                                'failed' => 'Failed',
+                            ])
+                            ->required(),
+                        \Filament\Forms\Components\Select::make('payment_gateway')
+                            ->options([
+                                'wiretransfer/ach' => 'wiretransfer/ach',
+                                'razorpay' => 'razorpay',
+                                'paypal' => 'paypal',
+                                'stripe' => 'stripe',
+                                'payu' => 'payu',
+                            ])
+                            ->label('Payment Gateway')
+                            ->required(),
+                        \Filament\Forms\Components\DateTimePicker::make('paid_at')
+                            ->default(now()),
+                        \Filament\Forms\Components\TextInput::make('transaction_id')
+                            ->label('Transaction ID'),
+                    ])
+                    ->fillForm(fn (EventBooking $record) => [
+                        'payment_status' => $record->payment_status,
+                        'payment_gateway' => $record->payment_gateway,
+                        'paid_at' => $record->paid_at ?? now(),
+                        'transaction_id' => $record->transaction_id,
+                    ])
+                    ->action(function (EventBooking $record, array $data): void {
+                        $record->update([
+                            'payment_status' => $data['payment_status'],
+                            'payment_gateway' => $data['payment_gateway'],
+                            'paid_at' => $data['paid_at'],
+                            'transaction_id' => $data['transaction_id'],
+                        ]);
+
+                        if ($data['payment_status'] === 'completed' && $record->wasChanged('payment_status')) {
+                            // Send Ticket Email
+                            try {
+                                \Illuminate\Support\Facades\Mail::to($record->user->email)->send(new \App\Mail\EventTicket($record));
+                                \Filament\Notifications\Notification::make()
+                                    ->title('Payment Updated & Ticket Sent')
+                                    ->success()
+                                    ->send();
+                            } catch (\Exception $e) {
+                                \Filament\Notifications\Notification::make()
+                                    ->title('Payment Updated but Email Failed')
+                                    ->body($e->getMessage())
+                                    ->warning()
+                                    ->send();
+                            }
+                        } else {
+                            \Filament\Notifications\Notification::make()
+                                ->title('Payment Status Updated')
+                                ->success()
+                                ->send();
+                        }
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

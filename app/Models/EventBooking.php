@@ -18,6 +18,7 @@ class EventBooking extends Model
         'payment_status',
         'payment_gateway',
         'transaction_id',
+        'manual_payment_invoice',
         'payment_details',
         'paid_at',
     ];

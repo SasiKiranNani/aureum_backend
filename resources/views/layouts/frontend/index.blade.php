@@ -22,6 +22,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    @stack('styles')
 </head>
 
 <body class="dark-scheme">
@@ -61,7 +62,7 @@
     <script src="{{ asset('frontend/js/custom-marquee.js') }}"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             @if (session('success'))
                 Toast.fire({
                     icon: 'success',
@@ -101,11 +102,11 @@
                 authModal.show();
             @endif
 
-                // Check for session flash to open Season Closed Modal
-                @if (session('open_season_modal'))
-                    var seasonModal = new bootstrap.Modal(document.getElementById('seasonClosedModal'));
-                    seasonModal.show();
-                @endif
+            // Check for session flash to open Season Closed Modal
+            @if (session('open_season_modal'))
+                var seasonModal = new bootstrap.Modal(document.getElementById('seasonClosedModal'));
+                seasonModal.show();
+            @endif
         });
     </script>
 

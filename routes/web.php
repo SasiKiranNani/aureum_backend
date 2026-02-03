@@ -44,6 +44,7 @@ Route::get('/news-room/{id}', [FrontendController::class, 'newsRoomDetails'])->n
 Route::get('/events', [FrontendController::class, 'events'])->name('events');
 Route::get('/event/{id}', [FrontendController::class, 'eventDetails'])->name('event-details');
 Route::post('/event/book', [EventBookingController::class, 'store'])->name('event.book')->middleware('auth');
+Route::post('/event/manual-payment', [EventBookingController::class, 'manualPaymentStore'])->name('event.manual-payment-store')->middleware('auth');
 Route::get('/blog', [FrontendController::class, 'blog'])->name('blog');
 Route::get('/blog/{id}', [FrontendController::class, 'blogDetails'])->name('blog-details');
 Route::get('/contact-us', [FrontendController::class, 'contactUs'])->name('contact-us');
@@ -68,7 +69,6 @@ Route::get('/privacy-policy', [FrontendController::class, 'privacyPolicy'])->nam
 Route::get('/terms-and-conditions', [FrontendController::class, 'termsAndConditions'])->name('terms-and-conditions');
 Route::get('/cookie-policy', [FrontendController::class, 'cookiePolicy'])->name('cookie-policy');
 Route::get('/cancellation-refund-policy', [FrontendController::class, 'cancellationRefundPolicy'])->name('cancellation-refund-policy');
-Route::get('/shipping-return-policy', [FrontendController::class, 'shippingReturnPolicy'])->name('shipping-return-policy');
 
 // Protected Routes
 Route::middleware(['auth'])->group(function () {

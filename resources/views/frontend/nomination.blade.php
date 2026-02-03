@@ -788,56 +788,8 @@
                 </div>
             </div>
     </section>
-
-    <script>
-        @if (isset($nomination))
-            window.nominationToEdit = @json($nomination);
-        @endif
-    </script>
-    <script src="{{ asset('frontend/js/nomination.js') }}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            @if (!$activeSeason)
-                const modalElement = document.getElementById('seasonClosedModal');
-                const modal = new bootstrap.Modal(modalElement);
-                modal.show();
-
-                // Redirect to home when modal is closed
-                modalElement.addEventListener('hidden.bs.modal', function() {
-                    window.location.href = "{{ route('home') }}";
-                });
-
-                // Also disable form fields
-                document.querySelectorAll('input, select, textarea, button[type="submit"]').forEach(el => {
-                    el.disabled = true;
-                });
-            @endif
-
-            // Auto-hide logic for file removal
-            document.querySelectorAll('.remove-check').forEach(check => {
-                check.addEventListener('change', function() {
-                    if (this.checked) {
-                        const wrapper = this.closest('.current-file-wrapper') || this.closest(
-                            '.col-md-6');
-                        if (wrapper) {
-                            wrapper.style.transition = 'all 0.5s ease';
-                            wrapper.style.opacity = '0';
-                            wrapper.style.transform = 'scale(0.9)';
-                            setTimeout(() => {
-                                wrapper.style.display = 'none';
-                                Toast.fire({
-                                    icon: 'info',
-                                    title: 'File Marked for Removal',
-                                    text: 'Changes will be saved on submission.',
-                                    timer: 2000
-                                });
-                            }, 500);
-                        }
-                    }
-                });
-            });
-        });
-    </script>
+@endsection
+@push('styles')
     <style>
         /* File Removal UI */
         .remove-check:checked+.remove-label i {
@@ -889,4 +841,55 @@
             border-color: rgba(255, 215, 0, 0.3) !important;
         }
     </style>
-@endsection
+@endpush
+@push('scripts')
+    <script>
+        @if (isset($nomination))
+            window.nominationToEdit = @json($nomination);
+        @endif
+    </script>
+    <script src="{{ asset('frontend/js/nomination.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (!$activeSeason)
+                const modalElement = document.getElementById('seasonClosedModal');
+                const modal = new bootstrap.Modal(modalElement);
+                modal.show();
+
+                // Redirect to home when modal is closed
+                modalElement.addEventListener('hidden.bs.modal', function() {
+                    window.location.href = "{{ route('home') }}";
+                });
+
+                // Also disable form fields
+                document.querySelectorAll('input, select, textarea, button[type="submit"]').forEach(el => {
+                    el.disabled = true;
+                });
+            @endif
+
+            // Auto-hide logic for file removal
+            document.querySelectorAll('.remove-check').forEach(check => {
+                check.addEventListener('change', function() {
+                    if (this.checked) {
+                        const wrapper = this.closest('.current-file-wrapper') || this.closest(
+                            '.col-md-6');
+                        if (wrapper) {
+                            wrapper.style.transition = 'all 0.5s ease';
+                            wrapper.style.opacity = '0';
+                            wrapper.style.transform = 'scale(0.9)';
+                            setTimeout(() => {
+                                wrapper.style.display = 'none';
+                                Toast.fire({
+                                    icon: 'info',
+                                    title: 'File Marked for Removal',
+                                    text: 'Changes will be saved on submission.',
+                                    timer: 2000
+                                });
+                            }, 500);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+@endpush
