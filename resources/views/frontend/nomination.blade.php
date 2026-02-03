@@ -777,8 +777,14 @@
                                             <i class="icofont-arrow-left"></i> Previous Step
                                         </button>
                                         @if ($isSeasonOpen)
-                                            <button type="submit" class="btn-main btn-glow px-5 next-btns">Pay &
+                                            <button type="submit" id="btn-pay-online"
+                                                class="btn-main btn-glow px-5 next-btns">Pay &
                                                 Submit</button>
+                                            <button type="button" id="btn-pay-manual"
+                                                class="btn-main btn-glow px-5 d-none"
+                                                style="background: #FFD700; color: #000;">
+                                                Pay via Wire Transfer <i class="icofont-bank-transfer-alt"></i>
+                                            </button>
                                         @endif
                                     </div>
                                 </div>
@@ -787,6 +793,114 @@
                     </div>
                 </div>
             </div>
+            <!-- Bank Account Modal -->
+            <div class="modal fade" id="bankAccountModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="false"
+                data-bs-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content border-0 bg-dark-gradient shadow-lg"
+                        style="background: linear-gradient(145deg, #1a1a1a, #2d2d2d); border: 1px solid rgba(255, 215, 0, 0.2);">
+                        <div class="modal-header border-bottom border-light-subtle">
+                            <h5 class="modal-title font-serif text-gold ps-2">Manual Payment - Wire Transfer</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body p-4">
+                            <!-- Step 1: Select Bank -->
+                            <div id="step-1-bank">
+                                <div class="text-center mb-4">
+                                    <h4 class="text-white mb-2">Step 1: Select Bank Account</h4>
+                                    <p class="text-white-50 fs-14">Please select a bank account to transfer the funds to.
+                                    </p>
+                                </div>
+
+                                <div class="row g-3 justify-content-center mb-4">
+                                    @foreach ($bankAccounts as $account)
+                                        <div class="col-md-6">
+                                            <label class="custom-radio-card h-100 p-3 w-100 position-relative">
+                                                <input type="radio" name="selected_bank_account"
+                                                    value="{{ $account->id }}">
+                                                <div class="radio-card-content flex-column text-start">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <i class="icofont-bank-alt fs-3 text-gold me-2"></i>
+                                                        <h6 class="mb-0 text-white">Bank Account</h6>
+                                                    </div>
+                                                    <div class="account-details fs-13 text-white-50 ps-1">
+                                                        <div class="mb-1"><strong>Holder Name:</strong>
+                                                            {{ $account->holder_name }}</div>
+                                                        <div class="mb-1"><strong>Account No:</strong>
+                                                            {{ $account->account_number }}
+                                                        </div>
+                                                        <div class="mb-1"><strong>Account Type:</strong>
+                                                            {{ $account->account_type }}
+                                                        </div>
+                                                        @if ($account->routing_number)
+                                                            <div class="mb-1"><strong>Routing No:</strong>
+                                                                {{ $account->routing_number }}
+                                                            </div>
+                                                        @endif
+                                                        @if ($account->swift_bic)
+                                                            <div class="mb-1"><strong>Swift/BIC:</strong>
+                                                                {{ $account->swift_bic }}
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                <div class="position-absolute top-0 end-0 p-2">
+                                                    <i
+                                                        class="icofont-check-circled fs-4 text-gold opacity-0 check-icon"></i>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                                <div id="step-1-error" class="alert alert-danger d-none mb-3 py-2 fs-14"></div>
+
+                                <div class="text-center">
+                                    <button type="button" id="btn-next-step" class="btn-main btn-glow px-5">
+                                        Next Step <i class="icofont-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Step 2: Upload Proof -->
+                            <div id="step-2-proof" class="d-none">
+                                <div class="text-center mb-4">
+                                    <h4 class="text-white mb-2">Step 2: Upload Payment Proof</h4>
+                                    <p class="text-white-50 fs-14">Please upload your transaction receipt or enter the ID.
+                                    </p>
+                                </div>
+
+                                <div class="mb-4">
+                                    <div class="field-set mb-3">
+                                        <label class="static-label mb-2">Transaction Receipt (PDF/Image)</label>
+                                        <input type="file" id="manual_payment_invoice"
+                                            class="form-control premium-input text-white" accept=".pdf,.jpg,.jpeg,.png">
+                                    </div>
+
+                                    <div class="field-set">
+                                        <label class="static-label mb-2">Transaction ID / Reference No.</label>
+                                        <input type="text" id="transaction_id"
+                                            class="form-control premium-input text-white" placeholder="e.g. TXN123456789">
+                                    </div>
+                                </div>
+
+                                <div id="manual-payment-error" class="alert alert-danger d-none mb-3 py-2 fs-14"></div>
+
+                                <div class="d-flex justify-content-between">
+                                    <button type="button" id="btn-prev-step" class="btn btn-outline-light">
+                                        <i class="icofont-arrow-left"></i> Back
+                                    </button>
+                                    <button type="button" id="btn-submit-manual" class="btn-main btn-glow px-4">
+                                        Submit Payment <i class="icofont-check-circled"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </section>
 @endsection
 @push('styles')
@@ -840,6 +954,41 @@
             background: rgba(255, 255, 255, 0.08) !important;
             border-color: rgba(255, 215, 0, 0.3) !important;
         }
+
+
+        /* SweetAlert2 Overrides for Premium Feel */
+        div.swal2-popup.border-gold {
+            border: 1px solid #FFD700 !important;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2) !important;
+            padding: 40px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        div.swal2-icon {
+            margin: 0 auto 20px auto !important;
+            display: flex !important;
+        }
+
+        div.swal2-title {
+            padding: 0 !important;
+            margin-bottom: 10px !important;
+            width: 100% !important;
+            text-align: center !important;
+        }
+
+        div.swal2-html-container {
+            margin: 30px 0 30px 0 !important;
+            width: 100% !important;
+            text-align: center !important;
+        }
+
+        div.swal2-actions {
+            width: 100% !important;
+            justify-content: center !important;
+        }
     </style>
 @endpush
 @push('scripts')
@@ -890,6 +1039,250 @@
                     }
                 });
             });
+
+            // --- MANUAL PAYMENT LOGIC ---
+            const nominationForm = document.getElementById('nomination-form');
+            const bankModalElement = document.getElementById('bankAccountModal');
+            let bankModal = null;
+            if (bankModalElement) {
+                bankModal = new bootstrap.Modal(bankModalElement);
+            }
+
+            let currentNominationId = null;
+
+            // Intercept Form Submission
+            if (nominationForm) {
+                nominationForm.addEventListener('submit', async function(e) {
+                    const selectedMethod = document.querySelector(
+                        'input[name="payment_method"]:checked');
+                    if (false && selectedMethod && (selectedMethod.value.includes('wire') ||
+                            selectedMethod.value
+                            .includes('ach'))) {
+                        e.preventDefault();
+
+                        // Submit Nomination First to get ID
+                        const submitBtn = this.querySelector('button[type="submit"]');
+                        const originalText = submitBtn.innerHTML;
+                        submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Initializing...';
+                        submitBtn.disabled = true;
+
+                        const formData = new FormData(this);
+
+                        try {
+                            const response = await fetch(this.action, {
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'Accept': 'application/json'
+                                }
+                            });
+
+                            const data = await response.json();
+
+                            if (data.success) {
+                                currentNominationId = data.data.nomination_id; // Store ID
+                                if (bankModal) {
+                                    bankModal.show();
+
+                                    // Reset Modal Steps
+                                    document.getElementById('step-1-bank').classList.remove('d-none');
+                                    document.getElementById('step-2-proof').classList.add('d-none');
+                                }
+                            } else {
+                                // Show validation errors
+                                if (data.errors) {
+                                    let errorMsg = Object.values(data.errors).flat().join('<br>');
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Validation Error',
+                                        html: errorMsg,
+                                        background: '#1a1a1a',
+                                        color: '#fff'
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: data.message || 'Submission failed',
+                                        background: '#1a1a1a',
+                                        color: '#fff'
+                                    });
+                                }
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'An unexpected error occurred.',
+                                background: '#1a1a1a',
+                                color: '#fff'
+                            });
+                        } finally {
+                            submitBtn.innerHTML = originalText;
+                            submitBtn.disabled = false;
+                        }
+                    }
+                });
+            }
+
+            // --- MANUAL PAYMENT BUTTON LISTENER ---
+            const btnManualPay = document.getElementById('btn-pay-manual');
+
+            if (btnManualPay) {
+                btnManualPay.addEventListener('click', function() {
+                    // Get Nomination ID from global window object (exposed by nomination.js)
+                    let nominationId = null;
+                    if (window.nominationData && window.nominationData.nomination_id) {
+                        nominationId = window.nominationData.nomination_id;
+                    } else if (window.nominationToEdit && window.nominationToEdit.id) {
+                        nominationId = window.nominationToEdit.id;
+                    }
+
+                    if (!nominationId) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Nomination data missing. Please ensure you have completed the previous step.',
+                            background: '#1a1a1a',
+                            color: '#fff'
+                        });
+                        return;
+                    }
+
+                    currentNominationId = nominationId;
+
+                    if (bankModal) {
+                        bankModal.show();
+                        // Reset Modal Steps
+                        document.getElementById('step-1-bank').classList.remove('d-none');
+                        document.getElementById('step-2-proof').classList.add('d-none');
+                    }
+                });
+            }
+
+            // Modal Navigation
+            const btnNextStep = document.getElementById('btn-next-step');
+            const btnPrevStep = document.getElementById('btn-prev-step');
+            const btnSubmitManual = document.getElementById('btn-submit-manual');
+            const step1Error = document.getElementById('step-1-error');
+            const manualPaymentError = document.getElementById('manual-payment-error');
+
+            if (btnNextStep) {
+                btnNextStep.addEventListener('click', function() {
+                    const selectedBank = document.querySelector(
+                        'input[name="selected_bank_account"]:checked');
+                    if (!selectedBank) {
+                        step1Error.textContent = 'Please select a bank account.';
+                        step1Error.classList.remove('d-none');
+                        return;
+                    }
+                    step1Error.classList.add('d-none');
+                    document.getElementById('step-1-bank').classList.add('d-none');
+                    document.getElementById('step-2-proof').classList.remove('d-none');
+                });
+            }
+
+            if (btnPrevStep) {
+                btnPrevStep.addEventListener('click', function() {
+                    document.getElementById('step-2-proof').classList.add('d-none');
+                    document.getElementById('step-1-bank').classList.remove('d-none');
+                });
+            }
+
+            // Submit Manual Proof
+            if (btnSubmitManual) {
+                btnSubmitManual.addEventListener('click', async function() {
+                    const fileInput = document.getElementById('manual_payment_invoice');
+                    const transactionIdInput = document.getElementById('transaction_id');
+                    const selectedBank = document.querySelector(
+                        'input[name="selected_bank_account"]:checked');
+
+                    if (!fileInput.files[0] && !transactionIdInput.value.trim()) {
+                        manualPaymentError.textContent =
+                            'Please either upload a proof file OR enter a transaction ID.';
+                        manualPaymentError.classList.remove('d-none');
+                        return;
+                    }
+
+                    manualPaymentError.classList.add('d-none');
+                    const btn = this;
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Submitting...';
+                    btn.disabled = true;
+
+                    // Capture Frontend Calculated Amount
+                    const totalAmountText = document.getElementById('pay-total-amount').textContent
+                        .replace('$', '').replace(',', '').trim();
+                    const discountSelect = document.getElementById('discount_select');
+                    let discountId = null;
+                    if (discountSelect && discountSelect.value) {
+                        discountId = discountSelect.value;
+                    }
+
+                    const formData = new FormData();
+                    formData.append('nomination_id', currentNominationId);
+                    formData.append('bank_account_id', selectedBank ? selectedBank.value : '');
+                    formData.append('payment_gateway_id', 'wiretransfer/ach');
+                    formData.append('manual_transaction_id', transactionIdInput.value.trim());
+                    formData.append('final_amount_paid', totalAmountText); // Send frontend amount
+                    if (discountId) {
+                        formData.append('discount_id', discountId);
+                    }
+
+                    if (fileInput.files[0]) {
+                        formData.append('manual_invoice', fileInput.files[0]);
+                    }
+
+                    formData.append('_token', "{{ csrf_token() }}");
+
+                    try {
+                        const response = await fetch("{{ route('nomination.manual-payment') }}", {
+                            method: "POST",
+                            body: formData,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Accept': 'application/json'
+                            }
+                        });
+
+                        const data = await response.json();
+
+                        if (data.success) {
+                            bankModal.hide();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Payment Submitted!',
+                                text: 'The council will verify your payment and update you shortly.',
+                                background: '#1a1a1a',
+                                color: '#ffffff',
+                                confirmButtonColor: '#FFD700',
+                                confirmButtonText: '<span style="color: #000; font-weight: bold;">Okay</span>',
+                                iconColor: '#FFD700',
+                                customClass: {
+                                    popup: 'border-gold',
+                                    confirmButton: 'px-5 py-2'
+                                }
+                            }).then(() => {
+                                window.location.href = "{{ route('home') }}"; // Or dashboard
+                            });
+                        } else {
+                            manualPaymentError.textContent = data.message || 'Submission failed.';
+                            manualPaymentError.classList.remove('d-none');
+                            btn.innerHTML = originalText;
+                            btn.disabled = false;
+                        }
+
+                    } catch (err) {
+                        console.error(err);
+                        manualPaymentError.textContent = 'An error occurred. Please try again.';
+                        manualPaymentError.classList.remove('d-none');
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                    }
+                });
+            }
         });
     </script>
 @endpush

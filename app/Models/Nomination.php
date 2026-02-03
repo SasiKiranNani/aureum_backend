@@ -52,6 +52,8 @@ class Nomination extends Model
         'invoice_path',
         'itr_invoice_path',
         'paid_at',
+        'manual_invoice',
+        'manual_transaction_id',
     ];
 
     public function judge(): BelongsTo

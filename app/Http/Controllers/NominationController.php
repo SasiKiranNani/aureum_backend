@@ -14,6 +14,103 @@ use Illuminate\Support\Facades\Validator;
 
 class NominationController extends Controller
 {
+    public function manualPaymentStore(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nomination_id' => 'required|exists:nominations,id',
+            'manual_invoice' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'manual_transaction_id' => 'nullable|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $nomination = Nomination::with(['award', 'discount', 'category'])
+                ->where('user_id', auth()->id())
+                ->where('id', $request->nomination_id)
+                ->firstOrFail();
+
+            // 1. Determine Amount (Prioritize Frontend for Gateway Discounts)
+            if ($request->filled('final_amount_paid')) {
+                $totalAmount = (float) $request->final_amount_paid;
+            } else {
+                // Fallback Calculation
+                $amount = $nomination->award->amount;
+
+                // Apply Discount if exists
+                $discountAmount = 0;
+                if ($nomination->discount_id) {
+                    $discount = \App\Models\Discount::find($nomination->discount_id);
+                    if ($discount) {
+                        if ($discount->type === 'percentage') {
+                            $discountAmount = ($amount * $discount->value) / 100;
+                        } else {
+                            $discountAmount = $discount->value;
+                        }
+                    }
+                }
+
+                // Add Admin Fee
+                $adminFee = \App\Models\AdminFee::where('is_active', true)->first();
+                $adminFeeAmount = $adminFee ? $adminFee->amount : 0;
+
+                // Final Total
+                $totalAmount = max(0, ($amount - $discountAmount) + $adminFeeAmount);
+            }
+
+            // 2. Find Gateway ID (Wire Transfer)
+
+            // 2. Find Gateway ID (Wire Transfer)
+            $gateway = \App\Models\PaymentGateway::where('name', 'LIKE', '%Wire Transfer%')
+                ->orWhere('name', 'LIKE', '%ACH%')
+                ->first();
+            $gatewayId = $gateway ? $gateway->id : null;
+
+            $updateData = [
+                'payment_status' => 'pending', 
+                'amount_paid' => $totalAmount,
+                'payment_gateway_id' => $gatewayId,
+                'paid_at' => now(), // Mark as paid (pending verification)
+                'payment_method' => 'wiretransfer/ach',
+            ];
+            
+            if ($request->filled('discount_id')) {
+                $updateData['discount_id'] = $request->discount_id;
+                $updateData['discount_applied'] = true; 
+            }
+
+            // If manual_invoice uploaded
+            if ($request->hasFile('manual_invoice')) {
+                $path = $request->file('manual_invoice')->store('manual_payments', 'public');
+                $updateData['manual_invoice'] = $path;
+            }
+
+            if ($request->filled('manual_transaction_id')) {
+                $updateData['manual_transaction_id'] = $request->manual_transaction_id;
+            }
+
+            $nomination->update($updateData);
+
+            DB::commit();
+
+            return response()->json(['success' => true]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Illuminate\Support\Facades\Log::error('Manual Payment Error: '.$e->getMessage());
+
+            return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.'], 500);
+        }
+    }
+
     public function store(Request $request)
     {
         // Validate the request

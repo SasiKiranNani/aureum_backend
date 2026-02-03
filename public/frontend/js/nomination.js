@@ -392,6 +392,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     nominationData = data.data;
                     
                     // Update payment tab with nomination data
+                    nominationData = data.data;
+                    window.nominationData = data.data; // Expose globally
                     document.getElementById('pay-nominee-name').textContent = data.data.full_name;
                     document.getElementById('pay-entry-title').textContent = document.getElementById('contribution_title').value;
                     
@@ -636,6 +638,19 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 conversionInfo.classList.add('d-none');
             }
+            
+            // Toggle Buttons for Wire Transfer
+            const btnOnline = document.getElementById('btn-pay-online');
+            const btnManual = document.getElementById('btn-pay-manual');
+            
+            if (this.value.includes('wire') || this.value.includes('ach')) {
+                if(btnOnline) btnOnline.classList.add('d-none');
+                if(btnManual) btnManual.classList.remove('d-none');
+            } else {
+                if(btnOnline) btnOnline.classList.remove('d-none');
+                if(btnManual) btnManual.classList.add('d-none');
+            }
+
             updateRadioStates();
             calculatePaymentTotal();
         });

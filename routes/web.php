@@ -49,6 +49,7 @@ Route::get('/blog', [FrontendController::class, 'blog'])->name('blog');
 Route::get('/blog/{id}', [FrontendController::class, 'blogDetails'])->name('blog-details');
 Route::get('/contact-us', [FrontendController::class, 'contactUs'])->name('contact-us');
 Route::get('/nomination', [FrontendController::class, 'nomination'])->name('nomination');
+Route::post('/nomination/manual-payment', [NominationController::class, 'manualPaymentStore'])->name('nomination.manual-payment');
 
 Route::get('/award-trophy', [FrontendController::class, 'awardTrophy'])->name('award-trophy');
 Route::get('/how-to-nominate', [FrontendController::class, 'howToNominate'])->name('how-to-nominate');

@@ -4,14 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\NominationResource\Pages;
 use App\Models\Nomination;
-use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Infolists;
-use Filament\Infolists\Infolist;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 class NominationResource extends Resource
@@ -43,19 +41,98 @@ class NominationResource extends Resource
                 Tables\Columns\TextColumn::make('award.name')->label('Award'),
                 Tables\Columns\BadgeColumn::make('status')->label('Status')
                     ->colors(['gray' => 'pending', 'warning' => 'processing', 'success' => 'awarded', 'danger' => 'rejected']),
-                Tables\Columns\TextColumn::make('created_at')->label('Submitted')->dateTime('M d, Y'),
+                // Tables\Columns\TextColumn::make('created_at')->label('Submitted')->dateTime('M d, Y'),
+                Tables\Columns\TextColumn::make('payment_method')->label('Payment Method'),
+                Tables\Columns\TextColumn::make('payment_status')->label('Payment Status'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('season')
                     ->relationship('season', 'name')
                     ->label('Season'),
                 Tables\Filters\SelectFilter::make('category')->relationship('category', 'name'),
-                Tables\Filters\SelectFilter::make('status')->options(['pending' => 'Pending', 'processing' => 'Processing', 'awarded' => 'Awarded', 'rejected' => 'Rejected']),
+                Tables\Filters\SelectFilter::make('status')->label('Winning Status')->options(['pending' => 'Pending', 'processing' => 'Processing', 'awarded' => 'Awarded', 'rejected' => 'Rejected']),
+                Tables\Filters\SelectFilter::make('payment_status')->label('Payment Status')->options(['pending' => 'Pending', 'processing' => 'Processing', 'awarded' => 'Awarded', 'rejected' => 'Rejected']),
+                Tables\Filters\SelectFilter::make('payment_gateway_id')->label('Payment Gateway')->relationship('paymentGateway', 'name'),
             ], layout: \Filament\Tables\Enums\FiltersLayout::AboveContent)
             ->filtersFormColumns(3)
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\Action::make('download_pdf')->label('PDF')->icon('heroicon-o-arrow-down-tray')->url(fn(Nomination $record) => route('nomination.pdf', $record->application_id))->openUrlInNewTab(),
+                Tables\Actions\Action::make('view_manual_invoice')
+                    ->label('View Invoice')
+                    ->icon('heroicon-o-document-text')
+                    ->color('info')
+                    ->url(fn (Nomination $record) => $record->manual_invoice ? asset('storage/'.$record->manual_invoice) : '#')
+                    ->openUrlInNewTab()
+                    ->visible(fn (Nomination $record) => (in_array(strtolower($record->payment_method), ['wiretransfer/ach', 'wire transfer', 'ach']) || $record->manual_invoice) && strtolower($record->payment_status) !== 'completed'),
+                Tables\Actions\Action::make('update_payment')
+                    ->label('Update Payment')
+                    ->icon('heroicon-o-currency-dollar')
+                    ->color('success')
+                    ->visible(fn (Nomination $record) => in_array(strtolower($record->payment_method), ['wiretransfer/ach', 'wire transfer', 'ach']) && strtolower($record->payment_status) !== 'completed')
+                    ->form([
+                        \Filament\Forms\Components\Select::make('payment_status')
+                            ->options([
+                                'pending' => 'Pending',
+                                'completed' => 'Completed',
+                                'failed' => 'Failed',
+                                'refunded' => 'Refunded',
+                            ])
+                            ->required(),
+                        \Filament\Forms\Components\Select::make('payment_gateway_id')
+                            ->label('Payment Gateway')
+                            ->relationship('paymentGateway', 'name')
+                            ->searchable()
+                            ->preload(),
+                        \Filament\Forms\Components\TextInput::make('payment_method')
+                            ->label('Payment Method Name (e.g. Wire Transfer)')
+                            ->default('Wire Transfer'),
+                        \Filament\Forms\Components\DateTimePicker::make('paid_at'),
+                        \Filament\Forms\Components\TextInput::make('manual_transaction_id')
+                            ->label('Transaction ID'),
+                    ])
+                    ->fillForm(fn (Nomination $record): array => [
+                        'payment_status' => $record->payment_status,
+                        'payment_gateway_id' => $record->payment_gateway_id,
+                        'payment_method' => $record->payment_method,
+                        'paid_at' => $record->paid_at,
+                        'manual_transaction_id' => $record->manual_transaction_id,
+                    ])
+                    ->action(function (array $data, Nomination $record): void {
+                        $record->update($data);
+
+                        if ($data['payment_status'] === 'completed' && $record->wasChanged('payment_status')) {
+                            // Trigger Email
+                            try {
+                                // Load relations for PDF
+                                $record->load(['answers.nomineeQuestion', 'evidence', 'category', 'award', 'user']);
+
+                                // Generate PDF
+                                $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.nomination-pdf', ['nomination' => $record]);
+                                $pdfContent = $pdf->output();
+                                $fileName = 'nomination-'.$record->application_id.'.pdf';
+
+                                // Create dummy payment object for email view
+                                $payment = new \stdClass;
+                                $payment->amount_usd = $record->amount_paid ?? 0;
+
+                                \Illuminate\Support\Facades\Mail::to($record->email)
+                                    ->send(new \App\Mail\NominationInvoiceMail($record, $payment, $pdfContent, $fileName));
+
+                            } catch (\Exception $e) {
+                                \Filament\Notifications\Notification::make()
+                                    ->title('Error sending email')
+                                    ->body($e->getMessage())
+                                    ->danger()
+                                    ->send();
+                            }
+                        }
+
+                        \Filament\Notifications\Notification::make()
+                            ->title('Payment Updated')
+                            ->success()
+                            ->send();
+                    }),
+                Tables\Actions\Action::make('download_pdf')->label('PDF')->icon('heroicon-o-arrow-down-tray')->url(fn (Nomination $record) => route('nomination.pdf', $record->application_id))->openUrlInNewTab(),
             ])
             ->defaultSort('created_at', 'desc');
     }
@@ -124,8 +201,8 @@ class NominationResource extends Resource
                         ])->columnSpan(9)->extraAttributes(['class' => 'pl-4 flex flex-col justify-center']),
                     ]),
                 ])->extraAttributes([
-                        'class' => 'bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 rounded-2xl shadow-xl border-none mb-8 p-8 overflow-hidden relative',
-                    ]),
+                    'class' => 'bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 rounded-2xl shadow-xl border-none mb-8 p-8 overflow-hidden relative',
+                ]),
 
             // CONTENT LAYOUT: 2-COLUMN (8 Main / 4 Sidebar)
             Infolists\Components\Grid::make(12)->schema([
@@ -189,7 +266,7 @@ class NominationResource extends Resource
                                         Infolists\Components\TextEntry::make('ev_icon')
                                             ->hiddenLabel()
                                             ->state(' ')
-                                            ->icon(fn($record) => match (true) {
+                                            ->icon(fn ($record) => match (true) {
                                                 ($record->type ?? '') === 'link' => 'heroicon-m-link',
                                                 ($record->type ?? '') === 'video' => 'heroicon-m-video-camera',
                                                 Str::contains($record->file_type ?? '', 'image') => 'heroicon-m-photo',
@@ -204,12 +281,12 @@ class NominationResource extends Resource
                                         // Name/URL (Computed State)
                                         Infolists\Components\TextEntry::make('ev_name')
                                             ->hiddenLabel()
-                                            ->state(fn($record) => $record->type === 'link' ? $record->reference_url : $record->file_name)
+                                            ->state(fn ($record) => $record->type === 'link' ? $record->reference_url : $record->file_name)
                                             ->limit(20)
-                                            ->tooltip(fn($state) => $state)
+                                            ->tooltip(fn ($state) => $state)
                                             ->weight('medium')
                                             ->columnSpan(9)
-                                            ->url(fn($record) => $record->type === 'link' ? $record->reference_url : null)
+                                            ->url(fn ($record) => $record->type === 'link' ? $record->reference_url : null)
                                             ->openUrlInNewTab(),
 
                                         // Action
@@ -218,7 +295,7 @@ class NominationResource extends Resource
                                                 ->hiddenLabel()
                                                 ->icon('heroicon-m-arrow-top-right-on-square')
                                                 ->color('gray')
-                                                ->url(fn($record) => $record->file_url ?? $record->reference_url)
+                                                ->url(fn ($record) => $record->file_url ?? $record->reference_url)
                                                 ->openUrlInNewTab(),
                                         ])->columnSpan(2)->alignEnd(),
                                     ])->extraAttributes(['class' => 'items-center']),
@@ -231,26 +308,25 @@ class NominationResource extends Resource
                         // ->collapsed()
                         ->columns(3)
                         ->schema([
-                            Infolists\Components\TextEntry::make('sensitive_data')->label('Sensitive Data')->badge()->color(fn($state) => $state === 'yes' ? 'danger' : 'success'),
-                            Infolists\Components\TextEntry::make('controversies')->label('Controversies')->badge()->color(fn($state) => $state === 'yes' ? 'danger' : 'success'),
-                            Infolists\Components\TextEntry::make('industry_influence')->label('Industry Influence')->badge()->color(fn($state) => $state === 'yes' ? 'danger' : 'success'),
+                            Infolists\Components\TextEntry::make('sensitive_data')->label('Sensitive Data')->badge()->color(fn ($state) => $state === 'yes' ? 'danger' : 'success'),
+                            Infolists\Components\TextEntry::make('controversies')->label('Controversies')->badge()->color(fn ($state) => $state === 'yes' ? 'danger' : 'success'),
+                            Infolists\Components\TextEntry::make('industry_influence')->label('Industry Influence')->badge()->color(fn ($state) => $state === 'yes' ? 'danger' : 'success'),
                             Infolists\Components\TextEntry::make('declaration_accurate')
                                 ->label('Declared Accurate')
                                 ->badge()
-                                ->formatStateUsing(fn(bool $state) => $state ? 'Yes' : 'No')
-                                ->color(fn(bool $state) => $state ? 'success' : 'danger')
-                                ->icon(fn(bool $state) => $state ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
+                                ->formatStateUsing(fn (bool $state) => $state ? 'Yes' : 'No')
+                                ->color(fn (bool $state) => $state ? 'success' : 'danger')
+                                ->icon(fn (bool $state) => $state ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
 
                             Infolists\Components\TextEntry::make('declaration_privacy')
                                 ->label('Declared Privacy')
                                 ->badge()
-                                ->formatStateUsing(fn(bool $state) => $state ? 'Yes' : 'No')
-                                ->color(fn(bool $state) => $state ? 'success' : 'danger')
-                                ->icon(fn(bool $state) => $state ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
+                                ->formatStateUsing(fn (bool $state) => $state ? 'Yes' : 'No')
+                                ->color(fn (bool $state) => $state ? 'success' : 'danger')
+                                ->icon(fn (bool $state) => $state ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
                         ]),
 
                 ])->columnSpan(8),
-
 
                 // === RIGHT SIDEBAR COLUMN (Data & Meta) ===
                 Infolists\Components\Group::make([
@@ -264,7 +340,9 @@ class NominationResource extends Resource
                             Infolists\Components\TextEntry::make('workforce_size')->label('Workforce')->icon('heroicon-m-users'),
                             Infolists\Components\TextEntry::make('status')
                                 ->badge()
-                                ->color(fn($state) => match ($state) { 'awarded' => 'success', 'rejected' => 'danger', default => 'warning'}),
+                                ->color(fn ($state) => match ($state) {
+                                    'awarded' => 'success', 'rejected' => 'danger', default => 'warning'
+                                }),
                         ])->columns(2),
 
                     // 2. EVALUATION OVERVIEW
@@ -280,7 +358,7 @@ class NominationResource extends Resource
                                 Infolists\Components\TextEntry::make('final_grade')
                                     ->label('Grade')
                                     ->badge()
-                                    ->color(fn($state) => match ($state) {
+                                    ->color(fn ($state) => match ($state) {
                                         'A', 'B' => 'success',
                                         'C' => 'warning',
                                         'D', 'F' => 'danger',
@@ -297,12 +375,14 @@ class NominationResource extends Resource
                                 Infolists\Components\TextEntry::make('status')
                                     ->label('Status')
                                     ->badge()
-                                    ->color(fn($state) => match ($state) { 'awarded' => 'success', 'rejected' => 'danger', default => 'gray'})
+                                    ->color(fn ($state) => match ($state) {
+                                        'awarded' => 'success', 'rejected' => 'danger', default => 'gray'
+                                    }),
                             ]),
                         ]),
                     Infolists\Components\Section::make('Financials')
                         ->icon('heroicon-o-currency-dollar')
-                        ->hidden(fn() => auth()->user()->hasRole('judge'))
+                        ->hidden(fn () => auth()->user()->hasRole('judge'))
                         ->schema([
                             Infolists\Components\TextEntry::make('payments.transaction_id')
                                 ->label('Txn ID')
@@ -318,7 +398,7 @@ class NominationResource extends Resource
                                 ->weight('black')
                                 ->color('success')
                                 ->alignCenter()
-                                ->badge()->formatStateUsing(fn($state) => strtoupper($state))
+                                ->badge()->formatStateUsing(fn ($state) => strtoupper($state))
                                 ->extraAttributes(['class' => 'mb-2']),
 
                             Infolists\Components\Grid::make(2)->schema([
@@ -342,9 +422,9 @@ class NominationResource extends Resource
                     Infolists\Components\Section::make('Contact')
                         ->icon('heroicon-o-at-symbol')
                         ->schema([
-                            Infolists\Components\TextEntry::make('curr_email')->label('Email')->default(fn($record) => $record->email)->icon('heroicon-m-envelope')->url(fn($state) => 'mailto:' . $state),
-                            Infolists\Components\TextEntry::make('curr_phone')->label('Phone')->default(fn($record) => $record->phone)->icon('heroicon-m-phone'),
-                            Infolists\Components\TextEntry::make('linkedin_url')->label('LinkedIn')->icon('heroicon-m-link')->url(fn($state) => $state)->openUrlInNewTab()->limit(30),
+                            Infolists\Components\TextEntry::make('curr_email')->label('Email')->default(fn ($record) => $record->email)->icon('heroicon-m-envelope')->url(fn ($state) => 'mailto:'.$state),
+                            Infolists\Components\TextEntry::make('curr_phone')->label('Phone')->default(fn ($record) => $record->phone)->icon('heroicon-m-phone'),
+                            Infolists\Components\TextEntry::make('linkedin_url')->label('LinkedIn')->icon('heroicon-m-link')->url(fn ($state) => $state)->openUrlInNewTab()->limit(30),
                             Infolists\Components\TextEntry::make('address')->icon('heroicon-m-map-pin')->size('xs')->color('gray'),
                             Infolists\Components\TextEntry::make('country')->badge(),
                         ]),
