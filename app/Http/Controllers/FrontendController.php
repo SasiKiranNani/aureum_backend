@@ -187,7 +187,22 @@ class FrontendController extends Controller
 
     public function howToNominate()
     {
-        return view('frontend.how-to-nominate');
+        $now = now();
+
+        // Check for active season (today is between opening and closing)
+        $activeSeason = \App\Models\Season::whereDate('opening_date', '<=', $now)
+            ->whereDate('closing_date', '>=', $now)
+            ->first();
+
+        $upcomingSeason = null;
+        if (!$activeSeason) {
+            // If no active season, get the nearest upcoming one
+            $upcomingSeason = \App\Models\Season::whereDate('opening_date', '>', $now)
+                ->orderBy('opening_date', 'asc')
+                ->first();
+        }
+
+        return view('frontend.how-to-nominate', compact('activeSeason', 'upcomingSeason'));
     }
 
     public function judges()
