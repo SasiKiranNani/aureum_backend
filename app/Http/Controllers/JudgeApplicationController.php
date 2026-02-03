@@ -11,6 +11,10 @@ class JudgeApplicationController extends Controller
 {
     public function index()
     {
+        if (!auth()->check()) {
+            return redirect()->route('home')->with('open_auth_modal', true);
+        }
+
         $categories = Category::where('is_active', true)->get();
 
         return view('frontend.judge-application', compact('categories'));

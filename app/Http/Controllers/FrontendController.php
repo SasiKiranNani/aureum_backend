@@ -109,6 +109,10 @@ class FrontendController extends Controller
 
     public function nomination(Request $request)
     {
+        if (!auth()->check()) {
+            return redirect()->route('home')->with('open_auth_modal', true);
+        }
+
         $categories = Category::where('is_active', true)->with('awards')->get();
         $adminFee = AdminFee::where('is_active', true)->first();
         $discounts = Discount::where('is_active', true)
@@ -131,7 +135,7 @@ class FrontendController extends Controller
                 ->where('payment_status', 'pending')
                 ->first();
 
-            if (! $nomination) {
+            if (!$nomination) {
                 return redirect()->route('dashboard.nominations')->with('error', 'Nomination not found or already paid.');
             }
 
@@ -146,6 +150,8 @@ class FrontendController extends Controller
             // Check if there's any active season for new nominations
             if ($activeSeason) {
                 $isSeasonOpen = true;
+            } else {
+                return redirect()->route('home')->with('open_season_modal', true);
             }
         }
 
@@ -156,7 +162,7 @@ class FrontendController extends Controller
     {
         $categoryId = $request->query('category_id');
 
-        if (! $categoryId) {
+        if (!$categoryId) {
             return response()->json(['error' => 'Category ID required'], 400);
         }
 
@@ -260,7 +266,7 @@ class FrontendController extends Controller
     public function viewBooking($id)
     {
         $user_id = auth()->id();
-        
+
         if (!$user_id) {
             return redirect()->route('login')->with('error', 'Please login to view details.');
         }

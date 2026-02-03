@@ -61,7 +61,7 @@
     <script src="{{ asset('frontend/js/custom-marquee.js') }}"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             @if (session('success'))
                 Toast.fire({
                     icon: 'success',
@@ -94,6 +94,18 @@
                     path: newUrl
                 }, '', newUrl);
             }
+
+            // Check for session flash to open Auth Modal
+            @if (session('open_auth_modal'))
+                var authModal = new bootstrap.Modal(document.getElementById('authModal'));
+                authModal.show();
+            @endif
+
+                // Check for session flash to open Season Closed Modal
+                @if (session('open_season_modal'))
+                    var seasonModal = new bootstrap.Modal(document.getElementById('seasonClosedModal'));
+                    seasonModal.show();
+                @endif
         });
     </script>
 
