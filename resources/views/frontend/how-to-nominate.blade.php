@@ -116,7 +116,7 @@
                             Fill in our official Nomination Form with complete and accurate information.
                             You may nominate yourself, your organization, or another deserving candidate.
                         </p>
-                        <a href="#" class="nom-step-cta-link">
+                        <a href="{{ route('nomination') }}" class="nom-step-cta-link auth-check-nomination">
                             <span>Access Nomination Form</span>
                             <i class="fas fa-arrow-right"></i>
                         </a>

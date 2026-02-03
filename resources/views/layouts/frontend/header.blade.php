@@ -103,3 +103,33 @@
         </div>
     </div>
 </header>
+<script>
+    window.isUserLoggedIn = {{ Auth::check() ? 'true' : 'false' }};
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Nomination Auth Check (Auth -> Season Check)
+        const nomLinks = document.querySelectorAll('.auth-check-nomination');
+        nomLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                if (!window.isUserLoggedIn) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation(); // Stop other handlers (like season check)
+                    var authModal = new bootstrap.Modal(document.getElementById('authModal'));
+                    authModal.show();
+                }
+            });
+        });
+
+        // Judge Application Auth Check (Auth Only)
+        const judgeLinks = document.querySelectorAll('.auth-check-judge');
+        judgeLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                if (!window.isUserLoggedIn) {
+                    e.preventDefault();
+                    var authModal = new bootstrap.Modal(document.getElementById('authModal'));
+                    authModal.show();
+                }
+            });
+        });
+    });
+</script>

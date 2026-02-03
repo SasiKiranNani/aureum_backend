@@ -29,7 +29,7 @@
                         <li><a href="{{ route('home') }}">Home</a></li>
                         {{-- <li><a href="{{ route('about-us') }}">About</a></li>
                         <li><a href="{{ route('categories') }}">Categories</a></li> --}}
-                        <li><a href="{{ route('nomination') }}">Nomination</a></li>
+                        <li><a href="{{ route('nomination') }}" class="auth-check-nomination">Nomination</a></li>
                         {{-- <li><a href="{{ route('award-trophy') }}">Award Trophy</a></li> --}}
                         <li><a href="{{ route('how-to-nominate') }}">How to Nominate</a></li>
                         {{-- <li><a href="{{ route('judges') }}">Judges</a></li> --}}
