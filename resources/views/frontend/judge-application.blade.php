@@ -88,7 +88,7 @@
                                                 <label class="form-label">Email Address <span
                                                         class="text-danger">*</span></label>
                                                 <input type="email" name="email" class="form-control-premium"
-                                                    value="{{ auth()->user()->email }}" readonly required
+                                                    value="{{ auth()->user()->email ?? '' }}" readonly required
                                                     title="Email cannot be changed as it is linked to your account.">
                                             </div>
                                         </div>

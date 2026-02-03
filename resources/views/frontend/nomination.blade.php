@@ -180,7 +180,7 @@
                                             <div class="field-set floating-label">
                                                 <input type="email" name="email" id="email"
                                                     class="form-control premium-input" placeholder=" " required
-                                                    value="{{ auth()->user()->email }}" readonly
+                                                    value="{{ auth()->user()->email ?? '' }}" readonly
                                                     title="Email cannot be changed as it is linked to your account.">
                                                 <label for="email">Official Email</label>
                                             </div>
