@@ -32,7 +32,9 @@ class FrontendController extends Controller
 
     public function categories()
     {
-        return view('frontend.categories');
+        $categories = Category::where('is_active', true)->get();
+
+        return view('frontend.categories', compact('categories'));
     }
 
     public function newsRoom()
