@@ -47,9 +47,11 @@ class EvaluationCriterionResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('min_score')
                     ->numeric()
+                    ->step(0.01)
                     ->label('Min Score'),
                 Forms\Components\TextInput::make('max_score')
                     ->numeric()
+                    ->step(0.01)
                     ->label('Max Score'),
                 Forms\Components\Toggle::make('is_rejection')
                     ->label('Is Rejection Criteria?')

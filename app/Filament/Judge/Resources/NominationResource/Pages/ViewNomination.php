@@ -83,6 +83,7 @@ class ViewNomination extends ViewRecord
                     Forms\Components\TextInput::make("phase_{$phase}_score")
                         ->label("Score")
                         ->numeric()
+                        ->step(0.01)
                         ->required(fn(Forms\Get $get) => $phase > 1 && !self::isRejection($phase, $get("phase_{$phase}_grade")))
                         ->visible(fn(Forms\Get $get) => $phase > 1 && $get("phase_{$phase}_grade") && !self::isRejection($phase, $get("phase_{$phase}_grade")))
                         ->minValue(fn(Forms\Get $get) => self::getMinScore($phase, $get("phase_{$phase}_grade")))
@@ -143,7 +144,7 @@ class ViewNomination extends ViewRecord
                 $isRejected = true;
             }
             if (isset($data["phase_{$i}_score"])) {
-                $totalScore += (int) $data["phase_{$i}_score"];
+                $totalScore += (float) $data["phase_{$i}_score"];
                 $scorablePhases++;
             }
         }
