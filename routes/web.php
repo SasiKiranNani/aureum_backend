@@ -54,7 +54,8 @@ Route::post('/nomination/manual-payment', [NominationController::class, 'manualP
 Route::get('/award-trophy', [FrontendController::class, 'awardTrophy'])->name('award-trophy');
 Route::get('/how-to-nominate', [FrontendController::class, 'howToNominate'])->name('how-to-nominate');
 Route::get('/judges', [FrontendController::class, 'judges'])->name('judges');
-Route::get('/judge-details', [FrontendController::class, 'judgeDetails'])->name('judge-details');
+Route::get('/judge-details/{name}', [FrontendController::class, 'judgeDetails'])->name('judge-details');
+Route::get('/panel-details/{name}', [FrontendController::class, 'panelDetails'])->name('panel-details');
 Route::get('/judging-criteria', [FrontendController::class, 'judgingCriteria'])->name('judging-criteria');
 Route::get('/past-winners', [FrontendController::class, 'pastWinners'])->name('past-winners');
 Route::get('/past-winner-details', [FrontendController::class, 'pastWinnerDetails'])->name('past-winner-details');

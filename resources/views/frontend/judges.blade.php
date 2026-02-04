@@ -21,138 +21,32 @@
 
             <!-- Judges Grid -->
             <div class="judges-grid">
-                <!-- Judge Card 1 -->
-                <div class="judge-card">
-                    <div class="judge-image-wrapper">
-                        <div class="judge-level-badge">LEVEL 1</div>
-                        <img src="divya-images/about.jpg" alt="Anna Kya" class="judge-photo">
-                        <div class="judge-overlay"></div>
+                @foreach ($judges as $judge)
+                    <!-- Judge Card -->
+                    @if ($judge->has_details_page)
+                        <a href="{{ route('judge-details', ['name' => $judge->name]) }}" class="judge-card-link">
+                    @endif
+                    <div class="judge-card">
+                        <div class="judge-image-wrapper">
+                            <img src="{{ $judge->image ? asset('storage/' . $judge->image) : asset('divya-images/about.jpg') }}"
+                                alt="{{ $judge->name }}" class="judge-photo">
+                            <div class="judge-overlay"></div>
+                        </div>
+                        <div class="judge-info">
+                            <h3 class="judge-name">{{ $judge->name }}</h3>
+                            <p class="judge-title">{{ $judge->designation }}</p>
+                            <p class="content-judge-specialty">Specialization: {{ $judge->specialization }}</p>
+                        </div>
                     </div>
-                    <div class="judge-info">
-                        <h3 class="judge-name">Anna Kya</h3>
-                        <p class="judge-title">CEO & COO</p>
-                    </div>
-                </div>
-
-                <!-- Judge Card 2 -->
-                <div class="judge-card">
-                    <div class="judge-image-wrapper">
-                        <div class="judge-level-badge">LEVEL 1</div>
-                        <img src="divya-images/about.jpg" alt="Des Ronald" class="judge-photo">
-                        <div class="judge-overlay"></div>
-                    </div>
-                    <div class="judge-info">
-                        <h3 class="judge-name">Des Ronald</h3>
-                        <p class="judge-title">Director of AI Strategy & Technology Board Member</p>
-                    </div>
-                </div>
-
-                <!-- Judge Card 3 -->
-                <div class="judge-card">
-                    <div class="judge-image-wrapper">
-                        <div class="judge-level-badge">LEVEL 1</div>
-                        <img src="divya-images/about.jpg" alt="Gilbert" class="judge-photo">
-                        <div class="judge-overlay"></div>
-                    </div>
-                    <div class="judge-info">
-                        <h3 class="judge-name">Gilbert</h3>
-                        <p class="judge-title">CEO & Digital Commerce & Innovation</p>
-                    </div>
-                </div>
-
-                <!-- Judge Card 4 -->
-                <div class="judge-card">
-                    <div class="judge-image-wrapper">
-                        <div class="judge-level-badge">LEVEL 1</div>
-                        <img src="divya-images/about.jpg" alt="Japnith Kaur" class="judge-photo">
-                        <div class="judge-overlay"></div>
-                    </div>
-                    <div class="judge-info">
-                        <h3 class="judge-name">Japnith Kaur</h3>
-                        <p class="judge-title">CTO & Technology Advisor</p>
-                    </div>
-                </div>
-
-                <!-- Judge Card 5 -->
-                <div class="judge-card">
-                    <div class="judge-image-wrapper">
-                        <div class="judge-level-badge">LEVEL 1</div>
-                        <img src="divya-images/about.jpg" alt="Joey Wong" class="judge-photo">
-                        <div class="judge-overlay"></div>
-                    </div>
-                    <div class="judge-info">
-                        <h3 class="judge-name">Joey Wong</h3>
-                        <p class="judge-title">Director of Technology Jury Member</p>
-                    </div>
-                </div>
-
-                <!-- Judge Card 6 -->
-                <div class="judge-card">
-                    <div class="judge-image-wrapper">
-                        <div class="judge-level-badge">LEVEL 1</div>
-                        <img src="divya-images/about.jpg" alt="Karen Price" class="judge-photo">
-                        <div class="judge-overlay"></div>
-                    </div>
-                    <div class="judge-info">
-                        <h3 class="judge-name">Karen Price</h3>
-                        <p class="judge-title">CEO & Global Business Tech Evaluator</p>
-                    </div>
-                </div>
-
-                <!-- Judge Card 7 -->
-                <div class="judge-card">
-                    <div class="judge-image-wrapper">
-                        <div class="judge-level-badge">LEVEL 1</div>
-                        <img src="divya-images/about.jpg" alt="Mitcheel" class="judge-photo">
-                        <div class="judge-overlay"></div>
-                    </div>
-                    <div class="judge-info">
-                        <h3 class="judge-name">Mitcheel</h3>
-                        <p class="judge-title">CTO & Technology Advisor</p>
-                    </div>
-                </div>
-
-                <!-- Judge Card 8 -->
-                <div class="judge-card">
-                    <div class="judge-image-wrapper">
-                        <div class="judge-level-badge">LEVEL 1</div>
-                        <img src="divya-images/about.jpg" alt="Neil Capel" class="judge-photo">
-                        <div class="judge-overlay"></div>
-                    </div>
-                    <div class="judge-info">
-                        <h3 class="judge-name">Neil Capel</h3>
-                        <p class="judge-title">CEO & Strategic Innovation Advisor</p>
-                    </div>
-                </div>
-
-                <!-- Judge Card 9 -->
-                <div class="judge-card">
-                    <div class="judge-image-wrapper">
-                        <div class="judge-level-badge">LEVEL 1</div>
-                        <img src="divya-images/about.jpg" alt="Sarah Smith" class="judge-photo">
-                        <div class="judge-overlay"></div>
-                    </div>
-                    <div class="judge-info">
-                        <h3 class="judge-name">Sarah Smith</h3>
-                        <p class="judge-title">Director & Global Innovation Jury Member</p>
-                    </div>
-                </div>
+                    @if ($judge->has_details_page)
+                        </a>
+                    @endif
+                @endforeach
             </div>
 
             <!-- Pagination -->
-            <div class="judges-pagination">
-                <button class="pagination-btn prev-btn" disabled>
-                    <i class="fas fa-chevron-left"></i>
-                    <span>Previous</span>
-                </button>
-                <div class="pagination-numbers">
-                    <button class="page-number active">1</button>
-                    <button class="page-number">Next</button>
-                </div>
-                <button class="pagination-btn next-btn">
-                    <span>Next</span>
-                    <i class="fas fa-chevron-right"></i>
-                </button>
+            <div class="judges-pagination-wrapper">
+                {{ $judges->links('vendor.pagination.custom') }}
             </div>
         </div>
     </section>
@@ -170,78 +64,128 @@
             </div>
 
             <div class="judges-content-grid">
-                <!-- Content Card 1 -->
-                <div class="judge-content-card">
-                    <div class="content-badge">LEVEL 2</div>
-                    <h3 class="content-judge-name">Dr. Michael Anderson</h3>
-                    <p class="content-judge-title">Chief Innovation Officer & AI Research Lead</p>
-                    <p class="content-judge-specialty">Specialization: Machine Learning, Neural Networks</p>
-                    <p class="content-judge-bio">
-                        15+ years of experience in artificial intelligence research and implementation.
-                        Published author of groundbreaking papers in deep learning architectures.
-                    </p>
-                </div>
+                @foreach ($panelMembers as $member)
+                    <!-- Content Card -->
+                    <div class="judge-content-card">
+                        <h3 class="content-judge-name">
+                            @if ($member->has_details_page)
+                                <a href="{{ route('panel-details', ['name' => $member->name]) }}"
+                                    style="color: inherit; text-decoration: none;">{{ $member->name }}</a>
+                            @else
+                                {{ $member->name }}
+                            @endif
+                        </h3>
+                        <p class="content-judge-title">{{ $member->display_designation }}</p>
+                        <p class="content-judge-specialty">Specialization: {{ $member->specialization }}</p>
+                        @if ($member->bio_html)
+                            <p class="content-judge-bio">
+                                {!! Str::limit(strip_tags($member->bio_html), 150) !!}
+                            </p>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
 
-                <!-- Content Card 2 -->
-                <div class="judge-content-card">
-                    <div class="content-badge">LEVEL 2</div>
-                    <h3 class="content-judge-name">Sarah Chen</h3>
-                    <p class="content-judge-title">VP of Product Innovation & UX Strategy</p>
-                    <p class="content-judge-specialty">Specialization: User Experience, Design Thinking</p>
-                    <p class="content-judge-bio">
-                        Award-winning product designer with expertise in creating intuitive digital experiences.
-                        Led design teams at Fortune 500 companies.
-                    </p>
-                </div>
-
-                <!-- Content Card 3 -->
-                <div class="judge-content-card">
-                    <div class="content-badge">LEVEL 2</div>
-                    <h3 class="content-judge-name">Prof. James Rodriguez</h3>
-                    <p class="content-judge-title">Academic Director & Technology Ethics Scholar</p>
-                    <p class="content-judge-specialty">Specialization: Tech Ethics, Data Privacy</p>
-                    <p class="content-judge-bio">
-                        Leading voice in technology ethics and responsible AI development.
-                        Advisor to international policy-making bodies on digital governance.
-                    </p>
-                </div>
-
-                <!-- Content Card 4 -->
-                <div class="judge-content-card">
-                    <div class="content-badge">LEVEL 2</div>
-                    <h3 class="content-judge-name">Emily Thompson</h3>
-                    <p class="content-judge-title">Venture Capitalist & Startup Ecosystem Builder</p>
-                    <p class="content-judge-specialty">Specialization: Investment Strategy, Scaling</p>
-                    <p class="content-judge-bio">
-                        Invested in 50+ successful tech startups. Expert in identifying disruptive
-                        innovations and guiding companies through rapid growth phases.
-                    </p>
-                </div>
-
-                <!-- Content Card 5 -->
-                <div class="judge-content-card">
-                    <div class="content-badge">LEVEL 3</div>
-                    <h3 class="content-judge-name">David Kim</h3>
-                    <p class="content-judge-title">Blockchain Architect & Decentralization Expert</p>
-                    <p class="content-judge-specialty">Specialization: Blockchain, Web3, DeFi</p>
-                    <p class="content-judge-bio">
-                        Pioneer in blockchain technology with contributions to major cryptocurrency protocols.
-                        Advocate for decentralized systems and digital sovereignty.
-                    </p>
-                </div>
-
-                <!-- Content Card 6 -->
-                <div class="judge-content-card">
-                    <div class="content-badge">LEVEL 3</div>
-                    <h3 class="content-judge-name">Dr. Priya Sharma</h3>
-                    <p class="content-judge-title">Cybersecurity Director & Threat Intelligence Lead</p>
-                    <p class="content-judge-specialty">Specialization: Security, Risk Management</p>
-                    <p class="content-judge-bio">
-                        Global authority on cybersecurity with expertise in protecting critical infrastructure.
-                        Regular speaker at international security conferences.
-                    </p>
-                </div>
+            <div class="judges-pagination-wrapper">
+                {{ $panelMembers->links('vendor.pagination.custom') }}
             </div>
         </div>
     </section>
+
+    <style>
+        /* Custom Pagination Styles */
+        .judges-pagination-wrapper {
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .custom-pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Desktop Pagination - Show only page numbers */
+        .desktop-pagination {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .mobile-pagination {
+            display: none;
+        }
+
+        /* Page Numbers */
+        .page-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 44px;
+            height: 44px;
+            padding: 0 16px;
+            background: transparent;
+            border: 2px solid #ff6b00;
+            border-radius: 10px;
+            color: #ff6b00;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .page-number:hover {
+            background: rgba(255, 107, 0, 0.15);
+            color: #ff8c00;
+        }
+
+        .page-number.active {
+            background: #ff6b00;
+            color: #fff;
+        }
+
+        .page-dots {
+            color: rgba(255, 255, 255, 0.4);
+            padding: 0 8px;
+        }
+
+        /* Mobile Pagination - Show Prev/Next and current page */
+        @media (max-width: 768px) {
+            .desktop-pagination {
+                display: none;
+            }
+
+            .mobile-pagination {
+                display: flex;
+                gap: 12px;
+                align-items: center;
+            }
+
+            .page-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0 24px;
+                height: 44px;
+                background: transparent;
+                border: 2px solid #ff6b00;
+                border-radius: 10px;
+                color: #ff6b00;
+                font-size: 15px;
+                font-weight: 600;
+                text-decoration: none;
+                transition: all 0.25s ease;
+            }
+
+            .page-btn:hover:not(.disabled) {
+                background: rgba(255, 107, 0, 0.15);
+            }
+
+            .page-btn.disabled {
+                opacity: 0.3;
+                cursor: not-allowed;
+            }
+        }
+    </style>
 @endsection

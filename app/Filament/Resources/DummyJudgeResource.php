@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\DummyJudgeResource\Pages;
-use App\Filament\Resources\DummyJudgeResource\RelationManagers;
 use App\Models\DummyJudge;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class DummyJudgeResource extends Resource
 {
@@ -45,10 +42,19 @@ class DummyJudgeResource extends Resource
                 Forms\Components\TextInput::make('linkedin_url')
                     ->url()
                     ->maxLength(255),
-                Forms\Components\Toggle::make('is_active')
-                    ->label('Status')
-                    ->default(true)
-                    ->required(),
+                // Forms\Components\Toggle::make('is_active')
+                //     ->label('Status')
+                //     ->default(true)
+                //     ->required(),
+                // Forms\Components\Toggle::make('is_judge')
+                //     ->label('Is Judge')
+                //     ->default(false),
+                // Forms\Components\Toggle::make('is_panel_member')
+                //     ->label('Is Panel Member')
+                //     ->default(false),
+                // Forms\Components\Toggle::make('has_details_page')
+                //     ->label('Has Details Page')
+                //     ->default(false),
             ]);
     }
 
@@ -66,6 +72,9 @@ class DummyJudgeResource extends Resource
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\ToggleColumn::make('is_active'),
+                Tables\Columns\ToggleColumn::make('is_judge'),
+                Tables\Columns\ToggleColumn::make('is_panel_member'),
+                Tables\Columns\ToggleColumn::make('has_details_page'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

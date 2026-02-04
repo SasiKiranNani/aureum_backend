@@ -58,6 +58,7 @@ class JudgeApplicationResource extends Resource
                         'approved' => 'success',
                         'rejected' => 'danger',
                     }),
+                Tables\Columns\ToggleColumn::make('has_details_page'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -75,7 +76,22 @@ class JudgeApplicationResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->after(function ($record) {
+                        if ($record->status === 'approved') {
+                            $user = \App\Models\User::firstOrCreate(
+                                ['email' => $record->email],
+                                [
+                                    'name' => $record->name,
+                                    'password' => \Illuminate\Support\Facades\Hash::make(\Illuminate\Support\Str::random(10)),
+                                ]
+                            );
+
+                            if (\Spatie\Permission\Models\Role::where('name', 'judge')->exists()) {
+                                $user->assignRole('judge');
+                            }
+                        }
+                    }),
                 Tables\Actions\Action::make('approve')
                     ->action(function ($record) {
                         $record->update(['status' => 'approved']);
@@ -254,9 +270,7 @@ class JudgeApplicationResource extends Resource
     {
         return [
             'index' => Pages\ListJudgeApplications::route('/'),
-            'create' => Pages\CreateJudgeApplication::route('/create'),
             'view' => Pages\ViewJudgeApplication::route('/{record}'),
-            'edit' => Pages\EditJudgeApplication::route('/{record}/edit'),
         ];
     }
 }

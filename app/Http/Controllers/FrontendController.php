@@ -203,14 +203,140 @@ class FrontendController extends Controller
         return view('frontend.how-to-nominate', compact('activeSeason', 'upcomingSeason'));
     }
 
-    public function judges()
+    public function judges(Request $request)
     {
-        return view('frontend.judges');
+        $judgesPage = $request->input('judges_page', 1);
+        $panelPage = $request->input('panel_page', 1);
+        $perPage = 12;
+
+        // Fetch Dummy Judges
+        $dummyJudges = \App\Models\DummyJudge::with('category')
+            ->where('is_active', true)
+            ->where('is_judge', true)
+            ->get()
+            ->map(function ($judge) {
+                return (object) [
+                    'name' => $judge->judge_name,
+                    'designation' => $judge->designation,
+                    'image' => $judge->image,
+                    'has_details_page' => $judge->has_details_page,
+                    // Description from rich editor (HTML)
+                    'bio_html' => $judge->description,
+                    'specialization' => $judge->category ? $judge->category->name : '',
+                    'linkedin' => $judge->linkedin_url,
+                ];
+            });
+
+        // Fetch Approved Judge Applications
+        $applicationJudges = \App\Models\JudgeApplication::with('category')
+            ->where('status', 'approved')
+            ->get()
+            ->map(function ($judge) {
+                return (object) [
+                    'name' => $judge->name,
+                    'designation' => $judge->present_designation,
+                    'image' => $judge->profile_pic,
+                    'has_details_page' => $judge->has_details_page,
+                    // Bio from normal content (Plain Text) -> convert to HTML
+                    'bio_html' => nl2br(e($judge->bio)),
+                    'specialization' => $judge->category ? $judge->category->name : '',
+                    'linkedin' => $judge->linkedin,
+                ];
+            });
+
+        // Merge Judges
+        $allJudges = $dummyJudges->concat($applicationJudges);
+
+        // Shuffle judges to randomize order on each page load
+        $allJudges = $allJudges->shuffle();
+
+        // Paginate Judges Manually
+        $judges = new \Illuminate\Pagination\LengthAwarePaginator(
+            $allJudges->forPage($judgesPage, $perPage),
+            $allJudges->count(),
+            $perPage,
+            $judgesPage,
+            ['path' => $request->url(), 'pageName' => 'judges_page']
+        );
+
+        // Fetch Panel Members
+        $panelQuery = \App\Models\DummyJudge::with('category')
+            ->where('is_active', true)
+            ->where('is_panel_member', true);
+
+        // Get panel members and map them for consistency
+        $allPanelMembers = $panelQuery->get()
+            ->map(function ($member) {
+                return (object) [
+                    'name' => $member->judge_name,
+                    'display_designation' => $member->designation,
+                    // Description from rich editor
+                    'bio_html' => $member->description,
+                    'image' => $member->image,
+                    'has_details_page' => $member->has_details_page,
+                    'specialization' => $member->category ? $member->category->name : '',
+                    'linkedin' => $member->linkedin_url,
+                ];
+            });
+
+        // Shuffle panel members to randomize order on each page load
+        $allPanelMembers = $allPanelMembers->shuffle();
+
+        // Paginate Panel Members
+        $panelMembers = new \Illuminate\Pagination\LengthAwarePaginator(
+            $allPanelMembers->forPage($panelPage, $perPage),
+            $allPanelMembers->count(),
+            $perPage,
+            $panelPage,
+            ['path' => $request->url(), 'pageName' => 'panel_page']
+        );
+
+        // Append other paginator's page param to links so they don't reset each other
+        $judges->appends('panel_page', $request->panel_page);
+        $panelMembers->appends('judges_page', $request->judges_page);
+
+        return view('frontend.judges', compact('judges', 'panelMembers'));
     }
 
-    public function judgeDetails()
+    public function judgeDetails($name)
     {
-        return view('frontend.judge-details');
+        $decodedName = urldecode($name);
+
+        $judge = \App\Models\DummyJudge::with('category')
+            ->where('judge_name', $decodedName)
+            ->where('is_active', true)
+            ->first();
+
+        $isRichText = true;
+
+        if (! $judge) {
+            $judge = \App\Models\JudgeApplication::with('category')
+                ->where('name', $decodedName)
+                ->where('status', 'approved')
+                ->first();
+            $isRichText = false;
+        }
+
+        if (! $judge || ! $judge->has_details_page) {
+            abort(404);
+        }
+
+        // Standardize object for view
+        $judgeData = (object) [
+            'name' => $judge->judge_name ?? $judge->name,
+            // Display the category name in place of designation as requested
+            'title' => $judge->category ? $judge->category->name : ($judge->designation ?? $judge->present_designation),
+            'bio' => $isRichText ? ($judge->description ?? '') : nl2br(e($judge->bio ?? '')),
+            'image' => $judge->image ?? $judge->profile_pic,
+            'linkedin' => $judge->linkedin_url ?? $judge->linkedin,
+        ];
+
+        return view('frontend.judge-details', compact('judgeData'));
+    }
+
+    public function panelDetails($name)
+    {
+        return $this->judgeDetails($name);
     }
 
     public function judgingCriteria()

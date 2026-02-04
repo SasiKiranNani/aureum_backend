@@ -30,6 +30,7 @@ class JudgeApplication extends Model
         'answers',
         'status',
         'remarks',
+        'has_details_page',
     ];
 
     protected $casts = [
@@ -37,6 +38,7 @@ class JudgeApplication extends Model
         'document_urls' => 'array',
         'answers' => 'array',
         'years_of_experience' => 'integer',
+        'has_details_page' => 'boolean',
     ];
 
     public function category()
