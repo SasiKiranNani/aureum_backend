@@ -78,17 +78,24 @@ class JudgeApplicationResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make()
                     ->after(function ($record) {
+                        $user = \App\Models\User::where('email', $record->email)->first();
+
                         if ($record->status === 'approved') {
-                            $user = \App\Models\User::firstOrCreate(
-                                ['email' => $record->email],
-                                [
+                            if (!$user) {
+                                $user = \App\Models\User::create([
                                     'name' => $record->name,
+                                    'email' => $record->email,
                                     'password' => \Illuminate\Support\Facades\Hash::make(\Illuminate\Support\Str::random(10)),
-                                ]
-                            );
+                                ]);
+                            }
 
                             if (\Spatie\Permission\Models\Role::where('name', 'judge')->exists()) {
                                 $user->assignRole('judge');
+                            }
+                        } else {
+                            // If status is changed from approved to something else, remove the role
+                            if ($user && $user->hasRole('judge')) {
+                                $user->removeRole('judge');
                             }
                         }
                     }),
@@ -128,6 +135,11 @@ class JudgeApplicationResource extends Resource
                             'status' => 'rejected',
                             'remarks' => $data['remarks'],
                         ]);
+
+                        $user = \App\Models\User::where('email', $record->email)->first();
+                        if ($user && $user->hasRole('judge')) {
+                            $user->removeRole('judge');
+                        }
 
                         \Filament\Notifications\Notification::make()
                             ->title('Application Rejected')
