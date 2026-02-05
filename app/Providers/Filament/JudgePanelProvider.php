@@ -26,7 +26,8 @@ class JudgePanelProvider extends PanelProvider
         return $panel
             ->id('judge')
             ->path('judge')
-            ->login()
+            ->login(\App\Filament\Judge\Pages\Auth\JudgeLogin::class)
+            ->brandLogo(asset('logo.png'))
             ->colors([
                 'primary' => Color::Amber,
                 'gray' => Color::Slate,

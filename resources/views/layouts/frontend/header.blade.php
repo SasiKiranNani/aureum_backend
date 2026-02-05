@@ -7,9 +7,9 @@
                         <!-- logo begin -->
                         <div id="logo">
                             <a href="{{ route('home') }}">
-                                <img class="logo-main" src="{{ asset('frontend/images/logo.webp') }}" alt="">
-                                <img class="logo-scroll" src="{{ asset('frontend/images/logo.webp') }}" alt="">
-                                <img class="logo-mobile" src="{{ asset('frontend/images/logo.webp') }}" alt="">
+                                <img class="logo-main" src="{{ asset('logo.png') }}" alt="">
+                                <img class="logo-scroll" src="{{ asset('logo.png') }}" alt="">
+                                <img class="logo-mobile" src="{{ asset('logo.png') }}" alt="">
                             </a>
                         </div>
                         <!-- logo close -->

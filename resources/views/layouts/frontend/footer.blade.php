@@ -9,7 +9,7 @@
                         BCA 94107
                     </div>
                     <div>
-                        <img src="{{ asset('frontend/images/logo.webp') }}" class="w-150px" alt=""><br>
+                        <img src="{{ asset('logo.png') }}" class="w-150px" alt=""><br>
                         <div class="social-icons mb-sm-30 mt-4">
                             <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
                             <a href="#"><i class="fa-brands fa-instagram"></i></a>

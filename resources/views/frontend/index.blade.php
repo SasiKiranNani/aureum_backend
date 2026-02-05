@@ -2,7 +2,7 @@
 
 @section('contents')
     <section id="section-hero" class="section-dark no-top no-bottom text-light jarallax relative mh-800"
-        data-jarallax-video="mp4:{{ asset('frontend/video/2.mp4') }}">
+        data-jarallax-video="mp4:{{ asset('frontend/video/banner-video.mp4') }}">
         <div class="gradient-edge-top op-6 h-50 color"></div>
         <div class="gradient-edge-bottom"></div>
         <div class="sw-overlay op-8"></div>

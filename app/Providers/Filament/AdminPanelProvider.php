@@ -27,7 +27,8 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login(\App\Filament\Pages\Auth\AdminLogin::class)
+            ->brandLogo(asset('logo.png'))
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -57,7 +58,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 \Filament\Navigation\NavigationGroup::make()
-                     ->label('Season Management'),
+                    ->label('Season Management'),
                 \Filament\Navigation\NavigationGroup::make()
                     ->label('Fee Management'),
                 \Filament\Navigation\NavigationGroup::make()
