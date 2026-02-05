@@ -36,6 +36,7 @@ class NominationResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn($query) => $query->whereHas('season', fn($q) => $q->whereDate('closing_date', '>=', now())))
             ->columns([
                 Tables\Columns\TextColumn::make('application_id')->label('ID')->searchable()->sortable()->weight('bold')->color('primary'),
                 Tables\Columns\TextColumn::make('full_name')->label('Nominee')->searchable()->sortable(),

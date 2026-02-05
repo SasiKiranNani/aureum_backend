@@ -49,17 +49,17 @@ class Season extends Model
                             ->where('closing_date', '>=', $season->closing_date);
                     });
             })
-            ->where('id', '!=', $season->id)
-            ->exists();
+                ->where('id', '!=', $season->id)
+                ->exists();
 
             if ($overlap) {
                 throw new \InvalidArgumentException("Season dates overlap with an existing season.");
             }
 
             // Strict Toggle Validation: Only allow is_active if within date range.
-            if ($season->is_active && !now()->between($season->opening_date, $season->closing_date)) {
-                throw new \InvalidArgumentException("Cannot activate a season that is outside its scheduled date range.");
-            }
+            // if ($season->is_active && !now()->between($season->opening_date, $season->closing_date)) {
+            //     throw new \InvalidArgumentException("Cannot activate a season that is outside its scheduled date range.");
+            // }
 
             // Auto-Active Logic: If current date is within range, set active.
             if (now()->between($season->opening_date, $season->closing_date)) {

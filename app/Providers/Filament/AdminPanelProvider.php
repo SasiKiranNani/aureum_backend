@@ -76,6 +76,28 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(
                 \Filament\View\PanelsRenderHook::HEAD_END,
                 fn(): string => '<link rel="stylesheet" href="' . url('css/admin-theme.css') . '" />'
-            );
+            )
+            ->bootUsing(function (Panel $panel) {
+                // Dynamic Past Winners Navigation
+                try {
+                    $pastSeasons = \App\Models\Season::whereDate('closing_date', '<', now())
+                        ->orderBy('closing_date', 'desc')
+                        ->get();
+
+                    $navItems = [];
+                    foreach ($pastSeasons as $season) {
+                        $navItems[] = \Filament\Navigation\NavigationItem::make($season->name)
+                            ->group('Past Winners')
+                            ->icon('heroicon-o-trophy')
+                            ->sort($season->closing_date->timestamp)
+                            ->isActiveWhen(fn() => request()->query('season_id') == $season->id)
+                            ->url(\App\Filament\Pages\PastWinners::getUrl(['season_id' => $season->id]));
+                    }
+
+                    $panel->navigationItems($navItems);
+                } catch (\Exception $e) {
+                    // Fail silently during migrations/setup if tables don't exist
+                }
+            });
     }
 }
