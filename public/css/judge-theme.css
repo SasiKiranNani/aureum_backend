@@ -22,9 +22,19 @@ body {
     border-right: 1px solid #f1f5f9;
 }
 
+nav {
+    height: 6rem !important;
+}
+
 .fi-sidebar-header {
     background-color: #ffffff !important;
     border-bottom: 1px solid #f1f5f9;
+    height: 6rem;
+}
+
+.fi-sidebar-header .fi-logo {
+    height: 5.5rem !important;
+    width: 150px;
 }
 
 .fi-logo {
@@ -256,12 +266,16 @@ body {
 
     /* Gradient Text */
     background: linear-gradient(135deg, #0f172a 30%, #475569 100%);
+    background: linear-gradient(135deg, #0f172a 30%, #475569 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 
     .dark & {
         background: linear-gradient(135deg, #ffffff 30%, #cbd5e1 100%);
+        background: linear-gradient(135deg, #ffffff 30%, #cbd5e1 100%);
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 }

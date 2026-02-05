@@ -72,6 +72,10 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->renderHook(
+                \Filament\View\PanelsRenderHook::HEAD_END,
+                fn(): string => '<link rel="stylesheet" href="' . url('css/admin-theme.css') . '" />'
+            );
     }
 }

@@ -1,0 +1,17 @@
+nav {
+    height: 6rem !important;
+}
+
+.fi-sidebar-header {
+    height: 6rem !important;
+    /* Force override if needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Center content vertically */
+}
+
+.fi-sidebar-header .fi-logo {
+    height: 5.5rem !important;
+    width: 150px !important;
+}
