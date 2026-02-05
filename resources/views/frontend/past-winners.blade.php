@@ -1,299 +1,6 @@
 @extends('layouts.frontend.index')
 
 @section('contents')
-    <!-- Past Winners Archive Section -->
-    <section class="past-winners-archive">
-        <div class="container">
-            <!-- Hero Header -->
-            <div class="archive-hero-header">
-                <h1 class="archive-main-title">Past Winners Archive</h1>
-                <p class="archive-subtitle">
-                    Celebrating excellence in technology innovation and leadership
-                </p>
-            </div>
-
-            <!-- Search and Filters -->
-            <div class="winners-filters">
-                <div class="filter-search">
-                    <i class="fas fa-search search-icon"></i>
-                    <input type="text" class="search-input" placeholder="Type to search...">
-                </div>
-                <div class="filter-group">
-                    <select class="filter-select">
-                        <option>Filter by Year</option>
-                        <option selected>2025</option>
-                        <option>2024</option>
-                        <option>2023</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <select class="filter-select">
-                        <option selected>Filter by Season</option>
-                        <option>Season 1</option>
-                        <option>Season 2</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <select class="filter-select">
-                        <option selected>Filter by Badge</option>
-                        <option>Platinum</option>
-                        <option>Gold</option>
-                        <option>Diamond</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <select class="filter-select">
-                        <option selected>Filter by Category</option>
-                        <option>AI Impact</option>
-                        <option>Data Analytics</option>
-                        <option>EdTech</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Winners Grid -->
-            <div class="winners-grid">
-                <!-- Winner Card 1 -->
-                <div class="winner-card">
-                    <div class="winner-rank-badge">1</div>
-                    <div class="winner-content">
-                        <h3 class="winner-name">Anders Holm</h3>
-                        <p class="winner-award"><i class="fas fa-trophy"></i> Award: Sustainable Tech Impact Award
-                        </p>
-                        <p class="winner-category"><i class="fas fa-layer-group"></i> Category: TRANSPORTATION &
-                            MOBILITY</p>
-                        <p class="winner-info"><i class="fas fa-calendar"></i> Season: Season 2</p>
-                        <p class="winner-info"><i class="fas fa-globe"></i> Country: Finland</p>
-                        <p class="winner-info"><i class="fas fa-medal"></i> Badge: Platinum</p>
-                    </div>
-                    <div class="winner-status-badge">
-                        <i class="fas fa-trophy"></i> WINNER
-                        <span class="winner-year">2025</span>
-                    </div>
-                </div>
-
-                <!-- Winner Card 2 -->
-                <div class="winner-card">
-                    <div class="winner-rank-badge">1</div>
-                    <div class="winner-content">
-                        <h3 class="winner-name">Nagerjuna Gummadi</h3>
-                        <p class="winner-award"><i class="fas fa-trophy"></i> Award: Data Analytics Excellence Award
-                        </p>
-                        <p class="winner-category"><i class="fas fa-layer-group"></i> Category: DATA ANALYTICS & BIG
-                            DATA</p>
-                        <p class="winner-info"><i class="fas fa-calendar"></i> Season: 2025-S2</p>
-                        <p class="winner-info"><i class="fas fa-globe"></i> Country: US</p>
-                        <p class="winner-info"><i class="fas fa-medal"></i> Badge: Gold</p>
-                    </div>
-                    <div class="winner-status-badge">
-                        <i class="fas fa-trophy"></i> WINNER
-                        <span class="winner-year">2025</span>
-                    </div>
-                </div>
-
-                <!-- Winner Card 3 -->
-                <div class="winner-card">
-                    <div class="winner-rank-badge">1</div>
-                    <div class="winner-content">
-                        <h3 class="winner-name">Viktoria Knee</h3>
-                        <p class="winner-award"><i class="fas fa-trophy"></i> Award: Supply Chain Impact Award</p>
-                        <p class="winner-category"><i class="fas fa-layer-group"></i> Category: LOGISTICS &
-                            AUTOMATION</p>
-                        <p class="winner-info"><i class="fas fa-calendar"></i> Season: Season 2</p>
-                        <p class="winner-info"><i class="fas fa-globe"></i> Country: Germany</p>
-                        <p class="winner-info"><i class="fas fa-medal"></i> Badge: Platinum</p>
-                    </div>
-                    <div class="winner-status-badge">
-                        <i class="fas fa-trophy"></i> WINNER
-                        <span class="winner-year">2025</span>
-                    </div>
-                </div>
-
-                <!-- Winner Card 4 -->
-                <div class="winner-card">
-                    <div class="winner-rank-badge">1</div>
-                    <div class="winner-content">
-                        <h3 class="winner-name">Jenn Graham</h3>
-                        <p class="winner-award"><i class="fas fa-trophy"></i> Award: EdTech Innovation Award</p>
-                        <p class="winner-category"><i class="fas fa-layer-group"></i> Category: EDUCATION & FINTECH
-                        </p>
-                        <p class="winner-info"><i class="fas fa-calendar"></i> Season: Season 1</p>
-                        <p class="winner-info"><i class="fas fa-globe"></i> Country: UK</p>
-                        <p class="winner-info"><i class="fas fa-medal"></i> Badge: Gold</p>
-                    </div>
-                    <div class="winner-status-badge">
-                        <i class="fas fa-trophy"></i> WINNER
-                        <span class="winner-year">2025</span>
-                    </div>
-                </div>
-
-                <!-- Winner Card 5 -->
-                <div class="winner-card">
-                    <div class="winner-rank-badge">1</div>
-                    <div class="winner-content">
-                        <h3 class="winner-name">Streeva</h3>
-                        <p class="winner-award"><i class="fas fa-trophy"></i> Award: AI Impact Award</p>
-                        <p class="winner-category"><i class="fas fa-layer-group"></i> Category: ARTIFICIAL
-                            INTELLIGENCE & MACHINE LEARNING</p>
-                        <p class="winner-info"><i class="fas fa-calendar"></i> Season: Season 1</p>
-                        <p class="winner-info"><i class="fas fa-globe"></i> Country: Belgium</p>
-                        <p class="winner-info"><i class="fas fa-medal"></i> Badge: Platinum</p>
-                    </div>
-                    <div class="winner-status-badge">
-                        <i class="fas fa-trophy"></i> WINNER
-                        <span class="winner-year">2025</span>
-                    </div>
-                </div>
-
-                <!-- Winner Card 6 -->
-                <div class="winner-card">
-                    <div class="winner-rank-badge">1</div>
-                    <div class="winner-content">
-                        <h3 class="winner-name">Eleanor Whitmore</h3>
-                        <p class="winner-award"><i class="fas fa-trophy"></i> Award: IoT Impact Award</p>
-                        <p class="winner-category"><i class="fas fa-layer-group"></i> Category: INTERNET OF THINGS &
-                            SMART</p>
-                        <p class="winner-info"><i class="fas fa-calendar"></i> Season: Season 2</p>
-                        <p class="winner-info"><i class="fas fa-globe"></i> Country: Sweden</p>
-                        <p class="winner-info"><i class="fas fa-medal"></i> Badge: Diamond</p>
-                    </div>
-                    <div class="winner-status-badge">
-                        <i class="fas fa-trophy"></i> WINNER
-                        <span class="winner-year">2025</span>
-                    </div>
-                </div>
-
-                <!-- Winner Card 7 -->
-                <div class="winner-card">
-                    <div class="winner-rank-badge">1</div>
-                    <div class="winner-content">
-                        <h3 class="winner-name">Bhaskardeep Khaund</h3>
-                        <p class="winner-award"><i class="fas fa-trophy"></i> Award: Cybersecurity Excellence Award
-                        </p>
-                        <p class="winner-category"><i class="fas fa-layer-group"></i> Category: CYBERSECURITY & DATA
-                            PROTECTION</p>
-                        <p class="winner-info"><i class="fas fa-calendar"></i> Season: 2025-S2</p>
-                        <p class="winner-info"><i class="fas fa-globe"></i> Country: UK</p>
-                        <p class="winner-info"><i class="fas fa-medal"></i> Badge: Platinum</p>
-                    </div>
-                    <div class="winner-status-badge">
-                        <i class="fas fa-trophy"></i> WINNER
-                        <span class="winner-year">2025</span>
-                    </div>
-                </div>
-
-                <!-- Winner Card 8 -->
-                <div class="winner-card">
-                    <div class="winner-rank-badge">1</div>
-                    <div class="winner-content">
-                        <h3 class="winner-name">Vamsi Krishna Pulusu</h3>
-                        <p class="winner-award"><i class="fas fa-trophy"></i> Award: Data Analytics Excellence Award
-                        </p>
-                        <p class="winner-category"><i class="fas fa-layer-group"></i> Category: DATA ANALYTICS & BIG
-                            DATA</p>
-                        <p class="winner-info"><i class="fas fa-calendar"></i> Season: 2025-S2</p>
-                        <p class="winner-info"><i class="fas fa-globe"></i> Country: US</p>
-                        <p class="winner-info"><i class="fas fa-medal"></i> Badge: Gold</p>
-                    </div>
-                    <div class="winner-status-badge">
-                        <i class="fas fa-trophy"></i> WINNER
-                        <span class="winner-year">2025</span>
-                    </div>
-                </div>
-
-                <!-- Winner Card 9 -->
-                <div class="winner-card">
-                    <div class="winner-rank-badge">1</div>
-                    <div class="winner-content">
-                        <h3 class="winner-name">Meridian Flow</h3>
-                        <p class="winner-award"><i class="fas fa-trophy"></i> Award: EdTech Impact Award</p>
-                        <p class="winner-category"><i class="fas fa-layer-group"></i> Category: EDUCATION TECHNOLOGY
-                            & EDTECH</p>
-                        <p class="winner-info"><i class="fas fa-calendar"></i> Season: Season 1</p>
-                        <p class="winner-info"><i class="fas fa-globe"></i> Country: Poland</p>
-                        <p class="winner-info"><i class="fas fa-medal"></i> Badge: Gold</p>
-                    </div>
-                    <div class="winner-status-badge">
-                        <i class="fas fa-trophy"></i> WINNER
-                        <span class="winner-year">2025</span>
-                    </div>
-                </div>
-
-                <!-- Winner Card 10 -->
-                <div class="winner-card">
-                    <div class="winner-rank-badge">1</div>
-                    <div class="winner-content">
-                        <h3 class="winner-name">Edwin Lim</h3>
-                        <p class="winner-award"><i class="fas fa-trophy"></i> Award: AI Impact Award</p>
-                        <p class="winner-category"><i class="fas fa-layer-group"></i> Category: ARTIFICIAL
-                            INTELLIGENCE & MACHINE LEARNING</p>
-                        <p class="winner-info"><i class="fas fa-calendar"></i> Season: Season 1</p>
-                        <p class="winner-info"><i class="fas fa-globe"></i> Country: Singapore</p>
-                        <p class="winner-info"><i class="fas fa-medal"></i> Badge: Platinum</p>
-                    </div>
-                    <div class="winner-status-badge">
-                        <i class="fas fa-trophy"></i> WINNER
-                        <span class="winner-year">2025</span>
-                    </div>
-                </div>
-
-                <!-- Winner Card 11 -->
-                <div class="winner-card">
-                    <div class="winner-rank-badge">1</div>
-                    <div class="winner-content">
-                        <h3 class="winner-name">Eryvon Shield</h3>
-                        <p class="winner-award"><i class="fas fa-trophy"></i> Award: Telecom Impact Award</p>
-                        <p class="winner-category"><i class="fas fa-layer-group"></i> Category: TELECOMMUNICATIONS &
-                            NETWORKS</p>
-                        <p class="winner-info"><i class="fas fa-calendar"></i> Season: Season 2</p>
-                        <p class="winner-info"><i class="fas fa-globe"></i> Country: Georgia</p>
-                        <p class="winner-info"><i class="fas fa-medal"></i> Badge: Gold</p>
-                    </div>
-                    <div class="winner-status-badge">
-                        <i class="fas fa-trophy"></i> WINNER
-                        <span class="winner-year">2025</span>
-                    </div>
-                </div>
-
-                <!-- Winner Card 12 -->
-                <div class="winner-card">
-                    <div class="winner-rank-badge">1</div>
-                    <div class="winner-content">
-                        <h3 class="winner-name">Ravi Teja Avireneni</h3>
-                        <p class="winner-award"><i class="fas fa-trophy"></i> Award: Software Impact Award</p>
-                        <p class="winner-category"><i class="fas fa-layer-group"></i> Category: SOFTWARE &
-                            APPLICATIONS</p>
-                        <p class="winner-info"><i class="fas fa-calendar"></i> Season: 2025-S2</p>
-                        <p class="winner-info"><i class="fas fa-globe"></i> Country: US</p>
-                        <p class="winner-info"><i class="fas fa-medal"></i> Badge: Gold</p>
-                    </div>
-                    <div class="winner-status-badge">
-                        <i class="fas fa-trophy"></i> WINNER
-                        <span class="winner-year">2025</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pagination -->
-            <div class="archive-pagination">
-                <button class="page-number active">1</button>
-                <button class="page-number">2</button>
-                <button class="page-number">3</button>
-                <button class="page-number">4</button>
-                <button class="page-number">5</button>
-                <button class="page-number">6</button>
-                <button class="page-number">7</button>
-                <button class="page-number">8</button>
-                <button class="page-number">9</button>
-                <button class="page-number">10</button>
-                <span class="page-dots">...</span>
-                <button class="page-number">12</button>
-                <button class="page-number">14</button>
-                <button class="page-number">16</button>
-            </div>
-        </div>
-    </section>
-
     <!-- Winners Gallery with Hover Section -->
     <section class="winners-gallery-hover">
         <div class="container">
@@ -306,151 +13,271 @@
                 </p>
             </div>
 
+            <!-- Filters Section -->
+            <div class="winners-filter-section mb-5">
+                <form action="{{ route('past-winners') }}" method="GET" class="winners-filter-form" id="filterForm">
+                    <div class="filter-row">
+                        <!-- Search -->
+                        <div class="filter-group search-group">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" name="search" class="filter-input" placeholder="Search winners..." value="{{ request('search') }}" onkeypress="if(event.key === 'Enter') this.form.submit()">
+                        </div>
+
+                        <!-- Year Filter -->
+                        <div class="filter-group">
+                            <select name="year" class="filter-select" onchange="this.form.submit()">
+                                <option value="">All Years</option>
+                                @foreach($years as $yearOption)
+                                    <option value="{{ $yearOption }}" {{ request('year') == $yearOption ? 'selected' : '' }}>{{ $yearOption }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Season Filter -->
+                        <div class="filter-group">
+                            <select name="season_id" class="filter-select" onchange="this.form.submit()">
+                                <option value="">All Seasons</option>
+                                @foreach($seasons as $season)
+                                    <option value="{{ $season->id }}" {{ request('season_id') == $season->id ? 'selected' : '' }}>{{ $season->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Badge Filter -->
+                        <div class="filter-group">
+                            <select name="badge_id" class="filter-select" onchange="this.form.submit()">
+                                <option value="">All Badges</option>
+                                @foreach($badges as $badge)
+                                    <option value="{{ $badge->id }}" {{ request('badge_id') == $badge->id ? 'selected' : '' }}>{{ $badge->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Category Filter -->
+                        <div class="filter-group">
+                            <select name="category_id" class="filter-select" onchange="this.form.submit()">
+                                <option value="">All Categories</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        
+                    </div>
+                </form>
+            </div>
+
             <div class="winners-image-grid">
-                <!-- Winner Image Card 1 -->
-                <div class="winner-image-card">
-                    <img src="divya-images/about.jpg" alt="Anders Holm" class="winner-img">
-                    <div class="winner-hover-overlay">
-                        <div class="overlay-content">
-                            <h3 class="overlay-name">Anders Holm</h3>
-                            <div class="overlay-divider"></div>
-                            <p class="overlay-award">Sustainable Tech Impact Award</p>
-                            <p class="overlay-category">TRANSPORTATION & MOBILITY</p>
-                            <div class="overlay-details">
-                                <span class="overlay-country"><i class="fas fa-map-marker-alt"></i> Finland</span>
-                                <span class="overlay-badge"><i class="fas fa-medal"></i> Platinum</span>
+                @forelse($nominations as $nomination)
+                    <!-- Winner Image Card -->
+                    <div class="winner-image-card">
+                        <img src="{{ $nomination->headshot ? asset('storage/' . $nomination->headshot) : asset('divya-images/about.jpg') }}" 
+                             alt="{{ $nomination->full_name }}" 
+                             class="winner-img">
+                        <div class="winner-hover-overlay">
+                            <div class="overlay-content">
+                                <h3 class="overlay-name">{{ $nomination->full_name }}</h3>
+                                <div class="overlay-divider"></div>
+                                <p class="overlay-award">{{ $nomination->award->name ?? 'Award Winner' }}</p>
+                                <p class="overlay-category">{{ strtoupper($nomination->category->name ?? '') }}</p>
+                                <div class="overlay-details">
+                                    <span class="overlay-country"><i class="fas fa-map-marker-alt"></i> {{ $nomination->country }}</span>
+                                    @if($nomination->badge)
+                                        <span class="overlay-badge"><i class="fas fa-medal"></i> {{ $nomination->badge->name }}</span>
+                                    @endif
+                                </div>
+                                <div class="overlay-year">{{ optional($nomination->season)->opening_date ? \Carbon\Carbon::parse($nomination->season->opening_date)->year : '' }}</div>
                             </div>
-                            <div class="overlay-year">2025</div>
                         </div>
                     </div>
-                </div>
+                @empty
+                    <div class="no-winners-found" style="grid-column: 1 / -1; text-align: center; color: #fff; padding: 50px;">
+                        <h3>No winners found matching your criteria.</h3>
+                    </div>
+                @endforelse
+            </div>
 
-                <!-- Winner Image Card 2 -->
-                <div class="winner-image-card">
-                    <img src="divya-images/about.jpg" alt="Nagerjuna Gummadi" class="winner-img">
-                    <div class="winner-hover-overlay">
-                        <div class="overlay-content">
-                            <h3 class="overlay-name">Nagerjuna Gummadi</h3>
-                            <div class="overlay-divider"></div>
-                            <p class="overlay-award">Data Analytics Excellence</p>
-                            <p class="overlay-category">DATA ANALYTICS & BIG DATA</p>
-                            <div class="overlay-details">
-                                <span class="overlay-country"><i class="fas fa-map-marker-alt"></i> US</span>
-                                <span class="overlay-badge"><i class="fas fa-medal"></i> Gold</span>
-                            </div>
-                            <div class="overlay-year">2025</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Winner Image Card 3 -->
-                <div class="winner-image-card">
-                    <img src="divya-images/about.jpg" alt="Viktoria Knee" class="winner-img">
-                    <div class="winner-hover-overlay">
-                        <div class="overlay-content">
-                            <h3 class="overlay-name">Viktoria Knee</h3>
-                            <div class="overlay-divider"></div>
-                            <p class="overlay-award">Supply Chain Impact</p>
-                            <p class="overlay-category">LOGISTICS & AUTOMATION</p>
-                            <div class="overlay-details">
-                                <span class="overlay-country"><i class="fas fa-map-marker-alt"></i> Germany</span>
-                                <span class="overlay-badge"><i class="fas fa-medal"></i> Platinum</span>
-                            </div>
-                            <div class="overlay-year">2025</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Winner Image Card 4 -->
-                <div class="winner-image-card">
-                    <img src="divya-images/about.jpg" alt="Jenn Graham" class="winner-img">
-                    <div class="winner-hover-overlay">
-                        <div class="overlay-content">
-                            <h3 class="overlay-name">Jenn Graham</h3>
-                            <div class="overlay-divider"></div>
-                            <p class="overlay-award">EdTech Innovation</p>
-                            <p class="overlay-category">EDUCATION & FINTECH</p>
-                            <div class="overlay-details">
-                                <span class="overlay-country"><i class="fas fa-map-marker-alt"></i> UK</span>
-                                <span class="overlay-badge"><i class="fas fa-medal"></i> Gold</span>
-                            </div>
-                            <div class="overlay-year">2025</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Winner Image Card 5 -->
-                <div class="winner-image-card">
-                    <img src="divya-images/about.jpg" alt="Eleanor Whitmore" class="winner-img">
-                    <div class="winner-hover-overlay">
-                        <div class="overlay-content">
-                            <h3 class="overlay-name">Eleanor Whitmore</h3>
-                            <div class="overlay-divider"></div>
-                            <p class="overlay-award">IoT Impact Award</p>
-                            <p class="overlay-category">INTERNET OF THINGS</p>
-                            <div class="overlay-details">
-                                <span class="overlay-country"><i class="fas fa-map-marker-alt"></i> Sweden</span>
-                                <span class="overlay-badge"><i class="fas fa-medal"></i> Diamond</span>
-                            </div>
-                            <div class="overlay-year">2025</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Winner Image Card 6 -->
-                <div class="winner-image-card">
-                    <img src="divya-images/about.jpg" alt="Edwin Lim" class="winner-img">
-                    <div class="winner-hover-overlay">
-                        <div class="overlay-content">
-                            <h3 class="overlay-name">Edwin Lim</h3>
-                            <div class="overlay-divider"></div>
-                            <p class="overlay-award">AI Impact Award</p>
-                            <p class="overlay-category">ARTIFICIAL INTELLIGENCE</p>
-                            <div class="overlay-details">
-                                <span class="overlay-country"><i class="fas fa-map-marker-alt"></i> Singapore</span>
-                                <span class="overlay-badge"><i class="fas fa-medal"></i> Platinum</span>
-                            </div>
-                            <div class="overlay-year">2025</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Winner Image Card 7 -->
-                <div class="winner-image-card">
-                    <img src="divya-images/about.jpg" alt="Bhaskardeep Khaund" class="winner-img">
-                    <div class="winner-hover-overlay">
-                        <div class="overlay-content">
-                            <h3 class="overlay-name">Bhaskardeep Khaund</h3>
-                            <div class="overlay-divider"></div>
-                            <p class="overlay-award">Cybersecurity Excellence</p>
-                            <p class="overlay-category">CYBERSECURITY</p>
-                            <div class="overlay-details">
-                                <span class="overlay-country"><i class="fas fa-map-marker-alt"></i> UK</span>
-                                <span class="overlay-badge"><i class="fas fa-medal"></i> Platinum</span>
-                            </div>
-                            <div class="overlay-year">2025</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Winner Image Card 8 -->
-                <div class="winner-image-card">
-                    <img src="divya-images/about.jpg" alt="Vamsi Krishna" class="winner-img">
-                    <div class="winner-hover-overlay">
-                        <div class="overlay-content">
-                            <h3 class="overlay-name">Vamsi Krishna Pulusu</h3>
-                            <div class="overlay-divider"></div>
-                            <p class="overlay-award">Data Analytics Excellence</p>
-                            <p class="overlay-category">DATA ANALYTICS</p>
-                            <div class="overlay-details">
-                                <span class="overlay-country"><i class="fas fa-map-marker-alt"></i> US</span>
-                                <span class="overlay-badge"><i class="fas fa-medal"></i> Gold</span>
-                            </div>
-                            <div class="overlay-year">2025</div>
-                        </div>
-                    </div>
-                </div>
+            <!-- Pagination -->
+            <div class="judges-pagination-wrapper">
+                {{ $nominations->links('vendor.pagination.custom') }}
             </div>
         </div>
     </section>
+
+    <style>
+        /* Filter Styles */
+        .winners-filter-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 40px;
+        }
+
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .filter-group {
+            position: relative;
+            min-width: 150px;
+            flex: 1;
+        }
+
+        .search-group {
+            flex: 2;
+            min-width: 200px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+        }
+
+        .filter-input, .filter-select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 10px 15px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-group .filter-input {
+            padding-left: 35px;
+        }
+
+        .filter-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 1em;
+            padding-right: 30px;
+        }
+
+        .filter-select option {
+            background: #222;
+            color: #fff;
+        }
+
+        /* Pagination Styles (Copied from judges.blade.php for consistency) */
+        .judges-pagination-wrapper {
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .custom-pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Desktop Pagination - Show only page numbers */
+        .desktop-pagination {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .mobile-pagination {
+            display: none;
+        }
+
+        /* Page Numbers */
+        .page-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 44px;
+            height: 44px;
+            padding: 0 16px;
+            background: transparent;
+            border: 2px solid #ff6b00;
+            border-radius: 10px;
+            color: #ff6b00;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .page-number:hover {
+            background: rgba(255, 107, 0, 0.15);
+            color: #ff8c00;
+        }
+
+        .page-number.active {
+            background: #ff6b00;
+            color: #fff;
+        }
+
+        .page-dots {
+            color: rgba(255, 255, 255, 0.4);
+            padding: 0 8px;
+        }
+
+        /* Mobile Pagination - Show Prev/Next and current page */
+        @media (max-width: 768px) {
+            .desktop-pagination {
+                display: none;
+            }
+
+            .mobile-pagination {
+                display: flex;
+                gap: 12px;
+                align-items: center;
+            }
+
+            .page-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0 24px;
+                height: 44px;
+                background: transparent;
+                border: 2px solid #ff6b00;
+                border-radius: 10px;
+                color: #ff6b00;
+                font-size: 15px;
+                font-weight: 600;
+                text-decoration: none;
+                transition: all 0.25s ease;
+            }
+
+            .page-btn:hover:not(.disabled) {
+                background: rgba(255, 107, 0, 0.15);
+            }
+
+            .page-btn.disabled {
+                opacity: 0.3;
+                cursor: not-allowed;
+            }
+        }
+
+        /* Responsive adjustments for filters */
+        @media (max-width: 992px) {
+            .filter-group {
+                min-width: 45%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .filter-group {
+                min-width: 100%;
+            }
+        }
+    </style>
 @endsection

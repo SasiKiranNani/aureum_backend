@@ -108,7 +108,7 @@ class FrontendController extends Controller
 
     public function nomination(Request $request)
     {
-        if (! auth()->check()) {
+        if (!auth()->check()) {
             return redirect()->route('home')->with('open_auth_modal', true);
         }
 
@@ -135,7 +135,7 @@ class FrontendController extends Controller
                 ->where('payment_status', 'pending')
                 ->first();
 
-            if (! $nomination) {
+            if (!$nomination) {
                 return redirect()->route('dashboard.nominations')->with('error', 'Nomination not found or already paid.');
             }
 
@@ -162,7 +162,7 @@ class FrontendController extends Controller
     {
         $categoryId = $request->query('category_id');
 
-        if (! $categoryId) {
+        if (!$categoryId) {
             return response()->json(['error' => 'Category ID required'], 400);
         }
 
@@ -195,7 +195,7 @@ class FrontendController extends Controller
             ->first();
 
         $upcomingSeason = null;
-        if (! $activeSeason) {
+        if (!$activeSeason) {
             // If no active season, get the nearest upcoming one
             $upcomingSeason = \App\Models\Season::whereDate('opening_date', '>', $now)
                 ->orderBy('opening_date', 'asc')
@@ -311,7 +311,7 @@ class FrontendController extends Controller
 
         $isRichText = true;
 
-        if (! $judge) {
+        if (!$judge) {
             $judge = \App\Models\JudgeApplication::with('category')
                 ->where('name', $decodedName)
                 ->where('status', 'approved')
@@ -319,7 +319,7 @@ class FrontendController extends Controller
             $isRichText = false;
         }
 
-        if (! $judge || ! $judge->has_details_page) {
+        if (!$judge || !$judge->has_details_page) {
             abort(404);
         }
 
@@ -346,9 +346,63 @@ class FrontendController extends Controller
         return view('frontend.judging-criteria');
     }
 
-    public function pastWinners()
+    public function pastWinners(Request $request)
     {
-        return view('frontend.past-winners');
+        $search = $request->input('search');
+        $year = $request->input('year');
+        $seasonId = $request->input('season_id');
+        $badgeId = $request->input('badge_id');
+        $categoryId = $request->input('category_id');
+
+        $query = Nomination::with(['season', 'award', 'category', 'badge'])
+            ->where('status', 'awarded')
+            ->whereNotNull('badge_id')
+            ->whereHas('season', function ($q) {
+                $q->whereDate('closing_date', '<', now());
+            });
+
+        if ($search) {
+            $query->where('full_name', 'like', '%' . $search . '%');
+        }
+
+        if ($year) {
+            $query->whereHas('season', function ($q) use ($year) {
+                $q->whereYear('opening_date', $year);
+            });
+        }
+
+        if ($seasonId) {
+            $query->where('season_id', $seasonId);
+        }
+
+        if ($badgeId) {
+            $query->where('badge_id', $badgeId);
+        }
+
+        if ($categoryId) {
+            $query->where('category_id', $categoryId);
+        }
+
+        $nominations = $query->orderBy('season_id', 'desc')
+            ->orderBy('id', 'desc')
+            ->paginate(12)
+            ->withQueryString();
+
+        // Filter Options
+        $years = \App\Models\Season::whereDate('closing_date', '<', now())
+            ->selectRaw('YEAR(opening_date) as year')
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->pluck('year');
+
+        $seasons = \App\Models\Season::whereDate('closing_date', '<', now())
+            ->orderBy('opening_date', 'desc')
+            ->get();
+
+        $badges = \App\Models\Badge::where('is_active', true)->get();
+        $categories = Category::where('is_active', true)->get();
+
+        return view('frontend.past-winners', compact('nominations', 'years', 'seasons', 'badges', 'categories'));
     }
 
     public function pastWinnerDetails()
@@ -408,7 +462,7 @@ class FrontendController extends Controller
     {
         $user_id = auth()->id();
 
-        if (! $user_id) {
+        if (!$user_id) {
             return redirect()->route('login')->with('error', 'Please login to view details.');
         }
 
@@ -417,7 +471,7 @@ class FrontendController extends Controller
             ->where('id', $id)
             ->first();
 
-        if (! $booking) {
+        if (!$booking) {
             // Check if it exists at all to give a better error
             $exists = EventBooking::where('id', $id)->exists();
             if ($exists) {
