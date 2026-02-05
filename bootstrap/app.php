@@ -13,6 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->redirectGuestsTo(fn () => route('home', ['login' => '1']));
     })
+    ->withSchedule(function (\Illuminate\Console\Scheduling\Schedule $schedule) {
+        $schedule->command('app:process-season-emails')->daily();
+    })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();

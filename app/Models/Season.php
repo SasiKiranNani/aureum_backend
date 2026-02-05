@@ -5,8 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-
 class Season extends Model
 {
     use HasFactory;
@@ -17,6 +15,7 @@ class Season extends Model
         'closing_date',
         'application_deadline_date',
         'is_active',
+        'mail_sent',
         'application_id',
         'invoice_no',
         'itr_invoice_no',
@@ -34,6 +33,7 @@ class Season extends Model
             'closing_date' => 'date',
             'application_deadline_date' => 'date',
             'is_active' => 'boolean',
+            'mail_sent' => 'boolean',
         ];
     }
 
@@ -53,7 +53,7 @@ class Season extends Model
                 ->exists();
 
             if ($overlap) {
-                throw new \InvalidArgumentException("Season dates overlap with an existing season.");
+                throw new \InvalidArgumentException('Season dates overlap with an existing season.');
             }
 
             // Strict Toggle Validation: Only allow is_active if within date range.
