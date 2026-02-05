@@ -166,8 +166,14 @@ class ViewNomination extends ViewRecord
             }
         }
 
-        // Average of scored phases (Phase 2-6)
-        $finalScore = $scorablePhases > 0 ? ($totalScore / $scorablePhases) : 0;
+        // Average of scored phases (Divide by 5 as per requirement)
+        $finalScore = $totalScore / 5;
+
+        // Fetch Badge
+        $badge = \App\Models\Badge::where('is_active', true)
+            ->where('min_score', '<=', $finalScore)
+            ->where('max_score', '>=', $finalScore)
+            ->first();
 
         $finalGrade = 'D';
         if (!$isRejected) {
@@ -215,6 +221,8 @@ class ViewNomination extends ViewRecord
             'status' => $isRejected ? 'rejected' : 'awarded',
             'final_score' => $finalScore,
             'final_grade' => $finalGrade,
+            'badge_id' => (!$isRejected && $badge) ? $badge->id : null,
+            'badge_name' => (!$isRejected && $badge) ? $badge->name : null,
         ]);
 
         \Filament\Notifications\Notification::make()

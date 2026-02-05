@@ -54,7 +54,14 @@ class Nomination extends Model
         'paid_at',
         'manual_invoice',
         'manual_transaction_id',
+        'badge_id',
+        'badge_name',
     ];
+
+    public function badge(): BelongsTo
+    {
+        return $this->belongsTo(Badge::class);
+    }
 
     public function judge(): BelongsTo
     {
@@ -142,20 +149,20 @@ class Nomination extends Model
         $now = now();
 
         // Find season if not provided
-        if (! $season) {
+        if (!$season) {
             $season = Season::where('opening_date', '<=', $now)
                 ->where('application_deadline_date', '>=', $now)
                 ->first();
         }
 
-        if (! $season) {
+        if (!$season) {
             // Fallback to legacy format
             $year = date('Y');
             $prefix = match ($type) {
                 'invoice_no' => 'INV-',
                 'itr_invoice_no' => 'ITR-',
                 default => 'AUR-',
-            }.$year.'-';
+            } . $year . '-';
 
             $lastNomination = self::whereYear('created_at', $year)
                 ->whereNull('season_id')
@@ -172,7 +179,7 @@ class Nomination extends Model
                 $newNumber = 1;
             }
 
-            return $prefix.str_pad($newNumber, 5, '0', STR_PAD_LEFT);
+            return $prefix . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
         }
 
         // Season exists
@@ -183,12 +190,12 @@ class Nomination extends Model
             ->orderBy('id', 'desc')
             ->first();
 
-        if (! $lastNomination) {
+        if (!$lastNomination) {
             return $startId ?: match ($type) {
                 'invoice_no' => 'INV-',
                 'itr_invoice_no' => 'ITR-',
                 default => 'AUR-',
-            }.date('Y', strtotime($season->opening_date)).'-00001';
+            } . date('Y', strtotime($season->opening_date)) . '-00001';
         }
 
         if (preg_match('/(\d+)$/', $lastNomination->$type, $matches)) {
@@ -197,9 +204,9 @@ class Nomination extends Model
             $nextNumber = (int) $numberStr + 1;
             $prefix = substr($lastNomination->$type, 0, -$length);
 
-            return $prefix.str_pad($nextNumber, $length, '0', STR_PAD_LEFT);
+            return $prefix . str_pad($nextNumber, $length, '0', STR_PAD_LEFT);
         }
 
-        return $lastNomination->$type.'-'.(self::where('season_id', $season->id)->count() + 1);
+        return $lastNomination->$type . '-' . (self::where('season_id', $season->id)->count() + 1);
     }
 }
