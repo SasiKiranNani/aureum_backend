@@ -20,15 +20,17 @@
                         <!-- Search -->
                         <div class="filter-group search-group">
                             <i class="fas fa-search search-icon"></i>
-                            <input type="text" name="search" class="filter-input" placeholder="Search winners..." value="{{ request('search') }}" onkeypress="if(event.key === 'Enter') this.form.submit()">
+                            <input type="text" name="search" class="filter-input" placeholder="Search winners..."
+                                value="{{ request('search') }}" onkeypress="if(event.key === 'Enter') this.form.submit()">
                         </div>
 
                         <!-- Year Filter -->
                         <div class="filter-group">
                             <select name="year" class="filter-select" onchange="this.form.submit()">
                                 <option value="">All Years</option>
-                                @foreach($years as $yearOption)
-                                    <option value="{{ $yearOption }}" {{ request('year') == $yearOption ? 'selected' : '' }}>{{ $yearOption }}</option>
+                                @foreach ($years as $yearOption)
+                                    <option value="{{ $yearOption }}"
+                                        {{ request('year') == $yearOption ? 'selected' : '' }}>{{ $yearOption }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -37,8 +39,10 @@
                         <div class="filter-group">
                             <select name="season_id" class="filter-select" onchange="this.form.submit()">
                                 <option value="">All Seasons</option>
-                                @foreach($seasons as $season)
-                                    <option value="{{ $season->id }}" {{ request('season_id') == $season->id ? 'selected' : '' }}>{{ $season->name }}</option>
+                                @foreach ($seasons as $season)
+                                    <option value="{{ $season->id }}"
+                                        {{ request('season_id') == $season->id ? 'selected' : '' }}>{{ $season->name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -47,8 +51,10 @@
                         <div class="filter-group">
                             <select name="badge_id" class="filter-select" onchange="this.form.submit()">
                                 <option value="">All Badges</option>
-                                @foreach($badges as $badge)
-                                    <option value="{{ $badge->id }}" {{ request('badge_id') == $badge->id ? 'selected' : '' }}>{{ $badge->name }}</option>
+                                @foreach ($badges as $badge)
+                                    <option value="{{ $badge->id }}"
+                                        {{ request('badge_id') == $badge->id ? 'selected' : '' }}>{{ $badge->name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -57,41 +63,45 @@
                         <div class="filter-group">
                             <select name="category_id" class="filter-select" onchange="this.form.submit()">
                                 <option value="">All Categories</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}"
+                                        {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        
+
                     </div>
                 </form>
             </div>
 
             <div class="winners-image-grid">
-                @forelse($nominations as $nomination)
+                @forelse($winners as $winner)
                     <!-- Winner Image Card -->
                     <div class="winner-image-card">
-                        <img src="{{ $nomination->headshot ? asset('storage/' . $nomination->headshot) : asset('divya-images/about.jpg') }}" 
-                             alt="{{ $nomination->full_name }}" 
-                             class="winner-img">
+                        <img src="{{ $winner->image ? asset('storage/' . $winner->image) : asset('divya-images/about.jpg') }}"
+                            alt="{{ $winner->name }}" class="winner-img">
                         <div class="winner-hover-overlay">
                             <div class="overlay-content">
-                                <h3 class="overlay-name">{{ $nomination->full_name }}</h3>
+                                <h3 class="overlay-name">{{ $winner->name }}</h3>
                                 <div class="overlay-divider"></div>
-                                <p class="overlay-award">{{ $nomination->award->name ?? 'Award Winner' }}</p>
-                                <p class="overlay-category">{{ strtoupper($nomination->category->name ?? '') }}</p>
+                                <p class="overlay-award">{{ $winner->award_name }}</p>
+                                <p class="overlay-category">{{ strtoupper($winner->category_name) }}</p>
                                 <div class="overlay-details">
-                                    <span class="overlay-country"><i class="fas fa-map-marker-alt"></i> {{ $nomination->country }}</span>
-                                    @if($nomination->badge)
-                                        <span class="overlay-badge"><i class="fas fa-medal"></i> {{ $nomination->badge->name }}</span>
+                                    <span class="overlay-country"><i class="fas fa-map-marker-alt"></i>
+                                        {{ $winner->country }}</span>
+                                    @if ($winner->badge_name)
+                                        <span class="overlay-badge"><i class="fas fa-medal"></i>
+                                            {{ $winner->badge_name }}</span>
                                     @endif
                                 </div>
-                                <div class="overlay-year">{{ optional($nomination->season)->opening_date ? \Carbon\Carbon::parse($nomination->season->opening_date)->year : '' }}</div>
+                                <div class="overlay-year">{{ $winner->year }}</div>
                             </div>
                         </div>
                     </div>
                 @empty
-                    <div class="no-winners-found" style="grid-column: 1 / -1; text-align: center; color: #fff; padding: 50px;">
+                    <div class="no-winners-found"
+                        style="grid-column: 1 / -1; text-align: center; color: #fff; padding: 50px;">
                         <h3>No winners found matching your criteria.</h3>
                     </div>
                 @endforelse
@@ -99,7 +109,7 @@
 
             <!-- Pagination -->
             <div class="judges-pagination-wrapper">
-                {{ $nominations->links('vendor.pagination.custom') }}
+                {{ $winners->links('vendor.pagination.custom') }}
             </div>
         </div>
     </section>
@@ -142,7 +152,8 @@
             color: #aaa;
         }
 
-        .filter-input, .filter-select {
+        .filter-input,
+        .filter-select {
             width: 100%;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.2);

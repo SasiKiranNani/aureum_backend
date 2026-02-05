@@ -23,6 +23,11 @@ class DummyWinnerResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('season_id')
+                    ->relationship('season', 'name')
+                    ->required()
+                    ->searchable()
+                    ->preload(),
                 Forms\Components\Select::make('category_id')
                     ->relationship('category', 'name')
                     ->required()
@@ -43,7 +48,12 @@ class DummyWinnerResource extends Resource
                     ->relationship('badge', 'name')
                     ->required()
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->live()
+                    ->afterStateUpdated(fn ($state, Forms\Set $set) => $set('badge_name', \App\Models\Badge::find($state)?->name)),
+                Forms\Components\TextInput::make('badge_name')
+                    ->required()
+                    ->maxLength(255),
                 Forms\Components\FileUpload::make('image')
                     ->label('Headshot')
                     ->image()
@@ -61,6 +71,8 @@ class DummyWinnerResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('season.name')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('category.name')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('award.name')
@@ -69,6 +81,8 @@ class DummyWinnerResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('badge.name')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('badge_name')
+                    ->searchable(),
                 Tables\Columns\ImageColumn::make('image')
                     ->label('Headshot'),
                 Tables\Columns\ToggleColumn::make('is_active'),

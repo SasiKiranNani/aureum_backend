@@ -8,13 +8,20 @@ class DummyWinner extends Model
 {
     protected $fillable = [
         'name',
+        'season_id',
         'category_id',
         'award_id',
         'country',
         'badge_id',
+        'badge_name',
         'image',
         'is_active',
     ];
+
+    public function season()
+    {
+        return $this->belongsTo(Season::class);
+    }
 
     public function category()
     {

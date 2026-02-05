@@ -354,7 +354,8 @@ class FrontendController extends Controller
         $badgeId = $request->input('badge_id');
         $categoryId = $request->input('category_id');
 
-        $query = Nomination::with(['season', 'award', 'category', 'badge'])
+        // 1. Fetch Nominations (Real Winners)
+        $nominationQuery = Nomination::with(['season', 'award', 'category', 'badge'])
             ->where('status', 'awarded')
             ->whereNotNull('badge_id')
             ->whereHas('season', function ($q) {
@@ -362,31 +363,98 @@ class FrontendController extends Controller
             });
 
         if ($search) {
-            $query->where('full_name', 'like', '%' . $search . '%');
+            $nominationQuery->where('full_name', 'like', '%' . $search . '%');
         }
 
         if ($year) {
-            $query->whereHas('season', function ($q) use ($year) {
+            $nominationQuery->whereHas('season', function ($q) use ($year) {
                 $q->whereYear('opening_date', $year);
             });
         }
 
         if ($seasonId) {
-            $query->where('season_id', $seasonId);
+            $nominationQuery->where('season_id', $seasonId);
         }
 
         if ($badgeId) {
-            $query->where('badge_id', $badgeId);
+            $nominationQuery->where('badge_id', $badgeId);
         }
 
         if ($categoryId) {
-            $query->where('category_id', $categoryId);
+            $nominationQuery->where('category_id', $categoryId);
         }
 
-        $nominations = $query->orderBy('season_id', 'desc')
-            ->orderBy('id', 'desc')
-            ->paginate(12)
-            ->withQueryString();
+        $nominations = $nominationQuery->get()->map(function ($nom) {
+            return (object) [
+                'id' => $nom->id,
+                'name' => $nom->full_name,
+                'image' => $nom->headshot,
+                'award_name' => $nom->award?->name ?? 'Award Winner',
+                'category_name' => $nom->category?->name ?? '',
+                'country' => $nom->country,
+                'badge_name' => $nom->badge?->name ?? $nom->badge_name,
+                'year' => $nom->season?->opening_date ? \Carbon\Carbon::parse($nom->season->opening_date)->year : '',
+                'season_id' => $nom->season_id,
+                'badge_id' => $nom->badge_id,
+                'category_id' => $nom->category_id,
+            ];
+        });
+
+        // 2. Fetch Dummy Winners
+        $dummyWinnerQuery = \App\Models\DummyWinner::with(['season', 'award', 'category', 'badge'])
+            ->where('is_active', true);
+
+        if ($search) {
+            $dummyWinnerQuery->where('name', 'like', '%' . $search . '%');
+        }
+
+        if ($year) {
+            $dummyWinnerQuery->whereHas('season', function ($q) use ($year) {
+                $q->whereYear('opening_date', $year);
+            });
+        }
+
+        if ($seasonId) {
+            $dummyWinnerQuery->where('season_id', $seasonId);
+        }
+
+        if ($badgeId) {
+            $dummyWinnerQuery->where('badge_id', $badgeId);
+        }
+
+        if ($categoryId) {
+            $dummyWinnerQuery->where('category_id', $categoryId);
+        }
+
+        $dummyWinners = $dummyWinnerQuery->get()->map(function ($win) {
+            return (object) [
+                'id' => $win->id,
+                'name' => $win->name,
+                'image' => $win->image,
+                'award_name' => $win->award?->name ?? 'Award Winner',
+                'category_name' => $win->category?->name ?? '',
+                'country' => $win->country,
+                'badge_name' => $win->badge?->name ?? $win->badge_name,
+                'year' => $win->season?->opening_date ? \Carbon\Carbon::parse($win->season->opening_date)->year : '',
+                'season_id' => $win->season_id,
+                'badge_id' => $win->badge_id,
+                'category_id' => $win->category_id,
+            ];
+        });
+
+        // 3. Merge and Shuffle
+        $allWinners = $nominations->concat($dummyWinners)->shuffle();
+
+        // 4. Manual Pagination
+        $perPage = 12;
+        $currentPage = $request->input('page', 1);
+        $pagedWinners = new \Illuminate\Pagination\LengthAwarePaginator(
+            $allWinners->forPage($currentPage, $perPage),
+            $allWinners->count(),
+            $perPage,
+            $currentPage,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
 
         // Filter Options
         $years = \App\Models\Season::whereDate('closing_date', '<', now())
@@ -402,7 +470,13 @@ class FrontendController extends Controller
         $badges = \App\Models\Badge::where('is_active', true)->get();
         $categories = Category::where('is_active', true)->get();
 
-        return view('frontend.past-winners', compact('nominations', 'years', 'seasons', 'badges', 'categories'));
+        return view('frontend.past-winners', [
+            'winners' => $pagedWinners,
+            'years' => $years,
+            'seasons' => $seasons,
+            'badges' => $badges,
+            'categories' => $categories
+        ]);
     }
 
     public function pastWinnerDetails()
