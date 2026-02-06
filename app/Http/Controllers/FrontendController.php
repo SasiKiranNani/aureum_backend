@@ -9,6 +9,7 @@ use App\Models\Collaborator;
 use App\Models\Discount;
 use App\Models\Event;
 use App\Models\EventBooking;
+use App\Models\Faq;
 use App\Models\Newsroom;
 use App\Models\Nomination;
 use App\Models\PaymentGateway;
@@ -560,5 +561,11 @@ class FrontendController extends Controller
     public function whyEnter()
     {
         return view('frontend.why-enter');
+    }
+
+    public function faq()
+    {
+        $faq = Faq::where('is_active', true)->get(); 
+        return view('frontend.faq', compact('faq'));
     }
 }

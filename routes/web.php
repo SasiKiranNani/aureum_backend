@@ -71,7 +71,7 @@ Route::get('/privacy-policy', [FrontendController::class, 'privacyPolicy'])->nam
 Route::get('/terms-and-conditions', [FrontendController::class, 'termsAndConditions'])->name('terms-and-conditions');
 Route::get('/cookie-policy', [FrontendController::class, 'cookiePolicy'])->name('cookie-policy');
 Route::get('/cancellation-refund-policy', [FrontendController::class, 'cancellationRefundPolicy'])->name('cancellation-refund-policy');
-
+Route::get('/faq', [FrontendController::class, 'faq'])->name('faq');
 // Protected Routes
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [FrontendController::class, 'dashboardOverview'])->name('dashboard');
